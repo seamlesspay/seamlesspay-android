@@ -1,0 +1,18 @@
+language: android
+jdk: oraclejdk8
+notifications:
+  email:
+    - info@seamlesspay.com
+sudo: true
+android:
+  components:
+    - tools
+    - tools
+    - platform-tools
+    - build-tools-28.0.3
+    - android-28
+    - extra-google-m2repository
+before_install:
+  - yes | sdkmanager "platforms;android-28"
+script: ./gradlew --stacktrace lint test :Demo:assembleDebug :Demo:assembleRelease
+after_success: ./script/deploy_snapshot.sh

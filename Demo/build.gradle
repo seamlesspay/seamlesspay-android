@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.seamlesspay.demo"
+        minSdkVersion 21
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.pro'
+        }
+    }
+
+    lintOptions {
+        disable 'IconMissingDensityFolder'
+        warning 'InvalidPackage'
+        warning 'GradleCompatible'
+        textReport true
+        textOutput 'stdout'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
+        exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation 'androidx.preference:preference:1.0.0'
+
+    implementation('com.squareup.retrofit:retrofit:1.9.0') {
+        exclude module: 'com.google.gson'
+    }
+
+    implementation project(':Seamlesspay')
+    implementation project(':CardForm')
+
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4'
+    implementation 'com.google.android.material:material:1.0.0-beta01'
+
+    androidTestImplementation 'com.lukekorth:device-automator:1.0.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.1'
+
+    testImplementation 'junit:junit:4.12'
+}
+
+
+
+task demoApkSize {
+  group 'Seamlesspay'
+  description 'Prints the current size of the Demo apk'
+
+  def apkDir = fileTree('./build/outputs/apk')
+  def apks = apkDir.matching {
+    include '*.apk'
+    exclude '*unaligned*'
+  }
+  apks.visit { apk ->
+    def apkName = apk.getName()
+    def mb = apk.getSize() / 1024 / 1000
+    mb = mb.setScale(2, BigDecimal.ROUND_UP)
+    println "Size of ${apkName} is ${mb} MB"
+  }
+}
+
+project.tasks.findAll {
+  if (it.name.startsWith('assemble')) {
+    it.finalizedBy demoApkSize
+  }
+}
