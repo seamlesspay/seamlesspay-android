@@ -63,9 +63,7 @@ Additionally `CardForm` has 4 available listeners:
 * `CardForm#setOnCardTypeChangedListener` called when the `CardType` in the form changes.
 
 ## Example
-
 ![](/files/cardform.png)
-
 ## card.io
 
 The card form is compatible with [card.io](https://github.com/card-io/card.io-Android-SDK).
