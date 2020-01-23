@@ -21,6 +21,8 @@ public class CreateTransactionActivity extends BaseActivity {
     public static final String EXTRA_PAYMENT_METHOD_NONCE = "nonce";
     private ProgressBar mLoadingSpinner;
 
+    private Long mStartTime, mEndTime;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -34,11 +36,15 @@ public class CreateTransactionActivity extends BaseActivity {
     public void onBaseChargeNonceCreated(BaseChargeNonce chargeNonceNonce) {
         super.onBaseChargeNonceCreated(chargeNonceNonce);
 
+        mEndTime = System.currentTimeMillis();
+        long timeElapsed = mEndTime - mStartTime;
+
         setStatus(R.string.transaction_complete);
         setMessage("Amount: " + chargeNonceNonce.getAmount() +
                 "\nStatus: " +  chargeNonceNonce.getStatus() +
                 "\nStatus message: " + chargeNonceNonce.getStatusDescription() +
-                "\ntxnID #: " + chargeNonceNonce.getChargeId());
+                "\ntxnID #: " + chargeNonceNonce.getChargeId() +
+                "\nCharge runtime : " + ((float)timeElapsed/1000) + " s");
     }
 
     @Override
@@ -51,6 +57,8 @@ public class CreateTransactionActivity extends BaseActivity {
         }
 
         crateCharge((PaymentMethodNonce) getIntent().getParcelableExtra(EXTRA_PAYMENT_METHOD_NONCE));
+
+        mStartTime = System.currentTimeMillis();
     }
 
     public void onError(Exception error) {

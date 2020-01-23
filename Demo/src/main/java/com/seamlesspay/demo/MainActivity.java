@@ -18,6 +18,7 @@ import static android.view.View.VISIBLE;
 public class MainActivity extends BaseActivity {
 
     static final String EXTRA_PAYMENT_RESULT = "payment_result";
+    static final String EXTRA_TIMER_RESULT = "timer_result";
     private static final int CARDS_REQUEST = 3;
     private static final String KEY_NONCE = "nonce";
     private PaymentMethodNonce mNonce;
@@ -29,6 +30,8 @@ public class MainActivity extends BaseActivity {
 
     private Button mCardsButton;
     private Button mCreateTransactionButton;
+
+    private Long mTimeElapsed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class MainActivity extends BaseActivity {
 
         if (resultCode == RESULT_OK) {
             Parcelable returnedData = data.getParcelableExtra(EXTRA_PAYMENT_RESULT);
+            mTimeElapsed = data.getLongExtra(EXTRA_TIMER_RESULT, 0);
             if (returnedData instanceof PaymentMethodNonce) {
                 displayNonce((PaymentMethodNonce) returnedData);
             }
@@ -103,7 +107,7 @@ public class MainActivity extends BaseActivity {
         mNonceString.setText(getString(R.string.nonce_placeholder, mNonce.getTxnType()));
         mNonceString.setVisibility(VISIBLE);
 
-        String details = CardActivity.getDisplayString((CardNonce) mNonce);
+        String details = CardActivity.getDisplayString((CardNonce) mNonce,  mTimeElapsed);
         mNonceDetails.setText(details);
         mNonceDetails.setVisibility(VISIBLE);
 

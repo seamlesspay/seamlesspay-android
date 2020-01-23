@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Settings {
 
-    private static final String SANDBOX_TOKENIZATION_KEY = "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
-    private static final String PRODUCTION_TOKENIZATION_KEY = "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+    private static final String SANDBOX_TOKENIZATION_KEY = "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+    private static final String PRODUCTION_TOKENIZATION_KEY = "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
     private static final String SANDBOX_SECRET_KEY = "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
     private static final String PRODUCTION_SECRET_KEY = "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
