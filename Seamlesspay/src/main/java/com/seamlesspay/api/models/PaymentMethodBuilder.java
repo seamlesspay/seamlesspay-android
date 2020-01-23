@@ -24,7 +24,7 @@ public abstract class PaymentMethodBuilder<T> {
     public PaymentMethodBuilder() {}
 
     /**
-     * @param txnType PAN Vault support five types of payments "Credit PanVault", "PINLess Debit PanVault", "ACH", "Gift PanVault"
+     * @param txnType PAN Vault support five types of payments "Credit Card", "PINLess Debit Card", "ACH", "Gift Card"
      */
     @SuppressWarnings("unchecked")
     public T setTxnType(String txnType) {

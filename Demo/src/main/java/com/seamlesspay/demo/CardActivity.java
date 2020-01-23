@@ -150,7 +150,7 @@ public class CardActivity extends BaseActivity implements
     }
 
     public static String getDisplayString(CardNonce nonce) {
-        return "PanVault Last Four: " + nonce.getLastFour() +
+        return "Card Last Four: " + nonce.getLastFour() +
                 "\nToken: " +  nonce.getToken() +
                 "\nExpDate: " +  nonce.getExpirationDate();
     }
