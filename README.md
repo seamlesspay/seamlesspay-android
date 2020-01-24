@@ -54,16 +54,6 @@ CardForm cardForm = (CardForm) findViewById(R.id.card_form);
     .setup(activity);
 ```
 
-To access the values in the form, there are getters for each field:
-
-```java
-cardForm.getCardNumber();
-cardForm.getExpirationMonth();
-cardForm.getExpirationYear();
-cardForm.getCvv();
-cardForm.getPostalCode();
-```
-
 To check if `CardForm` is valid call `CardForm#isValid()`. To validate each required field
 and show the user which fields are incorrect, call `CardForm#validate()`.
 
@@ -76,11 +66,44 @@ Additionally `CardForm` has 4 available listeners:
 * `CardForm#setOnFormFieldFocusedListener` called when a field in the form is focused.
 * `CardForm#setOnCardTypeChangedListener` called when the `CardType` in the form changes.
 
+# Create Token
+
+Create the token of given payment data.
+To access the values in the form, there are getters for each field
+
+```java
+ CardBuilder cardBuilder = new CardBuilder()
+                    .accountNumber(mCardForm.getCardNumber())
+                    .expirationMonth(mCardForm.getExpirationMonth())
+                    .expirationYear(mCardForm.getExpirationYear())
+                    .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
+                    .billingZip(mCardForm.getPostalCode());
+
+            PanVault.tokenize(activity, cardBuilder);
+```
+Available listener:
+* `PaymentMethodNonceCreatedListener` called when the `PaymentMethodNonce` getting card token.
+
+# Create a Charge
+
+```java
+CardChargeBulder chargeBulder = new CardChargeBulder()
+                .setAmount("1")
+                .setCurrency(CardChargeBulder.Keys.CURRENCY_USD)
+                .setCapture(true)
+                .setToken(nonce.getToken())
+                .setDescription("Demo Android Client Charge")
+                .setCvv(mCardForm.getCVV());
+
+        Charge.create(activity, chargeBulder);
+```
+Available listener:
+* `BaseChargeNonceCreatedListener` called when the `chargeNonceNonce` getting charge info.
+
 ## Example
 ![](/files/cardform.png)
-## Documentation
 
-Start with [**'Demo APP!'**](https://github.com/seamlesspay/seamlesspay-android/tree/dev/Demo) for sample on basic setup and usage.
+Start with [**'Demo APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/dev/Demo) for sample on basic setup and usage.
 
 ## card.io
 
