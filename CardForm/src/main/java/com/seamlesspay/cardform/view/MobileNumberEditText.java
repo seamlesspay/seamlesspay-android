@@ -8,8 +8,6 @@ import android.text.InputFilter.LengthFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
 
-import com.seamlesspay.cardform.R;
-
 /**
  * Input for mobile number. Validated for presence only due to the wide variation of mobile number formats worldwide.
  */
@@ -55,6 +53,6 @@ public class MobileNumberEditText extends ErrorEditText {
 
     @Override
     public String getErrorMessage() {
-        return getContext().getString(R.string.bt_mobile_number_required);
+        return "Mobile number is required";
     }
 }

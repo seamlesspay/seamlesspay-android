@@ -23,7 +23,7 @@
             <com.seamlesspay.cardform.view.CardholderNameEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_cardholder_name"
-                android:hint="@string/bt_form_hint_cardholder_name"/>
+                android:hint="Cardholder Name"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,7 +48,7 @@
             <com.seamlesspay.cardform.view.CardEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_card_number"
-                android:hint="@string/bt_form_hint_card_number"
+                android:hint="Card Number"
                 android:inputType="number"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -73,7 +73,7 @@
             <com.seamlesspay.cardform.view.ExpirationDateEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_expiration"
-                android:hint="@string/bt_form_hint_expiration"/>
+                android:hint="Expiration Date"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +86,7 @@
             <com.seamlesspay.cardform.view.CvvEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_cvv"
-                android:hint="@string/bt_form_hint_cvv"/>
+                android:hint="CVV"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,7 +112,7 @@
             <com.seamlesspay.cardform.view.PostalCodeEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_postal_code"
-                android:hint="@string/bt_form_hint_postal_code"/>
+                android:hint="Postal Code"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,7 +140,7 @@
             <com.seamlesspay.cardform.view.CountryCodeEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_country_code"
-                android:hint="@string/bt_form_hint_country_code"/>
+                android:hint="Country Code"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,7 +153,7 @@
             <com.seamlesspay.cardform.view.MobileNumberEditText
                 style="@style/bt_card_form_field"
                 android:id="@+id/bt_card_form_mobile_number"
-                android:hint="@string/bt_form_hint_mobile_number"/>
+                android:hint="Mobile Number"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,6 +183,6 @@
             android:layout_marginLeft="@dimen/bt_save_card_checkbox_left_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bt_save_card_checkbox_name"/>
+            android:text="Save card"/>
     </LinearLayout>
 </merge>

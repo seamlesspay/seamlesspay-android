@@ -41,6 +41,6 @@ public class CardholderNameEditText extends ErrorEditText {
 
     @Override
     public String getErrorMessage() {
-        return getContext().getString(R.string.bt_cardholder_name_required);
+        return "Cardholder name is required";
     }
 }

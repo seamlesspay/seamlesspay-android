@@ -146,9 +146,9 @@ public class CardEditText extends ErrorEditText implements TextWatcher {
     @Override
     public String getErrorMessage() {
         if (TextUtils.isEmpty(getText())) {
-            return getContext().getString(R.string.bt_card_number_required);
+            return "Card number is required";
         } else {
-            return getContext().getString(R.string.bt_card_number_invalid);
+            return "Card number is invalid";
         }
     }
 

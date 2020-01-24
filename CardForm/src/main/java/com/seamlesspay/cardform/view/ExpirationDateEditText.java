@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.seamlesspay.cardform.R;
 import com.seamlesspay.cardform.utils.DateValidator;
 
 import java.lang.reflect.Method;
@@ -147,9 +146,9 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
     @Override
     public String getErrorMessage() {
         if (TextUtils.isEmpty(getText())) {
-            return getContext().getString(R.string.bt_expiration_required);
+            return "Expiration date is required";
         } else {
-            return getContext().getString(R.string.bt_expiration_invalid);
+            return "Expiration date is invalid";
         }
     }
 

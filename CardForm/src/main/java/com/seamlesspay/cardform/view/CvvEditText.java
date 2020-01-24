@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
-import com.seamlesspay.cardform.R;
 import com.seamlesspay.cardform.utils.CardType;
 
 /**
@@ -55,7 +54,7 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
         InputFilter[] filters = { new LengthFilter(cardType.getSecurityCodeLength()) };
         setFilters(filters);
 
-        setContentDescription(getContext().getString(cardType.getSecurityCodeName()));
+        setContentDescription(cardType.getSecurityCodeName());
         setFieldHint(cardType.getSecurityCodeName());
 
         invalidate();
@@ -96,15 +95,15 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
     public String getErrorMessage() {
         String securityCodeName;
         if (mCardType == null) {
-            securityCodeName = getContext().getString(R.string.bt_cvv);
+            securityCodeName = "CVV";
         } else {
-            securityCodeName = getContext().getString(mCardType.getSecurityCodeName());
+            securityCodeName = mCardType.getSecurityCodeName();
         }
 
         if (TextUtils.isEmpty(getText())) {
-            return getContext().getString(R.string.bt_cvv_required, securityCodeName);
+            return "{securityCodeName} is required";
         } else {
-            return getContext().getString(R.string.bt_cvv_invalid, securityCodeName);
+            return "{securityCodeName} is invalid";
         }
     }
 

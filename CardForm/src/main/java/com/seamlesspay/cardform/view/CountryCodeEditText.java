@@ -6,8 +6,6 @@ import android.text.InputFilter.LengthFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
 
-import com.seamlesspay.cardform.R;
-
 /**
  * Input for country code. Validated for presence only due to the wide variation of country code formats worldwide.
  */
@@ -48,6 +46,6 @@ public class CountryCodeEditText extends ErrorEditText {
 
     @Override
     public String getErrorMessage() {
-        return getContext().getString(R.string.bt_country_code_required);
+        return "Country code is required";
     }
 }
