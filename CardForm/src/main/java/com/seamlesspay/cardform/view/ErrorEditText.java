@@ -67,8 +67,8 @@ public class ErrorEditText extends TextInputEditText {
     }
 
     /**
-     * Sets the hint on the {@link TextInputLayout} if this view is a child of a {@link TextInputLayout}, otherwise
-     * sets the hint on this {@link android.widget.EditText}.
+     * Sets the hint on the TextInputLayout if this view is a child of a TextInputLayout, otherwise
+     * sets the hint on this android.widget.EditText.
      *
      * @param hint The string resource to use as the hint.
      */
@@ -77,8 +77,8 @@ public class ErrorEditText extends TextInputEditText {
     }
 
     /**
-     * Sets the hint on the {@link TextInputLayout} if this view is a child of a {@link TextInputLayout}, otherwise
-     * sets the hint on this {@link android.widget.EditText}.
+     * Sets the hint on the TextInputLayout if this view is a child of TextInputLayout, otherwise
+     * sets the hint on this android.widget.EditText.
      *
      * @param hint The string value to use as the hint.
      */
@@ -199,7 +199,7 @@ public class ErrorEditText extends TextInputEditText {
     }
 
     /**
-     * @return the {@link TextInputLayout} parent if present, otherwise {@code null}.
+     * @return the TextInputLayout parent if present, otherwise null.
      */
     @Nullable
     public TextInputLayout getTextInputLayoutParent() {

@@ -16,7 +16,7 @@ public class DateValidator {
      * Maximum amount of years in advance that a credit card expiration date should be trusted to be
      * valid. This is mostly used if the current date is towards the end of the century and the
      * expiration date is at the start of the following one.
-     * <p/>
+     *
      * Ex. Current year is 2099, Expiration date is "01/01". The YY is "less than" the current year,
      * but since the difference is less than {@code MAXIMUM_VALID_YEAR_DIFFERENCE}, it should still
      * be trusted to be valid client-side.

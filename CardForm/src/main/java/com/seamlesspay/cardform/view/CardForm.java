@@ -267,8 +267,8 @@ public class CardForm extends LinearLayout implements CardEditText.OnCardTypeCha
 
 
     /**
-     * Sets up the card form for display to the user using the values provided in {@link CardForm#cardRequired(boolean)},
-     * {@link CardForm#expirationRequired(boolean)}, ect. If {@link CardForm#setup(AppCompatActivity)} is not called,
+     * Sets up the card form for display to the user using the values provided in CardForm#cardRequired(boolean),
+     * CardForm#expirationRequired(boolean), ect. If {CardForm#setup(AppCompatActivity) is not called,
      * the form will not be visible.
      *
      * @param activity Used to set {@link android.view.WindowManager.LayoutParams#FLAG_SECURE} to prevent screenshots

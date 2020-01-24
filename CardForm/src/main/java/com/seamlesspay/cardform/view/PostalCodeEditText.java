@@ -6,8 +6,6 @@ import android.text.InputFilter.LengthFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
 
-import com.seamlesspay.cardform.R;
-
 /**
  * Input for postal codes. Validated for presence only due to the wide variation of postal code formats worldwide.
  */
@@ -40,6 +38,6 @@ public class PostalCodeEditText extends ErrorEditText {
 
     @Override
     public String getErrorMessage() {
-        return getContext().getString(R.string.bt_postal_code_required);
+        return "Postal code is required";
     }
 }

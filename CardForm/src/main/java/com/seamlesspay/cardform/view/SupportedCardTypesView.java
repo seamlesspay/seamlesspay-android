@@ -41,9 +41,9 @@ public class SupportedCardTypesView extends TextView {
     }
 
     /**
-     * Sets the supported {@link CardType}s on the view to display the card icons.
+     * Sets the supported CardTypes on the view to display the card icons.
      *
-     * @param cardTypes The {@link CardType}s to display
+     * @param cardTypes The CardTypes to display
      */
     public void setSupportedCardTypes(@Nullable CardType... cardTypes) {
         if (cardTypes == null) {
@@ -57,17 +57,17 @@ public class SupportedCardTypesView extends TextView {
     }
 
     /**
-     * Selects the intersection between the {@link CardType}s passed into
-     * {@link #setSupportedCardTypes(CardType...)} and {@link CardType}s passed into
+     * Selects the intersection between the CardTypes passed into
+     *  #setSupportedCardTypes(CardType...) and CardTypes passed into
      * this method as visually enabled.
      *
      * The remaining supported card types will become visually disabled.
      *
-     * {@link #setSupportedCardTypes(CardType...)} must be called prior to using this method.
+     *  setSupportedCardTypes(CardType...) must be called prior to using this method.
      *
-     * @param cardTypes The {@link CardType}s to set as visually enabled.
+     * cardTypes The CardTypes to set as visually enabled.
      */
-    public void setSelected(@Nullable CardType... cardTypes) {
+    public void setSelected( CardType... cardTypes) {
         if (cardTypes == null) {
             cardTypes = new CardType[]{};
         }

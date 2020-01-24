@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'io.codearte.nexus-staging'
+//apply plugin: 'io.codearte.nexus-staging'
 
 version '1.0.1'
 
@@ -18,21 +18,21 @@ android {
         consumerProguardFiles 'proguard.cfg'
     }
 
-    testOptions {
-        unitTests {
-            includeAndroidResources true
-            all {
-                jvmArgs '-noverify'
-            }
-        }
-    }
+//    testOptions {
+//        unitTests {
+//            includeAndroidResources true
+//            all {
+//                jvmArgs '-noverify'
+//            }
+//        }
+//    }
 
-    lintOptions {
-        textReport true
-        textOutput 'stdout'
-    }
+//    lintOptions {
+//        textReport true
+//        textOutput 'stdout'
+//    }
 
-    resourcePrefix 'bt_'
+//    resourcePrefix 'sp_'
 }
 
 dependencies {
@@ -45,37 +45,61 @@ dependencies {
 }
 
 /* maven release */
-task javadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    failOnError false
+//task javadocs(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    failOnError false
+//}
+//
+//task javadocsJar(type: Jar, dependsOn: javadocs) {
+//    classifier = 'javadoc'
+//    from javadocs.destinationDir
+//}
+//
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from android.sourceSets.main.java.srcDirs
+//}
+
+//artifacts {
+//    archives javadocsJar
+//    archives sourcesJar
+//}
+
+//signing {
+//    required {
+//
+//    }
+//    sign configurations.archives
+//}
+
+//nexusStaging {
+//    packageGroup = "com.seamlesspay"
+//}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'CardForm'
+
+    publishedGroupId = 'com.seamlesspay'
+    libraryName = 'CardForm'
+    artifact = 'CardForm'
+
+    libraryDescription = 'A ready-made card form layout that can be included in your Android app, making it easy to accept credit and debit cards.'
+
+    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+
+    libraryVersion = '1.0.1'
+
+    developerId = 'seamlesspay'
+    developerName = 'Seamless Payments'
+    developerEmail = 'info@seamlesspay.com'
+
+    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
+    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
+    allLicenses = ["MIT"]
 }
 
-task javadocsJar(type: Jar, dependsOn: javadocs) {
-    classifier = 'javadoc'
-    from javadocs.destinationDir
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
-artifacts {
-    archives javadocsJar
-    archives sourcesJar
-}
-
-signing {
-    required {
-
-    }
-    sign configurations.archives
-}
-
-nexusStaging {
-    packageGroup = "com.seamlesspay"
-}
-
-
-
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

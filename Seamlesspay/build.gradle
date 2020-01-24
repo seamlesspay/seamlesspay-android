@@ -13,34 +13,34 @@ android {
         consumerProguardFiles 'proguard.pro'
     }
 
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-            all {
-                jvmArgs '-noverify'
-            }
-        }
-    }
+//    testOptions {
+//        unitTests {
+//            includeAndroidResources = true
+//            all {
+//                jvmArgs '-noverify'
+//            }
+//        }
+//    }
 
     packagingOptions {
         exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
         exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
     }
 
-    lintOptions {
-        textReport true
-        textOutput 'stdout'
-    }
+//    lintOptions {
+//        textReport true
+//        textOutput 'stdout'
+//    }
 
-    sourceSets {
-        String sharedTestDir = 'src/sharedTest/java'
-        androidTest {
-            java.srcDir sharedTestDir
-        }
-        test {
-            java.srcDir sharedTestDir
-        }
-    }
+//    sourceSets {
+//        String sharedTestDir = 'src/sharedTest/java'
+//        androidTest {
+//            java.srcDir sharedTestDir
+//        }
+//        test {
+//            java.srcDir sharedTestDir
+//        }
+//    }
 }
 
 dependencies {
@@ -49,45 +49,45 @@ dependencies {
 }
 
 
-/* maven deploy + signing */
-task javadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    failOnError false
-}
-
-task javadocsJar(type: Jar, dependsOn: javadocs) {
-    classifier = 'javadoc'
-    from javadocs.destinationDir
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
-artifacts {
-    archives javadocsJar
-    archives sourcesJar
-}
-
-apply plugin: 'io.codearte.nexus-staging'
-nexusStaging {
-    packageGroup = "com.seamlesspay"
-}
-
-group = 'com.seamlesspay.api'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            pom.setArtifactId 'seamlesspay'
-
-            pom.project {
-                name 'seamlesspay'
-                groupId = 'com.seamlesspay.api'
-                version = "${android.defaultConfig.versionName}"
-                description 'This is Seamlesspay Android SDK. Integrate this library to accept payments in your Android app.'
-            }
-        }
-    }
-}
+///* maven deploy + signing */
+//task javadocs(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    failOnError false
+//}
+//
+//task javadocsJar(type: Jar, dependsOn: javadocs) {
+//    classifier = 'javadoc'
+//    from javadocs.destinationDir
+//}
+//
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from android.sourceSets.main.java.srcDirs
+//}
+//
+//artifacts {
+//    archives javadocsJar
+//    archives sourcesJar
+//}
+//
+//apply plugin: 'io.codearte.nexus-staging'
+//nexusStaging {
+//    packageGroup = "com.seamlesspay"
+//}
+//
+//group = 'com.seamlesspay.api'
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            pom.setArtifactId 'seamlesspay'
+//
+//            pom.project {
+//                name 'seamlesspay'
+//                groupId = 'com.seamlesspay.api'
+//                version = "${android.defaultConfig.versionName}"
+//                description 'This is Seamlesspay Android SDK. Integrate this library to accept payments in your Android app.'
+//            }
+//        }
+//    }
+//}
