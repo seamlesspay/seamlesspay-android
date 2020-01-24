@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+//repositories {
+//    maven {
+//        url  "https://dl.bintray.com/seamlesspay/maven"
+//    }
+//}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -69,8 +75,10 @@ dependencies {
         exclude module: 'com.google.gson'
     }
 
-    implementation project(':Seamlesspay')
-    implementation project(':CardForm')
+    //implementation project(':Client')
+    //implementation project(':CardForm')
+    implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
+    implementation 'com.seamlesspay.api:Client:1.0.1'
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4'
@@ -81,29 +89,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.1'
 
     testImplementation 'junit:junit:4.12'
-}
-
-
-
-task demoApkSize {
-  group 'Seamlesspay'
-  description 'Prints the current size of the Demo apk'
-
-  def apkDir = fileTree('./build/outputs/apk')
-  def apks = apkDir.matching {
-    include '*.apk'
-    exclude '*unaligned*'
-  }
-  apks.visit { apk ->
-    def apkName = apk.getName()
-    def mb = apk.getSize() / 1024 / 1000
-    mb = mb.setScale(2, BigDecimal.ROUND_UP)
-    println "Size of ${apkName} is ${mb} MB"
-  }
-}
-
-project.tasks.findAll {
-  if (it.name.startsWith('assemble')) {
-    it.finalizedBy demoApkSize
-  }
 }

@@ -1,3 +1,2 @@
-include ':Seamlesspay', ':CardForm'
-include ':Core'
+include ':Client', ':CardForm'
 include ':Demo'

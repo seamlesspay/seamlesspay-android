@@ -1,4 +1,18 @@
-# seamlesspay-android
+# SeamlessPay Android SDK
+
+Welcome to SeamlessPay Android SDK. This library will help you accept card and alternative payments in your Android app.
+
+SeamlessPay Android SDK is available for Android SDK >= 21.
+
+## Adding It To Your Project
+
+Add the dependency in your `build.gradle`:
+
+```groovy
+dependencies {
+  implementation 'com.seamlesspay.api:Client:1.0.1'
+}
+```
 
 # Card Form
 
@@ -11,7 +25,7 @@ Add the dependency in your `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'com.seamlesspay:card-form:1.0.1'
+    implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
 }
 ```
 
@@ -64,6 +78,10 @@ Additionally `CardForm` has 4 available listeners:
 
 ## Example
 ![](/files/cardform.png)
+## Documentation
+
+Start with [**'Demo APP!'**](https://github.com/seamlesspay/seamlesspay-android/tree/dev/Demo) for sample on basic setup and usage.
+
 ## card.io
 
 The card form is compatible with [card.io](https://github.com/card-io/card.io-Android-SDK).
