@@ -14,7 +14,7 @@ dependencies {
 }
 ```
 
-#Authentication
+# Authentication
 
 ```java
 import com.seamlesspay.api.SeamlesspayFragment;
