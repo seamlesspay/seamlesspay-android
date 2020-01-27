@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Builder used to construct a gift card tokenization request.
  */
-public class GiftCardBuilder extends BaseCardBuilder<BaseCardBuilder> implements Parcelable {
+public class GiftCardBuilder extends BaseCardBuilder<GiftCardBuilder> implements Parcelable {
 
     static final String PINNUMBER_KEY = "pinNumber";
     String mPinNumber;
@@ -20,16 +20,16 @@ public class GiftCardBuilder extends BaseCardBuilder<BaseCardBuilder> implements
 
     /**
      * @param pinNumber The gift card number.
-     * @return {@link BaseCardBuilder}
+     * @return {@link GiftCardBuilder}
      */
     @SuppressWarnings("unchecked")
-    public BaseCardBuilder pinNumber(String pinNumber) {
+    public GiftCardBuilder pinNumber(String pinNumber) {
         if (TextUtils.isEmpty(pinNumber)) {
             mPinNumber = null;
         } else {
             mPinNumber = pinNumber;
         }
-        return (BaseCardBuilder) this;
+        return (GiftCardBuilder) this;
     }
 
     @Override

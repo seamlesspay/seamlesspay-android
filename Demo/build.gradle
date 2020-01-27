@@ -75,10 +75,10 @@ dependencies {
         exclude module: 'com.google.gson'
     }
 
-    //implementation project(':Client')
+    implementation project(':Client')
     //implementation project(':CardForm')
     implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
-    implementation 'com.seamlesspay.api:Client:1.0.1'
+ //   implementation 'com.seamlesspay.api:Client:1.0.2'
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4'

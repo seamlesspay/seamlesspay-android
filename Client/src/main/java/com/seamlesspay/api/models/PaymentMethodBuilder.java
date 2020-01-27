@@ -33,7 +33,7 @@ public abstract class PaymentMethodBuilder<T> {
     }
 
     /**
-     * @return String representation of {@link PaymentMethodNonce} for API use.
+     * @return String representation of {@link PaymentMethodToken} for API use.
      */
     public String build() {
         JSONObject base = new JSONObject();

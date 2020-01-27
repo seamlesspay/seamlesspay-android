@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Builder used to construct a ACH tokenization request.
  */
-public class AchCardBuilder extends BaseCardBuilder<BaseCardBuilder> implements Parcelable {
+public class AchCardBuilder extends BaseCardBuilder<AchCardBuilder> implements Parcelable {
 
     static final String BANK_ACCOUNT_TYPE_KEY = "bankAccountType";
     static final String BANK_ROUTING_NUMBER_KEY = "routingNumber";
@@ -22,30 +22,30 @@ public class AchCardBuilder extends BaseCardBuilder<BaseCardBuilder> implements 
 
     /**
      * @param bankAccountType The ACH.
-     * @return {@link BaseCardBuilder}
+     * @return {@link AchCardBuilder}
      */
     @SuppressWarnings("unchecked")
-    public BaseCardBuilder pinNumber(String bankAccountType) {
+    public AchCardBuilder pinNumber(String bankAccountType) {
         if (TextUtils.isEmpty(bankAccountType)) {
             mBankAccountType = null;
         } else {
             mBankAccountType = bankAccountType;
         }
-        return (BaseCardBuilder) this;
+        return (AchCardBuilder) this;
     }
 
     /**
      * @param routingNumber The ACH.
-     * @return {@link BaseCardBuilder}
+     * @return {@link AchCardBuilder}
      */
     @SuppressWarnings("unchecked")
-    public BaseCardBuilder routingNumber(String routingNumber) {
+    public AchCardBuilder routingNumber(String routingNumber) {
         if (TextUtils.isEmpty(routingNumber)) {
             mRoutingNumber = null;
         } else {
             mRoutingNumber = routingNumber;
         }
-        return (BaseCardBuilder) this;
+        return (AchCardBuilder) this;
     }
 
     @Override

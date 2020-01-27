@@ -7,15 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class ChargeNonce extends BaseChargeNonce implements Parcelable {
+public class ChargeToken extends BaseChargeToken implements Parcelable {
 
-    public ChargeNonce() {}
+    public ChargeToken() {}
 
-    public static ChargeNonce fromJson(String json) throws JSONException {
-        ChargeNonce chargeNonce = new ChargeNonce();
+    public static ChargeToken fromJson(String json) throws JSONException {
+        ChargeToken chargeToken = new ChargeToken();
         JSONObject jsonObject = new JSONObject(json);
-        chargeNonce.fromJson(jsonObject);
-        return chargeNonce;
+        chargeToken.fromJson(jsonObject);
+        return chargeToken;
     }
 
     /**
@@ -33,17 +33,17 @@ public class ChargeNonce extends BaseChargeNonce implements Parcelable {
         super.writeToParcel(dest, flags);
     }
 
-    protected ChargeNonce(Parcel in) {
+    protected ChargeToken(Parcel in) {
         super(in);
     }
 
-    public static final Creator<CardNonce> CREATOR = new Creator<CardNonce>() {
-        public CardNonce createFromParcel(Parcel source) {
-            return new CardNonce(source);
+    public static final Creator<CardToken> CREATOR = new Creator<CardToken>() {
+        public CardToken createFromParcel(Parcel source) {
+            return new CardToken(source);
         }
 
-        public CardNonce[] newArray(int size) {
-            return new CardNonce[size];
+        public CardToken[] newArray(int size) {
+            return new CardToken[size];
         }
     };
 }

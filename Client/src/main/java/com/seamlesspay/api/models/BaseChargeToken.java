@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 
 
-public abstract class BaseChargeNonce implements Parcelable {
+public abstract class BaseChargeToken implements Parcelable {
 
     protected static final String AUTHCODE_KEY = "authCode";
     protected static final String AVS_MESSAGE_KEY = "avsMessage";
@@ -56,7 +56,7 @@ public abstract class BaseChargeNonce implements Parcelable {
     private String mBusinessCard;
     private JSONObject mOrder = new JSONObject();
 
-    public BaseChargeNonce() {}
+    public BaseChargeToken() {}
 
 
     protected void fromJson(JSONObject json) throws JSONException {
@@ -131,16 +131,14 @@ public abstract class BaseChargeNonce implements Parcelable {
     }
 
 
-    public static BaseChargeNonce parseChargeNonces(String json) throws JSONException {
-        return parseChargeNonces(new JSONObject(json));
+    public static BaseChargeToken parseChargeToken(String json) throws JSONException {
+        return parseChargeToken(new JSONObject(json));
     }
 
-
-
-    public static BaseChargeNonce parseChargeNonces(JSONObject json) throws JSONException {
-                ChargeNonce chargeNonce = new ChargeNonce();
-                chargeNonce.fromJson(json);
-                return chargeNonce;
+    public static BaseChargeToken parseChargeToken(JSONObject json) throws JSONException {
+        ChargeToken chargeToken = new ChargeToken();
+        chargeToken.fromJson(json);
+        return chargeToken;
     }
 
 
@@ -176,7 +174,7 @@ public abstract class BaseChargeNonce implements Parcelable {
         dest.writeString(mOrder.toString());
     }
 
-    protected BaseChargeNonce(Parcel in) {
+    protected BaseChargeToken(Parcel in) {
 
         mAuthCode = in.readString();
         mAvsMessage = in.readString();
