@@ -15,16 +15,16 @@ import com.seamlesspay.api.interfaces.SeamlesspayCancelListener;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
 import com.seamlesspay.api.interfaces.SeamlesspayListener;
 
-import com.seamlesspay.api.interfaces.PaymentMethodNonceCreatedListener;
-import com.seamlesspay.api.interfaces.BaseChargeNonceCreatedListener;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
+import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
 import com.seamlesspay.api.interfaces.QueuedCallback;
 
 import com.seamlesspay.api.internal.BrowserSwitchFragment;
 import com.seamlesspay.api.internal.SeamlesspayApiHttpClient;
 
-import com.seamlesspay.api.models.BaseChargeNonce;
+import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.Configuration;
-import com.seamlesspay.api.models.PaymentMethodNonce;
+import com.seamlesspay.api.models.PaymentMethodToken;
 
 
 import java.util.ArrayDeque;
@@ -51,9 +51,9 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
 
 
 
-    static final String EXTRA_CACHED_PAYMENT_METHOD_NONCES = "com.seamlesspay.api.EXTRA_CACHED_PAYMENT_METHOD_NONCES";
+    static final String EXTRA_CACHED_PAYMENT_METHOD_TOKENS = "com.seamlesspay.api.EXTRA_CACHED_PAYMENT_METHOD_TOKENS";
 
-    static final String EXTRA_FETCHED_PAYMENT_METHOD_NONCES = "com.seamlesspay.api.EXTRA_FETCHED_PAYMENT_METHOD_NONCES";
+    static final String EXTRA_FETCHED_PAYMENT_METHOD_TOKENS = "com.seamlesspay.api.EXTRA_FETCHED_PAYMENT_METHOD_TOKENS";
 
 
     protected SeamlesspayApiHttpClient mPanVaulHttpClient;
@@ -65,8 +65,8 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
     private final Queue<QueuedCallback> mCallbackQueue = new ArrayDeque<>();
 
     private SeamlesspayCancelListener mCancelListener;
-    private PaymentMethodNonceCreatedListener mPaymentMethodNonceCreatedListener;
-    private BaseChargeNonceCreatedListener mBaseChargeNonceCreatedListener;
+    private PaymentMethodTokenCreatedListener mPaymentMethodTokenCreatedListener;
+    private BaseChargeTokenCreatedListener mBaseChargeTokenCreatedListener;
     private SeamlesspayErrorListener mErrorListener;
 
     public SeamlesspayFragment() {}
@@ -292,12 +292,12 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
             mCancelListener = (SeamlesspayCancelListener) listener;
         }
 
-        if (listener instanceof PaymentMethodNonceCreatedListener) {
-            mPaymentMethodNonceCreatedListener = (PaymentMethodNonceCreatedListener) listener;
+        if (listener instanceof PaymentMethodTokenCreatedListener) {
+            mPaymentMethodTokenCreatedListener = (PaymentMethodTokenCreatedListener) listener;
         }
 
-        if (listener instanceof BaseChargeNonceCreatedListener) {
-            mBaseChargeNonceCreatedListener = (BaseChargeNonceCreatedListener) listener;
+        if (listener instanceof BaseChargeTokenCreatedListener) {
+            mBaseChargeTokenCreatedListener = (BaseChargeTokenCreatedListener) listener;
         }
 
         if (listener instanceof SeamlesspayErrorListener) {
@@ -318,12 +318,12 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
             mCancelListener = null;
         }
 
-        if (listener instanceof PaymentMethodNonceCreatedListener) {
-            mPaymentMethodNonceCreatedListener = null;
+        if (listener instanceof PaymentMethodTokenCreatedListener) {
+            mPaymentMethodTokenCreatedListener = null;
         }
 
-        if (listener instanceof BaseChargeNonceCreatedListener) {
-            mBaseChargeNonceCreatedListener = null;
+        if (listener instanceof BaseChargeTokenCreatedListener) {
+            mBaseChargeTokenCreatedListener = null;
         }
 
         if (listener instanceof SeamlesspayErrorListener) {
@@ -342,12 +342,12 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
             listeners.add(mCancelListener);
         }
 
-        if (mPaymentMethodNonceCreatedListener != null) {
-            listeners.add(mPaymentMethodNonceCreatedListener);
+        if (mPaymentMethodTokenCreatedListener != null) {
+            listeners.add(mPaymentMethodTokenCreatedListener);
         }
 
-        if (mBaseChargeNonceCreatedListener != null) {
-            listeners.add(mBaseChargeNonceCreatedListener);
+        if (mBaseChargeTokenCreatedListener != null) {
+            listeners.add(mBaseChargeTokenCreatedListener);
         }
 
         if (mErrorListener != null) {
@@ -371,32 +371,32 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
         });
     }
 
-    protected void postCallback(final PaymentMethodNonce paymentMethodNonce) {
+    protected void postCallback(final PaymentMethodToken paymentMethodToken) {
 
         postOrQueueCallback(new QueuedCallback() {
             @Override
             public boolean shouldRun() {
-                return mPaymentMethodNonceCreatedListener != null;
+                return mPaymentMethodTokenCreatedListener != null;
             }
 
             @Override
             public void run() {
-                mPaymentMethodNonceCreatedListener.onPaymentMethodNonceCreated(paymentMethodNonce);
+                mPaymentMethodTokenCreatedListener.onPaymentMethodTokenCreated(paymentMethodToken);
             }
         });
     }
 
-    protected void postCallback(final BaseChargeNonce baseChargeNonce) {
+    protected void postCallback(final BaseChargeToken baseChargeToken) {
 
         postOrQueueCallback(new QueuedCallback() {
             @Override
             public boolean shouldRun() {
-                return mBaseChargeNonceCreatedListener != null;
+                return mBaseChargeTokenCreatedListener != null;
             }
 
             @Override
             public void run() {
-                mBaseChargeNonceCreatedListener.onBaseChargeNonceCreated(baseChargeNonce);
+                mBaseChargeTokenCreatedListener.onBaseChargeTokenCreated(baseChargeToken);
             }
         });
     }

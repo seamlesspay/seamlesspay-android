@@ -17,18 +17,18 @@ import android.widget.ArrayAdapter;
 import com.seamlesspay.api.Authorization;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
-import com.seamlesspay.api.interfaces.BaseChargeNonceCreatedListener;
+import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
 import com.seamlesspay.api.interfaces.SeamlesspayCancelListener;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
-import com.seamlesspay.api.interfaces.PaymentMethodNonceCreatedListener;
-import com.seamlesspay.api.models.BaseChargeNonce;
-import com.seamlesspay.api.models.PaymentMethodNonce;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
+import com.seamlesspay.api.models.BaseChargeToken;
+import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.demo.R;
 
 @SuppressWarnings("deprecation")
 public abstract class BaseActivity extends AppCompatActivity implements OnRequestPermissionsResultCallback,
-        PaymentMethodNonceCreatedListener,
-        BaseChargeNonceCreatedListener,
+        PaymentMethodTokenCreatedListener,
+        BaseChargeTokenCreatedListener,
         SeamlesspayCancelListener,
         SeamlesspayErrorListener,
         ActionBar.OnNavigationListener {
@@ -74,18 +74,18 @@ public abstract class BaseActivity extends AppCompatActivity implements OnReques
 
     @CallSuper
     @Override
-    public void onBaseChargeNonceCreated(BaseChargeNonce baseChargeNonceNonce) {
+    public void onBaseChargeTokenCreated(BaseChargeToken baseChargeToken) {
         setProgressBarIndeterminateVisibility(true);
 
-        Log.d(getClass().getSimpleName(), "Charge Nonce received: " + baseChargeNonceNonce.getChargeId());
+        Log.d(getClass().getSimpleName(), "Charge Token received: " + baseChargeToken.getChargeId());
     }
 
     @CallSuper
     @Override
-    public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
+    public void onPaymentMethodTokenCreated(PaymentMethodToken paymentMethodToken) {
         setProgressBarIndeterminateVisibility(true);
 
-        Log.d(getClass().getSimpleName(), "Payment Method Nonce received: " + paymentMethodNonce.getTxnType());
+        Log.d(getClass().getSimpleName(), "Payment Method Token received: " + paymentMethodToken.getTxnType());
     }
 
     @CallSuper

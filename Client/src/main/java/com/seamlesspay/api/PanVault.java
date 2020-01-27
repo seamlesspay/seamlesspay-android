@@ -1,12 +1,11 @@
 package com.seamlesspay.api;
 
-import com.seamlesspay.api.interfaces.PaymentMethodNonceCallback;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCallback;
 import com.seamlesspay.api.models.CardBuilder;
-import com.seamlesspay.api.models.CardNonce;
-import com.seamlesspay.api.models.PaymentMethodNonce;
+import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.api.exceptions.ErrorWithResponse;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
-import com.seamlesspay.api.interfaces.PaymentMethodNonceCreatedListener;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
 
 /**
  * Used to tokenize credit or debit cards using a {@link CardBuilder}. For more information see the
@@ -15,10 +14,10 @@ import com.seamlesspay.api.interfaces.PaymentMethodNonceCreatedListener;
 public class PanVault {
 
     /**
-     * Create a {@link PaymentMethodNonce}.
+     * Create a {@link PaymentMethodToken}.
      * <p>
-     * On completion, returns the {@link PaymentMethodNonce} to
-     * {@link PaymentMethodNonceCreatedListener}.
+     * On completion, returns the {@link PaymentMethodToken} to
+     * {@link PaymentMethodTokenCreatedListener}.
      * <p>
      * If creation fails validation, {@link SeamlesspayErrorListener#onError(Exception)}
      * will be called with the resulting {@link ErrorWithResponse}.
@@ -31,10 +30,10 @@ public class PanVault {
      * @param cardBuilder {@link CardBuilder}
      */
     public static void tokenize(final SeamlesspayFragment fragment, final CardBuilder cardBuilder) {
-        TokenizationClient.tokenize(fragment, cardBuilder, new PaymentMethodNonceCallback() {
+        TokenizationClient.tokenize(fragment, cardBuilder, new PaymentMethodTokenCallback() {
             @Override
-            public void success(PaymentMethodNonce paymentMethodNonce) {
-                fragment.postCallback(paymentMethodNonce);
+            public void success(PaymentMethodToken paymentMethodToken) {
+                fragment.postCallback(paymentMethodToken);
             }
 
             @Override

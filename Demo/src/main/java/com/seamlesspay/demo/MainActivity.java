@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.seamlesspay.api.models.CardNonce;
-import com.seamlesspay.api.models.PaymentMethodNonce;
+import com.seamlesspay.api.models.CardToken;
+import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.demo.R;
 
 import static android.view.View.GONE;
@@ -20,12 +20,12 @@ public class MainActivity extends BaseActivity {
     static final String EXTRA_PAYMENT_RESULT = "payment_result";
     static final String EXTRA_TIMER_RESULT = "timer_result";
     private static final int CARDS_REQUEST = 3;
-    private static final String KEY_NONCE = "nonce";
-    private PaymentMethodNonce mNonce;
+    private static final String KEY_TOKEN = "token";
+    private PaymentMethodToken mToken;
 
-    private ImageView mNonceIcon;
-    private TextView mNonceString;
-    private TextView mNonceDetails;
+    private ImageView mTokenIcon;
+    private TextView mTokenString;
+    private TextView mTokenDetails;
     private TextView mDeviceData;
 
     private Button mCardsButton;
@@ -38,17 +38,17 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mNonceIcon = findViewById(R.id.nonce_icon);
-        mNonceString = findViewById(R.id.nonce);
-        mNonceDetails = findViewById(R.id.nonce_details);
+        mTokenIcon = findViewById(R.id.token_icon);
+        mTokenString = findViewById(R.id.token);
+        mTokenDetails = findViewById(R.id.token_details);
         mDeviceData = findViewById(R.id.device_data);
 
         mCardsButton = findViewById(R.id.card);
         mCreateTransactionButton = findViewById(R.id.create_transaction);
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_NONCE)) {
-                mNonce = savedInstanceState.getParcelable(KEY_NONCE);
+            if (savedInstanceState.containsKey(KEY_TOKEN)) {
+                mToken = savedInstanceState.getParcelable(KEY_TOKEN);
             }
         }
     }
@@ -56,8 +56,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mNonce != null) {
-            outState.putParcelable(KEY_NONCE, mNonce);
+        if (mToken != null) {
+            outState.putParcelable(KEY_TOKEN, mToken);
         }
     }
 
@@ -68,11 +68,11 @@ public class MainActivity extends BaseActivity {
 
     public void createTransaction(View v) {
         Intent intent = new Intent(this, CreateTransactionActivity.class)
-                .putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD_NONCE, mNonce);
+                .putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD_TOKEN, mToken);
         startActivity(intent);
 
         mCreateTransactionButton.setEnabled(false);
-        clearNonce();
+        clearToken();
     }
 
     @Override
@@ -82,8 +82,8 @@ public class MainActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             Parcelable returnedData = data.getParcelableExtra(EXTRA_PAYMENT_RESULT);
             mTimeElapsed = data.getLongExtra(EXTRA_TIMER_RESULT, 0);
-            if (returnedData instanceof PaymentMethodNonce) {
-                displayNonce((PaymentMethodNonce) returnedData);
+            if (returnedData instanceof PaymentMethodToken) {
+                displayToken((PaymentMethodToken) returnedData);
             }
             mCreateTransactionButton.setEnabled(true);
         }
@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity {
     protected void reset() {
         enableButtons(true);
         mCreateTransactionButton.setEnabled(false);
-        clearNonce();
+        clearToken();
     }
 
     @Override
@@ -101,23 +101,23 @@ public class MainActivity extends BaseActivity {
         enableButtons(true);
     }
 
-    private void displayNonce(PaymentMethodNonce paymentMethodNonce) {
+    private void displayToken(PaymentMethodToken paymentMethodToken) {
 
-        mNonce = paymentMethodNonce;
-        mNonceString.setText(getString(R.string.nonce_placeholder, mNonce.getTxnType()));
-        mNonceString.setVisibility(VISIBLE);
+        mToken = paymentMethodToken;
+        mTokenString.setText(getString(R.string.token_placeholder, mToken.getTxnType()));
+        mTokenString.setVisibility(VISIBLE);
 
-        String details = CardActivity.getDisplayString((CardNonce) mNonce,  mTimeElapsed);
-        mNonceDetails.setText(details);
-        mNonceDetails.setVisibility(VISIBLE);
+        String details = CardActivity.getDisplayString((CardToken) mToken,  mTimeElapsed);
+        mTokenDetails.setText(details);
+        mTokenDetails.setVisibility(VISIBLE);
 
         mCreateTransactionButton.setEnabled(true);
     }
 
-    private void clearNonce() {
-        mNonceIcon.setVisibility(GONE);
-        mNonceString.setVisibility(GONE);
-        mNonceDetails.setVisibility(GONE);
+    private void clearToken() {
+        mTokenIcon.setVisibility(GONE);
+        mTokenString.setVisibility(GONE);
+        mTokenDetails.setVisibility(GONE);
         mDeviceData.setVisibility(GONE);
         mCreateTransactionButton.setEnabled(false);
     }

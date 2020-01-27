@@ -12,11 +12,11 @@ import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.PanVault;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
-import com.seamlesspay.api.interfaces.PaymentMethodNonceCreatedListener;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
 import com.seamlesspay.api.models.CardBuilder;
-import com.seamlesspay.api.models.CardNonce;
+import com.seamlesspay.api.models.CardToken;
 import com.seamlesspay.api.models.Configuration;
-import com.seamlesspay.api.models.PaymentMethodNonce;
+import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.cardform.OnCardFormFieldFocusedListener;
 import com.seamlesspay.cardform.OnCardFormSubmitListener;
 import com.seamlesspay.cardform.utils.CardType;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class CardActivity extends BaseActivity implements
-        PaymentMethodNonceCreatedListener, SeamlesspayErrorListener, OnCardFormSubmitListener,
+        PaymentMethodTokenCreatedListener, SeamlesspayErrorListener, OnCardFormSubmitListener,
         OnCardFormFieldFocusedListener {
 
     private Configuration mConfiguration;
@@ -129,7 +129,8 @@ public class CardActivity extends BaseActivity implements
                     .expirationMonth(mCardForm.getExpirationMonth())
                     .expirationYear(mCardForm.getExpirationYear())
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
-                    .billingZip(mCardForm.getPostalCode());
+                    .billingZip(mCardForm.getPostalCode())
+                    .verification(true);
 
             PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 
@@ -137,16 +138,16 @@ public class CardActivity extends BaseActivity implements
     }
 
     @Override
-    public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
-        super.onPaymentMethodNonceCreated(paymentMethodNonce);
+    public void onPaymentMethodTokenCreated(PaymentMethodToken paymentMethodToken) {
+        super.onPaymentMethodTokenCreated(paymentMethodToken);
 
             mEndTime = System.currentTimeMillis();
             long timeElapsed = mEndTime - mStartTime;
 
-            paymentMethodNonce.setInfo(mCardForm.getCvv());
+        paymentMethodToken.setInfo(mCardForm.getCvv());
 
             Intent intent = new Intent()
-                    .putExtra(MainActivity.EXTRA_PAYMENT_RESULT, paymentMethodNonce)
+                    .putExtra(MainActivity.EXTRA_PAYMENT_RESULT, paymentMethodToken)
                     .putExtra(MainActivity.EXTRA_TIMER_RESULT, timeElapsed);
             setResult(RESULT_OK, intent);
             finish();
@@ -158,11 +159,13 @@ public class CardActivity extends BaseActivity implements
         }
     }
 
-    public static String getDisplayString(CardNonce nonce, long timeElapsed) {
+    public static String getDisplayString(CardToken token, long timeElapsed) {
 
-        return "Card Last Four: " + nonce.getLastFour() +
-                "\nToken: " +  nonce.getToken() +
-                "\nExpDate: " +  nonce.getExpirationDate() +
+        return "Card Last Four: " + token.getLastFour() +
+                "\nToken: " +  token.getToken() +
+                "\nExpDate: " +  token.getExpirationDate() +
+                (token.getVerificationResult() != null ? "\nVerificationResult: " : "") +
+                (token.getVerificationResult() != null ?  token.getVerificationResult() : "") +
                 "\nTokenization runtime : " + ((float)timeElapsed/1000) + " s";
     }
 }

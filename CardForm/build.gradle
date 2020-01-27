@@ -27,29 +27,29 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.8.9'
 }
 
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'card-form'
-
-    publishedGroupId = 'com.seamlesspay.sdk'
-    libraryName = 'CardForm'
-    artifact = 'CardForm'
-
-    libraryDescription = 'A ready-made card form layout that can be included in your Android app, making it easy to accept credit and debit cards.'
-
-    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
-    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
-
-    libraryVersion = '1.0.1'
-
-    developerId = 'seamlesspay'
-    developerName = 'Seamless Payments'
-    developerEmail = 'info@seamlesspay.com'
-
-    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
-    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
-    allLicenses = ["MIT"]
-}
-
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+//ext {
+//    bintrayRepo = 'maven'
+//    bintrayName = 'card-form'
+//
+//    publishedGroupId = 'com.seamlesspay.sdk'
+//    libraryName = 'CardForm'
+//    artifact = 'CardForm'
+//
+//    libraryDescription = 'A ready-made card form layout that can be included in your Android app, making it easy to accept credit and debit cards.'
+//
+//    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+//    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+//
+//    libraryVersion = '1.0.1'
+//
+//    developerId = 'seamlesspay'
+//    developerName = 'Seamless Payments'
+//    developerEmail = 'info@seamlesspay.com'
+//
+//    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
+//    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
+//    allLicenses = ["MIT"]
+//}
+//
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

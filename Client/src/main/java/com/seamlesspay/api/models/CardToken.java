@@ -7,25 +7,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * {@link PaymentMethodNonce} representing a credit or debit card.
+ * {@link PaymentMethodToken} representing a credit or debit card.
  */
-public class CardNonce extends PaymentMethodNonce implements Parcelable {
+public class CardToken extends PaymentMethodToken implements Parcelable {
 
     private static final String EXPIRATION_DATE_KEY = "expDate";
     private String mExpDate;
 
     /**
-     * Convert an API response to a {@link CardNonce}.
+     * Convert an API response to a {@link CardToken}.
      *
-     * @param json Raw JSON response from Seamlesspay of a {@link CardNonce}.
-     * @return {@link CardNonce}.
+     * @param json Raw JSON response from Seamlesspay of a {@link CardToken}.
+     * @return {@link CardToken}.
      * @throws JSONException when parsing the response fails.
      */
-    public static CardNonce fromJson(String json) throws JSONException {
-        CardNonce cardNonce = new CardNonce();
+    public static CardToken fromJson(String json) throws JSONException {
+        CardToken cardToken = new CardToken();
         JSONObject jsonObject = new JSONObject(json);
-        cardNonce.fromJson(jsonObject);
-        return cardNonce;
+        cardToken.fromJson(jsonObject);
+        return cardToken;
     }
 
     /**
@@ -46,7 +46,7 @@ public class CardNonce extends PaymentMethodNonce implements Parcelable {
         return mExpDate;
     }
 
-    public CardNonce() {}
+    public CardToken() {}
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -54,18 +54,18 @@ public class CardNonce extends PaymentMethodNonce implements Parcelable {
         dest.writeString(mExpDate);
     }
 
-    protected CardNonce(Parcel in) {
+    protected CardToken(Parcel in) {
         super(in);
         mExpDate = in.readString();
     }
 
-    public static final Creator<CardNonce> CREATOR = new Creator<CardNonce>() {
-        public CardNonce createFromParcel(Parcel source) {
-            return new CardNonce(source);
+    public static final Creator<CardToken> CREATOR = new Creator<CardToken>() {
+        public CardToken createFromParcel(Parcel source) {
+            return new CardToken(source);
         }
 
-        public CardNonce[] newArray(int size) {
-            return new CardNonce[size];
+        public CardToken[] newArray(int size) {
+            return new CardToken[size];
         }
     };
 }

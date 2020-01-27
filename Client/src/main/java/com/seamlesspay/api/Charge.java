@@ -1,18 +1,18 @@
 package com.seamlesspay.api;
 
 
-import com.seamlesspay.api.interfaces.BaseChargeNonceCallback;
-import com.seamlesspay.api.models.BaseChargeNonce;
+import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
+import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
 
 public class Charge {
 
     public static void create(final SeamlesspayFragment fragment, final CardChargeBulder chargeBuilder) {
 
-        ChargeClient.create(fragment, chargeBuilder, new BaseChargeNonceCallback() {
+        ChargeClient.create(fragment, chargeBuilder, new BaseChargeTokenCallback() {
             @Override
-            public void success(BaseChargeNonce baseChargeNonce) {
-                fragment.postCallback(baseChargeNonce);
+            public void success(BaseChargeToken baseChargeToken) {
+                fragment.postCallback(baseChargeToken);
             }
 
             @Override
