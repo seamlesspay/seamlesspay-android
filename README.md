@@ -10,8 +10,23 @@ Add the dependency in your `build.gradle`:
 
 ```groovy
 dependencies {
-  implementation 'com.seamlesspay.api:Client:1.0.1'
+  implementation 'com.seamlesspay.api:Client:1.0.2'
 }
+```
+
+#Authentication
+
+```java
+import com.seamlesspay.api.SeamlesspayFragment;
+import com.seamlesspay.api.Authorization;
+
+public class CardActivity ...
+
+Authorization authorization = Authorization.fromKeys(
+                    "sandbox",
+                    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX");
+
+mSeamlesspayFragment = SeamlesspayFragment.newInstance(this, authorization);
 ```
 
 # Card Form
@@ -79,10 +94,10 @@ To access the values in the form, there are getters for each field
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                     .billingZip(mCardForm.getPostalCode());
 
-            PanVault.tokenize(activity, cardBuilder);
+            PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 ```
 Available listener:
-* `PaymentMethodNonceCreatedListener` called when the `PaymentMethodNonce` getting card token.
+* `PaymentMethodTokenCreatedListener` called when the `PaymentMethodToken` getting card token.
 
 # Create a Charge
 
@@ -91,14 +106,14 @@ CardChargeBulder chargeBulder = new CardChargeBulder()
                 .setAmount("1")
                 .setCurrency(CardChargeBulder.Keys.CURRENCY_USD)
                 .setCapture(true)
-                .setToken(nonce.getToken())
+                .setToken(token.getToken())
                 .setDescription("Demo Android Client Charge")
                 .setCvv(mCardForm.getCVV());
 
-        Charge.create(activity, chargeBulder);
+        Charge.create(mSeamlesspayFragment, chargeBulder);
 ```
 Available listener:
-* `BaseChargeNonceCreatedListener` called when the `chargeNonceNonce` getting charge info.
+* `BaseChargeTokenCreatedListener` called when the `chargeToken` getting charge info.
 
 ## Example
 ![](/files/cardform.png)
