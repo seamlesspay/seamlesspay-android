@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements PaymentMethodToke
         try {
             Authorization authorization = Authorization.fromKeys(
                     "sandbox",
-                    "pk_01D8GYH576BS85FYZZFQDD3YKM");
+                    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX");
             mSeamlesspayFragment = SeamlesspayFragment.newInstance(this, authorization);
         } catch (InvalidArgumentException e) {
             mInfoView.setText(e.getMessage());
