@@ -1,0 +1,120 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'checkstyle'
+// make sure this line comes *after* you apply the Android plugin
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'org.jetbrains.dokka-android'
+
+assemble.dependsOn('lint')
+
+version '1.0.1'
+
+configurations {
+    javadocDeps
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.1.0"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation "javax.annotation:jsr250-api:1.0"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation "org.mockito:mockito-core:3.2.4"
+    testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.json:json:20190722'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion rootProject.ext.compileSdkVersion
+        consumerProguardFiles 'proguard-rules.txt'
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+        test {
+
+        }
+    }
+    testOptions {
+        unitTests {
+            // Note: without this, all Robolectric tests using BuildConfig will fail.
+            includeAndroidResources = true
+        }
+    }
+    productFlavors {
+    }
+
+    lintOptions {
+        enable "Interoperability"
+    }
+
+    dokka {
+        outputFormat = 'javadoc'
+        outputDirectory = "${project.rootDir}/docs/"
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'singlefield'
+
+    publishedGroupId = 'com.seamlesspay.ui'
+    libraryName = 'Singlefield'
+    artifact = 'Singlefield'
+
+    libraryDescription = 'Singlefield widget drop-in UI component provided by the SDK.'
+
+    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+
+    libraryVersion = '1.0.1'
+
+    developerId = 'seamlesspay'
+    developerName = 'Seamless Payments'
+    developerEmail = 'info@seamlesspay.com'
+
+    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
+    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
+    allLicenses = ["MIT"]
+}
+
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
