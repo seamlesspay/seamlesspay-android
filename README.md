@@ -31,6 +31,7 @@ mSeamlesspayFragment = SeamlesspayFragment.newInstance(this, authorization);
 
 We provide native screens and elements to collect payment
 
+
 # Single Field
 
 Singlefield widget drop-in UI component provided by the SDK.
@@ -119,6 +120,7 @@ Create an instance of the card component and a Pay button by adding the followin
 ![](/files/singlefield.gif)
 
 Start with [**'DemoSinglefield APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/master/DemoSingleField) for sample on basic setup and usage.
+
 
 
 # Card Form
