@@ -111,8 +111,6 @@ Create an instance of the card component and a Pay button by adding the followin
                                 .verification(true);
 
                         PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
-
-                        mStartTime = System.currentTimeMillis();
                     }
                 });
 ```
@@ -186,7 +184,8 @@ To access the values in the form, there are getters for each field
                     .expirationMonth(mCardForm.getExpirationMonth())
                     .expirationYear(mCardForm.getExpirationYear())
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
-                    .billingZip(mCardForm.getPostalCode());
+                    .billingZip(mCardForm.getPostalCode())
+                    .verification(true);
 
             PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 ```
