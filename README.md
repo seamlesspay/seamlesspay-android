@@ -29,6 +29,100 @@ Authorization authorization = Authorization.fromKeys(
 mSeamlesspayFragment = SeamlesspayFragment.newInstance(this, authorization);
 ```
 
+We provide native screens and elements to collect payment
+
+
+# Single Field
+
+Singlefield widget drop-in UI component provided by the SDK.
+
+## Adding It To Your Project
+
+Add the dependency in your `build.gradle`:
+
+```groovy
+dependencies {
+    implementation 'com.seamlesspay.ui:Singlefield:1.0.1'
+}
+```
+
+## Usage
+
+Create an instance of the card component and a Pay button by adding the following to your checkout page’s layout:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_checkout"
+        tools:context=".CardActivity">
+
+    <!--  ...  -->
+
+    <com.seamlesspay.ui.view.CardInputWidget
+            android:id="@+id/cardInputWidget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+    <Button
+            android:text="Pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/payButton"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/cardInputWidget"
+            app:layout_constraintStart_toStartOf="@+id/cardInputWidget"
+            app:layout_constraintEnd_toEndOf="@+id/cardInputWidget"/>
+
+      <!--  ...  -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+## To access the values in the form, there are getters for each field:
+
+```java
+@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button payButton = findViewById(R.id.payButton);
+        mCardInputWidget = (CardInputWidget) findViewById(R.id.cardInputWidget);
+        mCardInputWidget.configureForUs();
+
+        payButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        // Code here executes on main thread after user presses button
+                        mCardInputWidget.clearFocus();
+
+                        CardBuilder cardBuilder = new CardBuilder()
+                                .accountNumber(mCardInputWidget.getCardNumber())
+                                .expirationMonth(mCardInputWidget.getExpirationMonth())
+                                .expirationYear(mCardInputWidget.getExpirationYear())
+                                .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
+                                .billingZip(mCardInputWidget.getPostalCode())
+                                .verification(true);
+
+                        PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
+                    }
+                });
+```
+
+## Example
+![](/files/singlefield.gif)
+
+Start with [**'DemoSinglefield APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/master/DemoSingleField) for sample on basic setup and usage.
+
+
+
 # Card Form
 
 Card Form is a ready made card form layout that can be included in your app making it easy to
@@ -92,7 +186,8 @@ To access the values in the form, there are getters for each field
                     .expirationMonth(mCardForm.getExpirationMonth())
                     .expirationYear(mCardForm.getExpirationYear())
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
-                    .billingZip(mCardForm.getPostalCode());
+                    .billingZip(mCardForm.getPostalCode())
+                    .verification(true);
 
             PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 ```
@@ -118,7 +213,7 @@ Available listener:
 ## Example
 ![](/files/cardform.png)
 
-Start with [**'Demo APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/dev/Demo) for sample on basic setup and usage.
+Start with [**'Demo APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/master/Demo) for sample on basic setup and usage.
 
 ## card.io
 

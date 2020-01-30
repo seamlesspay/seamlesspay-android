@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SeamlesspayBaseTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorAccent">@color/seamlesspay_accent_color_default</item>
+        <item name="colorControlNormal">@color/seamlesspay_control_normal_color_default</item>
+        <item name="colorPrimary">@color/seamlesspay_toolbar_color_default</item>
+        <item name="colorPrimaryDark">@color/seamlesspay_toolbar_color_default_dark</item>
+        <item name="titleTextColor">@color/seamlesspay_title_text_color</item>
+        <item name="android:textColorSecondary">@color/seamlesspay_text_color_secondary</item>
+    </style>
+
+    <style name="SeamlesspayToolBarStyle" parent="@style/ThemeOverlay.AppCompat">
+        <item name="colorControlNormal">?attr/titleTextColor</item>
+        <item name="actionMenuTextColor">?attr/titleTextColor</item>
+        <item name="android:actionButtonStyle">@style/SeamlesspayActionButtonStyle</item>
+    </style>
+
+    <style name="SeamlesspayActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="SeamlesspayErrorTextStyle">
+        <item name="android:textColor">#999999</item>
+        <item name="android:textSize">@dimen/seamlesspay_notification_text_size</item>
+    </style>
+
+    <style name="SeamlesspayDefaultTheme" parent="SeamlesspayBaseTheme"/>
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog" />
+
+    <style name="Seamlesspay.Base.CardInputWidget.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">@dimen/ciw_seamlesspay_edit_text_size</item>
+    </style>
+
+    <style name="Seamlesspay.CardInputWidget.EditText" parent="Seamlesspay.Base.CardInputWidget.EditText" />
+</resources>

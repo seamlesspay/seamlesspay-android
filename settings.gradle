@@ -1,2 +1,2 @@
-include ':Client', ':CardForm'
+include ':Client', ':CardForm', ':Singlefield', ':DemoSinglefield'
 include ':Demo'

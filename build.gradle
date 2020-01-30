@@ -1,4 +1,6 @@
 buildscript {
+    ext.kotlinVersion = '1.3.60'
+    ext.dokkaVersion = '0.9.17'
     repositories {
         jcenter()
         google()
@@ -6,11 +8,26 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
 
-    //    classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
-
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.3.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaVersion"
     }
+}
+
+ext {
+    buildToolsVersion = "29.0.2"
+    compileSdkVersion = 29
+
+    javaAnnotationVersion = '1.0'
+    kotlinVersion = '1.3.61'
+    kotlinCoroutinesVersion = '1.3.0'
+    espressoVersion = '3.2.0'
+    ktlintVersion = '0.36.0'
+
+    androidTestVersion = '1.2.0'
 }
 
 
