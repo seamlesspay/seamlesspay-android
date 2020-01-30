@@ -59,7 +59,7 @@ Create an instance of the card component and a Pay button by adding the followin
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_checkout"
-        tools:context=".CheckoutActivity">
+        tools:context=".CardActivity">
 
     <!--  ...  -->
 
@@ -118,7 +118,7 @@ Create an instance of the card component and a Pay button by adding the followin
 ## Example
 ![](/files/singlefield.gif)
 
-Start with [**'Demo APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/master/DemoSingleField) for sample on basic setup and usage.
+Start with [**'DemoSinglefield APP'**](https://github.com/seamlesspay/seamlesspay-android/tree/master/DemoSingleField) for sample on basic setup and usage.
 
 
 # Card Form
