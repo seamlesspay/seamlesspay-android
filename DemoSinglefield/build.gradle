@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+//repositories {
+//    maven {
+//        url  "https://dl.bintray.com/seamlesspay/maven"
+//    }
+//}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -36,5 +42,5 @@ dependencies {
     implementation 'com.seamlesspay.ui:Singlefield:1.0.1'
 
 //  implementation project(':Client')
-    implementation 'com.seamlesspay.api:Client:1.0.2'
+    implementation 'com.seamlesspay.api:Client:1.0.3'
 }

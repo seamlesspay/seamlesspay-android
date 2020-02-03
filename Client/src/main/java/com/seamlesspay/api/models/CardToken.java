@@ -12,7 +12,9 @@ import org.json.JSONObject;
 public class CardToken extends PaymentMethodToken implements Parcelable {
 
     private static final String EXPIRATION_DATE_KEY = "expDate";
+    private static final String CARD_BRAND_KEY = "cardBrand";
     private String mExpDate;
+    private String mCardBrand;
 
     /**
      * Convert an API response to a {@link CardToken}.
@@ -37,6 +39,11 @@ public class CardToken extends PaymentMethodToken implements Parcelable {
     protected void fromJson(JSONObject json) throws JSONException {
         super.fromJson(json);
         mExpDate = json.getString(EXPIRATION_DATE_KEY);
+        try {
+            mCardBrand = json.getString(CARD_BRAND_KEY);
+        } catch (JSONException ex) {
+            mCardBrand = null;
+        }
     }
 
     /**
@@ -46,17 +53,26 @@ public class CardToken extends PaymentMethodToken implements Parcelable {
         return mExpDate;
     }
 
+    /**
+     * @return Card Brand Name.
+     */
+    public String getCardBrand() {
+        return mCardBrand;
+    }
+
     public CardToken() {}
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(mExpDate);
+        dest.writeString(mCardBrand);
     }
 
     protected CardToken(Parcel in) {
         super(in);
         mExpDate = in.readString();
+        mCardBrand = in.readString();
     }
 
     public static final Creator<CardToken> CREATOR = new Creator<CardToken>() {
