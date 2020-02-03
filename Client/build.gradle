@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version '1.0.2'
+version '1.0.3'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -35,7 +35,7 @@ dependencies {
 //    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
 //    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
 //
-//    libraryVersion = '1.0.2'
+//    libraryVersion = '1.0.3'
 //
 //    developerId = 'seamlesspay'
 //    developerName = 'Seamless Payments'
