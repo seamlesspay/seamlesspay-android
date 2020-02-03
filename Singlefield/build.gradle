@@ -91,30 +91,30 @@ tasks.withType(Javadoc).all {
     enabled = false
 }
 
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'singlefield'
-
-    publishedGroupId = 'com.seamlesspay.ui'
-    libraryName = 'Singlefield'
-    artifact = 'Singlefield'
-
-    libraryDescription = 'Singlefield widget drop-in UI component provided by the SDK.'
-
-    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
-    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
-
-    libraryVersion = '1.0.1'
-
-    developerId = 'seamlesspay'
-    developerName = 'Seamless Payments'
-    developerEmail = 'info@seamlesspay.com'
-
-    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
-    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
-    allLicenses = ["MIT"]
-}
-
-
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+//ext {
+//    bintrayRepo = 'maven'
+//    bintrayName = 'singlefield'
+//
+//    publishedGroupId = 'com.seamlesspay.ui'
+//    libraryName = 'Singlefield'
+//    artifact = 'Singlefield'
+//
+//    libraryDescription = 'Singlefield widget drop-in UI component provided by the SDK.'
+//
+//    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+//    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
+//
+//    libraryVersion = '1.0.1'
+//
+//    developerId = 'seamlesspay'
+//    developerName = 'Seamless Payments'
+//    developerEmail = 'info@seamlesspay.com'
+//
+//    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
+//    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
+//    allLicenses = ["MIT"]
+//}
+//
+//
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

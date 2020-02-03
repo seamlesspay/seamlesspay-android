@@ -45,7 +45,6 @@ dependencies {
 //    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
 //    allLicenses = ["MIT"]
 //}
-//
-//
+
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
