@@ -13,7 +13,6 @@ import org.json.JSONObject;
 public abstract class BaseCardBuilder<T> extends PaymentMethodBuilder<T> implements Parcelable {
 
     static final String NUMBER_KEY = "accountNumber";
-    static final String CVV_KEY = "cvv";
     static final String COMPANY_KEY = "company";
     static final String BILLING_ADDRESS_KEY = "billingAddress";
     static final String BILLING_ADDRESS2_KEY = "billingAddress2";
@@ -29,7 +28,6 @@ public abstract class BaseCardBuilder<T> extends PaymentMethodBuilder<T> impleme
 
     String mCardType;
     String mAccountNumber;
-    String mCvv;
     String mExpirationMonth;
     String mExpirationYear;
     String mFirstName;
@@ -58,20 +56,6 @@ public abstract class BaseCardBuilder<T> extends PaymentMethodBuilder<T> impleme
             mAccountNumber = null;
         } else {
             mAccountNumber = number;
-        }
-        return (T) this;
-    }
-
-    /**
-     * @param cvv The card verification code (like CVV or CID). If you wish to create a CVV-only payment method to verify a card already stored in your Vault, omit all other properties to only collect CVV.
-     * @return {@link BaseCardBuilder}
-     */
-    @SuppressWarnings("unchecked")
-    public T cvv(String cvv) {
-        if (TextUtils.isEmpty(cvv)) {
-            mCvv = null;
-        } else {
-            mCvv = cvv;
         }
         return (T) this;
     }
@@ -326,7 +310,6 @@ public abstract class BaseCardBuilder<T> extends PaymentMethodBuilder<T> impleme
         super(in);
         mCardType = in.readString();
         mAccountNumber = in.readString();
-        mCvv = in.readString();
         mExpirationMonth = in.readString();
         mExpirationYear = in.readString();
         mCardholderName = in.readString();
@@ -348,7 +331,6 @@ public abstract class BaseCardBuilder<T> extends PaymentMethodBuilder<T> impleme
         super.writeToParcel(dest, flags);
         dest.writeString(mCardType);
         dest.writeString(mAccountNumber);
-        dest.writeString(mCvv);
         dest.writeString(mExpirationMonth);
         dest.writeString(mExpirationYear);
         dest.writeString(mCardholderName);

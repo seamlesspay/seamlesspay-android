@@ -10,7 +10,7 @@ Add the dependency in your `build.gradle`:
 
 ```groovy
 dependencies {
-  implementation 'com.seamlesspay.api:Client:1.0.3'
+  implementation 'com.seamlesspay.api:Client:1.0.4'
 }
 ```
 
@@ -109,6 +109,7 @@ Create an instance of the card component and a Pay button by adding the followin
                                 .expirationYear(mCardInputWidget.getExpirationYear())
                                 .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                                 .billingZip(mCardInputWidget.getPostalCode())
+                                .cvv(mCardInputWidget.getCvv()
                                 .verification(true);
 
                         PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
@@ -187,6 +188,7 @@ To access the values in the form, there are getters for each field
                     .expirationYear(mCardForm.getExpirationYear())
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                     .billingZip(mCardForm.getPostalCode())
+                    .cvv(mCardForm.getCvv()
                     .verification(true);
 
             PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
@@ -203,7 +205,7 @@ CardChargeBulder chargeBulder = new CardChargeBulder()
                 .setCapture(true)
                 .setToken(token.getToken())
                 .setDescription("Demo Android Client Charge")
-                .setCvv(mCardForm.getCVV());
+                .setCvv(mCardForm.getCvv());
 
         Charge.create(mSeamlesspayFragment, chargeBulder);
 ```

@@ -78,7 +78,7 @@ dependencies {
     //implementation project(':Client')
     //implementation project(':CardForm')
     implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
-    implementation 'com.seamlesspay.api:Client:1.0.3'
+    implementation 'com.seamlesspay.api:Client:1.0.4'
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4'

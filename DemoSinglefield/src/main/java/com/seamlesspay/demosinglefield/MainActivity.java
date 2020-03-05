@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements PaymentMethodToke
                         .expirationYear(mCardInputWidget.getExpirationYear())
                         .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                         .billingZip(mCardInputWidget.getPostalCode())
+                        .cvv(mCardInputWidget.getCvv())
                         .verification(true);
 
                 PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
