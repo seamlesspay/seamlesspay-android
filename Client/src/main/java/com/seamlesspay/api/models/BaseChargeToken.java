@@ -18,6 +18,7 @@ public abstract class BaseChargeToken implements Parcelable {
     protected static final String AMOUNT_KEY = "amount";
     protected static final String CURRENCY_KEY = "currency";
     protected static final String CARD_BRAND_KEY = "cardBrand";
+    protected static final String EXP_DATE_KEY = "expDate";
     protected static final String CARD_TYPE_KEY = "cardType";
     protected static final String IP_ADDRESS_KEY = "ipAddress";
     protected static final String LASTFOUR_KEY = "lastFour";
@@ -41,6 +42,7 @@ public abstract class BaseChargeToken implements Parcelable {
     private String mAmount;
     private String mCurrency;
     private String mCardBrand;
+    private String mExpDate;
     private String mCardType;
     private String mIpAddress;
     private String mLastFour;
@@ -79,6 +81,12 @@ public abstract class BaseChargeToken implements Parcelable {
             mCardBrand = json.getString(CARD_BRAND_KEY);
         } catch (JSONException ex) {
             mCardBrand = null;
+        }
+
+        try {
+            mExpDate = json.getString(EXP_DATE_KEY);
+        } catch (JSONException ex) {
+            mExpDate = null;
         }
 
         try {
@@ -158,6 +166,7 @@ public abstract class BaseChargeToken implements Parcelable {
         dest.writeString(mAmount);
         dest.writeString(mCurrency);
         dest.writeString(mCardBrand);
+        dest.writeString(mExpDate);
         dest.writeString(mCardType);
         dest.writeString(mIpAddress);
         dest.writeString(mLastFour);
@@ -184,6 +193,7 @@ public abstract class BaseChargeToken implements Parcelable {
         mAmount = in.readString();
         mCurrency = in.readString();
         mCardBrand = in.readString();
+        mExpDate = in.readString();
         mCardType = in.readString();
         mIpAddress = in.readString();
         mLastFour = in.readString();
@@ -263,6 +273,10 @@ public abstract class BaseChargeToken implements Parcelable {
 
     public String getCardBrand() {
         return mCardBrand;
+    }
+
+    public String getExpDate() {
+        return mExpDate;
     }
 
     public String getCurrency() {

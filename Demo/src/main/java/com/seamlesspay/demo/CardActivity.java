@@ -130,6 +130,7 @@ public class CardActivity extends BaseActivity implements
                     .expirationYear(mCardForm.getExpirationYear())
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                     .billingZip(mCardForm.getPostalCode())
+                    .cvv(mCardForm.getCvv())
                     .verification(true);
 
             PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
