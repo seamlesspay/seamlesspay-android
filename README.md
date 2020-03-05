@@ -109,7 +109,7 @@ Create an instance of the card component and a Pay button by adding the followin
                                 .expirationYear(mCardInputWidget.getExpirationYear())
                                 .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                                 .billingZip(mCardInputWidget.getPostalCode())
-                                .cvv(mCardInputWidget.getCvv()
+                                .cvv(mCardInputWidget.getCvv())
                                 .verification(true);
 
                         PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
@@ -188,7 +188,7 @@ To access the values in the form, there are getters for each field
                     .expirationYear(mCardForm.getExpirationYear())
                     .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
                     .billingZip(mCardForm.getPostalCode())
-                    .cvv(mCardForm.getCvv()
+                    .cvv(mCardForm.getCvv())
                     .verification(true);
 
             PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
