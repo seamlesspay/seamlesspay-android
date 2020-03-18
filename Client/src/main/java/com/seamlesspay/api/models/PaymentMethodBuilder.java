@@ -18,56 +18,51 @@ import org.json.JSONObject;
  */
 public abstract class PaymentMethodBuilder<T> {
 
-  public final class Keys {
-    public static final String ACH_TYPE = "ACH";
-    public static final String CREDIT_CARD_TYPE = "CREDIT_CARD";
-    public static final String GIFT_CARD_TYPE = "GIFT_CARD";
-    public static final String PLDEBIT_CARD_TYPE = "PLDEBIT_CARD";
-  }
+    public final class Keys {
+        public static final String CREDIT_CARD_TYPE = "CREDIT_CARD";
+        public static final String PLDEBIT_CARD_TYPE = "PLDEBIT_CARD";
+        public static final String ACH_TYPE = "ACH";
+        public static final String GIFT_CARD_TYPE = "GIFT_CARD";
+    }
 
-  protected static final String TXN_TYPE_KEY = "txnType";
+    protected static final String TXN_TYPE_KEY = "txnType";
+    private String mTxnType;
 
-  private String mTxnType;
+    public PaymentMethodBuilder() {}
 
-  public PaymentMethodBuilder() {}
+    /**
+     * @param txnType PAN Vault support five types of payments "Credit Card", "PINLess Debit Card", "ACH", "Gift Card"
+     */
+    @SuppressWarnings("unchecked")
+    public T setTxnType(String txnType) {
+        mTxnType = txnType;
+        return (T) this;
+    }
 
-  /**
-   * @param txnType PAN Vault support five types of payments "Credit Card",
-   * "PINLess Debit Card", "ACH", "Gift Card"
-   */
-  @SuppressWarnings("unchecked")
-  public T setTxnType(String txnType) {
-    mTxnType = txnType;
+    /**
+     * @return String representation of {@link PaymentMethodToken} for API use.
+     */
+    public String build() {
+        JSONObject base = new JSONObject();
+        try {
+            base.put(TXN_TYPE_KEY, mTxnType);
+            build(base);
+        } catch (JSONException ignored) {}
 
-    return (T) this;
-  }
+        return base.toString();
+    }
 
-  /**
-   * @return String representation of {@link PaymentMethodToken} for API use.
-   */
-  public String build() {
-    JSONObject base = new JSONObject();
+    protected PaymentMethodBuilder(Parcel in) {
+        mTxnType = in.readString();
+    }
 
-    try {
-      base.put(TXN_TYPE_KEY, mTxnType);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTxnType);
+    }
 
-      build(base);
-    } catch (JSONException ignored) {}
+    protected abstract void build(JSONObject base) throws JSONException;
 
-    return base.toString();
-  }
-
-  protected PaymentMethodBuilder(Parcel in) {
-    mTxnType = in.readString();
-  }
-
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(mTxnType);
-  }
-
-  protected abstract void build(JSONObject base) throws JSONException;
-
-  public String getResponsePaymentMethodType() {
-    return mTxnType;
-  }
+    public String getResponsePaymentMethodType() {
+        return mTxnType;
+    }
 }
