@@ -101,8 +101,8 @@ In most cases, you will only need to install the **`api`** and one of the UI pac
 We provide several drop-in native UI components for easily collecting payment information in your Android Application:
 
 <details><summary><strong>Card Input Form Usage</strong></summary><p>
-
-<img style="float: right; margin: 1rem; width: 30%;" src="/files/cardform.png"/>
+	
+<img align="right" width="20%" src="/files/cardform.png"/>
 
 ### Card Input Form
 
@@ -165,7 +165,7 @@ Start with the provided [**`Demo`**](https://github.com/seamlesspay/seamlesspay-
 
 <details><summary><strong>Single Field Input Usage</strong></summary><p>
 
-<img style="float: right; margin: 1rem; width: 30%;" src="/files/singlefield.gif"/>
+<img align="right" width="20%" src="/files/singlefield.gif"/>
 
 ### Single Field Input
 
