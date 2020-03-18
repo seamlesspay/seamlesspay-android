@@ -16,40 +16,55 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class ChargeClient {
+  static final String CHARGE_ENDPOINT = "charge";
 
-    static final String CHARGE_ENDPOINT = "charge";
+  static void create(
+    final SeamlesspayFragment fragment,
+    final CardChargeBulder cardChargeBulder,
+    final BaseChargeTokenCallback callback
+  ) {
+    createRest(fragment, cardChargeBulder, callback);
+  }
 
-    static void create(final SeamlesspayFragment fragment, final CardChargeBulder cardChargeBulder,
-                         final BaseChargeTokenCallback callback) {
+  private static void createRest(
+    final SeamlesspayFragment fragment,
+    final CardChargeBulder cardChargeBulder,
+    final BaseChargeTokenCallback callback
+  ) {
+    String data = cardChargeBulder.build();
 
-        createRest(fragment, cardChargeBulder, callback);
-    }
+    try {
+      JSONObject dataJson = new JSONObject(data);
 
-    private static void createRest(final SeamlesspayFragment fragment, final CardChargeBulder cardChargeBulder,
-                                     final BaseChargeTokenCallback callback) {
+      dataJson.put(
+        "deviceFingerprint",
+        AppHelper.getDeviceFingerprint(fragment.getContext())
+      );
 
-        String data = cardChargeBulder.build();
-        try {
-            JSONObject dataJson = new JSONObject(data);
-            dataJson.put("deviceFingerprint", AppHelper.getDeviceFingerprint(fragment.getContext()));
-            data = dataJson.toString();
-        } catch (JSONException ignored) {}
+      data = dataJson.toString();
+    } catch (JSONException ignored) {}
 
-        fragment.getApiHttpClient().post(ChargeClient.CHARGE_ENDPOINT,
-                data, new HttpResponseCallback() {
-                    @Override
-                    public void success(String responseBody) {
-                        try {
-                            callback.success(BaseChargeToken.parseChargeToken(responseBody));
-                        } catch (JSONException e) {
-                            callback.failure(e);
-                        }
-                    }
+    fragment
+      .getApiHttpClient()
+      .post(
+        ChargeClient.CHARGE_ENDPOINT,
+        data,
+        new HttpResponseCallback() {
 
-                    @Override
-                    public void failure(Exception exception) {
-                        callback.failure(exception);
-                    }
-                });
-    }
+          @Override
+          public void success(String responseBody) {
+            try {
+              callback.success(BaseChargeToken.parseChargeToken(responseBody));
+            } catch (JSONException e) {
+              callback.failure(e);
+            }
+          }
+
+          @Override
+          public void failure(Exception exception) {
+            callback.failure(exception);
+          }
+        }
+      );
+  }
 }
