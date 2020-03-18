@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.api.internal;
 
 import android.content.Context;
@@ -10,36 +17,52 @@ import android.net.Uri;
 
 public class ManifestValidator {
 
-    public static boolean isActivityDeclaredInAndroidManifest(Context context, Class klass) {
-        return getActivityInfo(context, klass) != null;
-    }
+  public static boolean isActivityDeclaredInAndroidManifest(
+    Context context,
+    Class klass
+  ) {
+    return getActivityInfo(context, klass) != null;
+  }
 
-    public static boolean isUrlSchemeDeclaredInAndroidManifest(Context context, String urlScheme, Class klass) {
-        Intent intent = new Intent(Intent.ACTION_VIEW)
-                .setData(Uri.parse(urlScheme + "://"))
-                .addCategory(Intent.CATEGORY_DEFAULT)
-                .addCategory(Intent.CATEGORY_BROWSABLE);
+  public static boolean isUrlSchemeDeclaredInAndroidManifest(
+    Context context,
+    String urlScheme,
+    Class klass
+  ) {
+    Intent intent = new Intent(Intent.ACTION_VIEW)
+      .setData(Uri.parse(urlScheme + "://"))
+      .addCategory(Intent.CATEGORY_DEFAULT)
+      .addCategory(Intent.CATEGORY_BROWSABLE);
 
-        ActivityInfo activityInfo = getActivityInfo(context, klass);
-        return (activityInfo != null && activityInfo.launchMode == ActivityInfo.LAUNCH_SINGLE_TASK &&
-                AppHelper.isIntentAvailable(context, intent));
-    }
+    ActivityInfo activityInfo = getActivityInfo(context, klass);
 
+    return (
+      activityInfo != null &&
+      activityInfo.launchMode == ActivityInfo.LAUNCH_SINGLE_TASK &&
+      AppHelper.isIntentAvailable(context, intent)
+    );
+  }
 
-    public static ActivityInfo getActivityInfo(Context context, Class klass) {
-        try {
-            PackageInfo packageInfo =
-                    context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
-            ActivityInfo[] activities = packageInfo.activities;
-            if (activities != null) {
-                for (ActivityInfo activityInfo : activities) {
-                    if (activityInfo.name.equals(klass.getName())) {
-                        return activityInfo;
-                    }
-                }
-            }
-        } catch (NameNotFoundException ignored) {}
+  public static ActivityInfo getActivityInfo(Context context, Class klass) {
+    try {
+      PackageInfo packageInfo = context
+        .getPackageManager()
+        .getPackageInfo(
+          context.getPackageName(),
+          PackageManager.GET_ACTIVITIES
+        );
 
-        return null;
-    }
+      ActivityInfo[] activities = packageInfo.activities;
+
+      if (activities != null) {
+        for (ActivityInfo activityInfo : activities) {
+          if (activityInfo.name.equals(klass.getName())) {
+            return activityInfo;
+          }
+        }
+      }
+    } catch (NameNotFoundException ignored) {}
+
+    return null;
+  }
 }

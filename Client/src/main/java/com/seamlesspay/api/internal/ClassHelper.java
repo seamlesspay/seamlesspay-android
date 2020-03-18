@@ -1,35 +1,50 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.api.internal;
 
 import java.lang.reflect.Field;
 
 public class ClassHelper {
 
-    public static boolean isClassAvailable(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (ClassNotFoundException ignored) {
-            return false;
-        }
+  public static boolean isClassAvailable(String className) {
+    try {
+      Class.forName(className);
+
+      return true;
+    } catch (ClassNotFoundException ignored) {
+      return false;
     }
+  }
 
-    /**
-     * @param className The name of the class we need a field from
-     * @param fieldName The name of the field we need a value from
-     * @param <FIELD_TYPE> The type of the field value
-     * @return the value of a field on a class, or null.
-     */
-    public static <FIELD_TYPE> FIELD_TYPE getFieldValue(String className, String fieldName) {
-        FIELD_TYPE value = null;
+  /**
+   * @param className The name of the class we need a field from
+   * @param fieldName The name of the field we need a value from
+   * @param <FIELD_TYPE> The type of the field value
+   * @return the value of a field on a class, or null.
+   */
+  public static <FIELD_TYPE> FIELD_TYPE getFieldValue(
+    String className,
+    String fieldName
+  ) {
+    FIELD_TYPE value = null;
 
-        try {
-            Class<?> clazz = Class.forName(className);
-            Field field = clazz.getField(fieldName);
+    try {
+      Class<?> clazz = Class.forName(className);
+      Field field = clazz.getField(fieldName);
 
-            field.setAccessible(true);
-            value = (FIELD_TYPE) field.get(Object.class);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ignored) {}
+      field.setAccessible(true);
+      value = (FIELD_TYPE) field.get(Object.class);
+    } catch (
+      ClassNotFoundException
+      | NoSuchFieldException
+      | IllegalAccessException ignored
+    ) {}
 
-        return value;
-    }
+    return value;
+  }
 }
