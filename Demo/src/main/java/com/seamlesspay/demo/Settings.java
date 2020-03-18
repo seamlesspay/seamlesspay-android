@@ -1,69 +1,83 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.demo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Settings {
+  private static final String SANDBOX_TOKENIZATION_KEY =
+    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String PRODUCTION_TOKENIZATION_KEY =
+    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-    private static final String SANDBOX_TOKENIZATION_KEY = "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
-    private static final String PRODUCTION_TOKENIZATION_KEY = "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String SANDBOX_SECRET_KEY =
+    "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String PRODUCTION_SECRET_KEY =
+    "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-    private static final String SANDBOX_SECRET_KEY = "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
-    private static final String PRODUCTION_SECRET_KEY = "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  protected static final String ENVIRONMENT = "environment";
 
-    protected static final String ENVIRONMENT = "environment";
-    private static SharedPreferences sSharedPreferences;
+  private static SharedPreferences sSharedPreferences;
 
-    public static SharedPreferences getPreferences(Context context) {
-        if (sSharedPreferences == null) {
-            sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        }
-        return sSharedPreferences;
+  public static SharedPreferences getPreferences(Context context) {
+    if (sSharedPreferences == null) {
+      sSharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(
+          context.getApplicationContext()
+        );
     }
 
-    public static int getEnvironment(Context context) {
-        return getPreferences(context).getInt(ENVIRONMENT, 0);
-    }
+    return sSharedPreferences;
+  }
 
-    public static void setEnvironment(Context context, int environment) {
-        getPreferences(context)
-                .edit()
-                .putInt(ENVIRONMENT, environment)
-                .apply();
-    }
+  public static int getEnvironment(Context context) {
+    return getPreferences(context).getInt(ENVIRONMENT, 0);
+  }
 
-    public static String getEnvironmentName(Context context) {
-        int environment = getEnvironment(context);
-        if (environment == 0) {
-            return "sandbox";
-        } else {
-            return "production";
-        }
-    }
+  public static void setEnvironment(Context context, int environment) {
+    getPreferences(context).edit().putInt(ENVIRONMENT, environment).apply();
+  }
 
-    public static String getEnvironmentTokenizationKey(Context context) {
-        int environment = getEnvironment(context);
-        if (environment == 0) {
-            return SANDBOX_TOKENIZATION_KEY;
-        } else if (environment == 1) {
-            return PRODUCTION_TOKENIZATION_KEY;
-        } else {
-            return "";
-        }
-    }
+  public static String getEnvironmentName(Context context) {
+    int environment = getEnvironment(context);
 
-    public static String getEnvironmentSecretKey(Context context) {
-        int environment = getEnvironment(context);
-        if (environment == 0) {
-            return SANDBOX_SECRET_KEY;
-        } else if (environment == 1) {
-            return PRODUCTION_SECRET_KEY;
-        } else {
-            return "";
-        }
+    if (environment == 0) {
+      return "sandbox";
+    } else {
+      return "production";
     }
+  }
+
+  public static String getEnvironmentTokenizationKey(Context context) {
+    int environment = getEnvironment(context);
+
+    if (environment == 0) {
+      return SANDBOX_TOKENIZATION_KEY;
+    } else if (environment == 1) {
+      return PRODUCTION_TOKENIZATION_KEY;
+    } else {
+      return "";
+    }
+  }
+
+  public static String getEnvironmentSecretKey(Context context) {
+    int environment = getEnvironment(context);
+
+    if (environment == 0) {
+      return SANDBOX_SECRET_KEY;
+    } else if (environment == 1) {
+      return PRODUCTION_SECRET_KEY;
+    } else {
+      return "";
+    }
+  }
 }
