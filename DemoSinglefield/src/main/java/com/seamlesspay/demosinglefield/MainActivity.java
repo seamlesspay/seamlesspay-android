@@ -26,7 +26,7 @@ import com.seamlesspay.api.models.Configuration;
 import com.seamlesspay.api.models.PaymentMethodToken;
 
 public class MainActivity extends AppCompatActivity implements PaymentMethodTokenCreatedListener,
-        BaseChargeTokenCreatedListener {
+        BaseChargeTokenCreatedListener, SeamlesspayErrorListener {
 
     CardInputWidget mCardInputWidget;
     SeamlesspayFragment mSeamlesspayFragment;
@@ -117,5 +117,9 @@ public class MainActivity extends AppCompatActivity implements PaymentMethodToke
                 "\nStatus message: " + chargeToken.getStatusDescription() +
                 "\ntxnID #: " + chargeToken.getChargeId() +
                 "\nCharge runtime : " + ((float)timeElapsed/1000) + " s");
+    }
+
+    public void onError(Exception error) {
+        mInfoView.setText("Error\n" + error.getMessage());
     }
 }

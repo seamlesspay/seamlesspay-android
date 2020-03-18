@@ -41,6 +41,6 @@ dependencies {
  //   implementation project(':Singlefield')
     implementation 'com.seamlesspay.ui:Singlefield:1.0.1'
 
-  //  implementation project(':Client')
-    implementation 'com.seamlesspay.api:Client:1.0.4'
+    implementation project(':Client')
+  //  implementation 'com.seamlesspay.api:Client:1.0.4'
 }

@@ -3,6 +3,8 @@ package com.seamlesspay.api.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.seamlesspay.api.internal.AppHelper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

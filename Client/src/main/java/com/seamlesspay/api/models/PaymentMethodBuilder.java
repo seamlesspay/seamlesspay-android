@@ -2,6 +2,8 @@ package com.seamlesspay.api.models;
 
 import android.os.Parcel;
 
+import com.seamlesspay.api.internal.AppHelper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +39,6 @@ public abstract class PaymentMethodBuilder<T> {
      */
     public String build() {
         JSONObject base = new JSONObject();
-
         try {
             base.put(TXN_TYPE_KEY, mTxnType);
             build(base);
@@ -58,5 +59,5 @@ public abstract class PaymentMethodBuilder<T> {
 
     public String getResponsePaymentMethodType() {
         return mTxnType;
-    };
+    }
 }

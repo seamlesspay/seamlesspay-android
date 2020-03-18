@@ -3,11 +3,13 @@ package com.seamlesspay.api;
 import com.seamlesspay.api.exceptions.ErrorWithResponse;
 import com.seamlesspay.api.interfaces.HttpResponseCallback;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCallback;
+import com.seamlesspay.api.internal.AppHelper;
 import com.seamlesspay.api.models.PaymentMethodBuilder;
 import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.seamlesspay.api.models.PaymentMethodToken.parsePaymentMethodToken;
 
@@ -39,8 +41,15 @@ class TokenizationClient {
     private static void tokenizeRest(final SeamlesspayFragment fragment, final PaymentMethodBuilder paymentMethodBuilder,
             final PaymentMethodTokenCallback callback) {
 
+        String data = paymentMethodBuilder.build();
+        try {
+            JSONObject dataJson = new JSONObject(data);
+            dataJson.put("deviceFingerprint", AppHelper.getDeviceFingerprint(fragment.getContext()));
+            data = dataJson.toString();
+        } catch (JSONException ignored) {}
+
         fragment.getPanVaulHttpClient().post(TokenizationClient.PAYMENT_METHOD_ENDPOINT,
-                paymentMethodBuilder.build(), new HttpResponseCallback() {
+                data, new HttpResponseCallback() {
                     @Override
                     public void success(String responseBody) {
                         try {
