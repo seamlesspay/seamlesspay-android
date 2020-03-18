@@ -72,7 +72,7 @@
     <!--Error text indicating zip/ postal code is invalid, used for international addresses-->
     <string name="address_zip_postal_invalid">Your ZIP/Postal code is invalid</string>
 
-    <!-- TODO(mshafrir-seamlesspay): translate string (ANDROID-450) -->
+    <!-- TODO: translate string (ANDROID-450) -->
     <!--Error text indicating country is invalid-->
     <string name="address_country_invalid" tools:ignore="MissingTranslation">Your country is invalid</string>
 
@@ -128,12 +128,12 @@
     <string name="secure_checkout">Secure Checkout</string>
     <string name="close">Close</string>
 
-    <!-- TODO(mshafrir-seamlesspay): translate string - ANDROID-413 -->
+    <!-- TODO: translate string - ANDROID-413 -->
     <string name="added" tools:ignore="MissingTranslation">Added %s</string>
     <string name="removed" tools:ignore="MissingTranslation">Removed %s</string>
     <string name="delete_payment_method" tools:ignore="MissingTranslation">Delete Payment Method?</string>
 
-    <!-- TODO(mshafrir-seamlesspay): translate string - ANDROID-432 -->
+    <!-- TODO: translate string - ANDROID-432 -->
     <!-- Label that will show that an FPX bank is offline. For example, "AmBank - Offline" -->
     <string name="fpx_bank_offline" tools:ignore="MissingTranslation">%s - Offline</string>
 

@@ -1,14 +1,19 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.api.models;
 
 import android.os.Parcel;
-
-import com.seamlesspay.api.internal.AppHelper;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * An abstract class to extend when creating a builder for a payment method. Contains logic and
+ * An abstract class to extend when creating a builder for
+ * a payment method. Contains logic and
  * implementations shared by all payment methods.
  */
 public abstract class PaymentMethodBuilder<T> {

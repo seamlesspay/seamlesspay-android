@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.api;
 
 import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
@@ -5,7 +12,6 @@ import com.seamlesspay.api.interfaces.HttpResponseCallback;
 import com.seamlesspay.api.internal.AppHelper;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,5 +52,4 @@ class ChargeClient {
                     }
                 });
     }
-
 }

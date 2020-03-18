@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.cardform.view;
 
 import android.content.Context;
@@ -7,45 +14,52 @@ import android.text.InputType;
 import android.util.AttributeSet;
 
 /**
- * Input for country code. Validated for presence only due to the wide variation of country code formats worldwide.
+ * Input for country code. Validated for presence only due to the
+ * wide variation of country code formats worldwide.
  */
 public class CountryCodeEditText extends ErrorEditText {
 
-    public CountryCodeEditText(Context context) {
-        super(context);
-        init();
-    }
+  public CountryCodeEditText(Context context) {
+    super(context);
+    init();
+  }
 
-    public CountryCodeEditText(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
+  public CountryCodeEditText(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    init();
+  }
 
-    public CountryCodeEditText(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
+  public CountryCodeEditText(
+    Context context,
+    AttributeSet attrs,
+    int defStyle
+  ) {
+    super(context, attrs, defStyle);
+    init();
+  }
 
-    private void init() {
-        setInputType(InputType.TYPE_CLASS_PHONE);
-        InputFilter[] filters = { new LengthFilter(4) };
-        setFilters(filters);
-    }
+  private void init() {
+    setInputType(InputType.TYPE_CLASS_PHONE);
 
-    /**
-     * @return the numeric country code entered by the user
-     */
-    public String getCountryCode() {
-        return getText().toString().replaceAll("[^\\d]", "");
-    }
+    InputFilter[] filters = { new LengthFilter(4) };
 
-    @Override
-    public boolean isValid() {
-        return isOptional() || getText().toString().length() > 0;
-    }
+    setFilters(filters);
+  }
 
-    @Override
-    public String getErrorMessage() {
-        return "Country code is required";
-    }
+  /**
+   * @return the numeric country code entered by the user
+   */
+  public String getCountryCode() {
+    return getText().toString().replaceAll("[^\\d]", "");
+  }
+
+  @Override
+  public boolean isValid() {
+    return isOptional() || getText().toString().length() > 0;
+  }
+
+  @Override
+  public String getErrorMessage() {
+    return "Country code is required";
+  }
 }

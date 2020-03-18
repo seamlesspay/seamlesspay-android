@@ -1,20 +1,25 @@
+/**
+ * Copyright (c) Seamless Payments, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.seamlesspay.api;
+
+import static com.seamlesspay.api.models.PaymentMethodToken.parsePaymentMethodToken;
 
 import com.seamlesspay.api.exceptions.ErrorWithResponse;
 import com.seamlesspay.api.interfaces.HttpResponseCallback;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCallback;
 import com.seamlesspay.api.internal.AppHelper;
+import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
 import com.seamlesspay.api.models.PaymentMethodBuilder;
 import com.seamlesspay.api.models.PaymentMethodToken;
-import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.seamlesspay.api.models.PaymentMethodToken.parsePaymentMethodToken;
-
 class TokenizationClient {
-
     static final String PAYMENT_METHOD_ENDPOINT = "tokens";
 
     /**
@@ -66,4 +71,7 @@ class TokenizationClient {
                     }
                 });
     }
-}
+
+
+  }
+
