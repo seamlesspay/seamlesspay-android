@@ -1,16 +1,58 @@
-# SeamlessPay Android SDK
+<!-- [<img width="250" height="119" src="https://raw.githubusercontent.com/seamlesspay/seamlesspay-android/master/assets/stripe_logo_slate_small.png"/>](https://seamlesspay.com/docs/mobile/android) -->
 
-The SeamlessPay Android SDK makes it easy to accept card and alternative payments in your Android app. Our Android SDK is available for Android SDK >= 21.
+# SeamlessPay Android
 
-| Package                                                                 | Description                                                  | Release                                                                    |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------- |
-| [**`api`**](https://bintray.com/seamless-ops/maven/api)                 | Seamless Payments API Client for Android.                    | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/api)         |
-| [**`card-form`**](https://bintray.com/seamless-ops/maven/card-form)     | UI component for card input using a traditional form layout. | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/card-form)   |
-| [**`singlefield`**](https://bintray.com/seamless-ops/maven/singlefield) | UI component for card input using a single-field widget.     | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/singlefield) |
+[![License](https://img.shields.io/github/license/seamlesspay/seamlesspay-android)](https://github.com/seamlesspay/seamlesspay-android/blob/master/LICENSE)
 
-### Installation
+_The Seamless Payments Android SDK makes it quick and easy to build an excellent
+payment experience in your Android app_ :robot:
 
-Add the required dependencies to your project using your preferred repository:
+## Overview
+
+SeamlessPay Android provides drop-in customizable UI elements that can be used
+to collect your users' payment details and process payments from within your
+app. We also expose the low-level APIs that power those UIs so that you can
+build fully custom experiences.
+
+There are several components that comprise this SDK:
+
+- [Client](Client) provides the networking, communication and modeling layer
+- [CardForm](CardForm) provides a drop-in UI for collecting payment information in your app
+- [Singlefield](Singlefield) provides an advanced drop-in UI that uses a single input
+
+The individual components may be used for advanced integrations
+and are available as modules in maven.
+
+| Package                                                                 | Description                                                 | Release                                                                                                     |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [**`api`**](https://bintray.com/seamless-ops/maven/api)                 | Seamless Payments API Client for Android                    | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/api?logo=android&color=3DDC84)                |
+| [**`card-form`**](https://bintray.com/seamless-ops/maven/card-form)     | UI component for card input using a traditional form layout | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/card-form?logo=android-studio&color=3DDC84)   |
+| [**`singlefield`**](https://bintray.com/seamless-ops/maven/singlefield) | UI component for card input using a single-field widget     | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/singlefield?logo=android-studio&color=3DDC84) |
+
+Get started with our [📚 integration guide](https://docs.seamlesspay.com/#tag/SeamlessPayCoreFrameworkAndroid) and [example projects](#examples).
+
+## Installation
+
+Your development environment must have minimum requirements configured:
+
+<details><summary><strong>Requirements</strong></summary><p>
+
+- [Java 8](https://www.oracle.com/technetwork/java/javase/overview/java8-2100321.html) is installed and available in your `PATH`
+- [Android Studio](https://developer.android.com/studio/)
+- [Gradle](https://gradle.org/releases/) 5.4.1+
+- [Android SDK](https://developer.android.com/studio/releases/sdk-tools) >= 21 -
+  If you do not have the Android SDK installed, run `./gradlew build`
+  3 times to download the Android SDK and install all required tools
+  as well as set your `local.properties` file (we use
+  [sdk-manager-plugin](https://github.com/JakeWharton/sdk-manager-plugin) to do this automatically).
+
+Note: If you do have the Android SDK installed, add a `local.properties`
+file to the top level directory with `sdk.dir=/path/to/your/sdk/.android-sdk`
+
+</p></details><br/>
+
+Once your environment is configured, add the SeamlessPay Android SDK
+to your project using your preferred repository, for example:
 
 <details><summary><strong>Gradle</strong></summary><p>
 
@@ -29,7 +71,8 @@ dependencies {
 }
 ```
 
-_Note: Be sure to replace **`[VERSION]`** with the correct semantic version of package._
+_Note: Be sure to replace **`[VERSION]`** with the correct semantic
+version of package._
 
 </p></details>
 
@@ -63,7 +106,8 @@ Add the required dependencies to your project's **`pom.xml`**:
 </dependency>
 ```
 
-_Note: Be sure to replace **`[VERSION]`** with the correct semantic version of package._
+_Note: Be sure to replace **`[VERSION]`** with the correct
+semantic version of package._
 
 </p></details>
 
@@ -88,39 +132,31 @@ Add the required dependencies to your project's **`ivy.xml`**:
 </dependency>
 ```
 
-_Note: Be sure to replace **`[VERSION]`** with the correct semantic version of package._
+_Note: Be sure to replace **`[VERSION]`** with the correct
+semantic version of package._
 
 </p></details><br>
 
-In most cases, you will only need to install the **`api`** and one of the UI packages, either `card-form` **or** `singlefield`.
+In most cases, you will only need to install the **`api`** and one of the
+UI packages, either `card-form` **or** `singlefield`.
 
-# Usage
+## Usage
 
-## Drop-In UI Components
+### Drop-In UI Components
 
-We provide several drop-in native UI components for easily collecting payment information in your Android Application:
+We provide several drop-in native UI components for easily collecting
+payment information in your Android Application:
 
-<details><summary><strong>Card Input Form Usage</strong></summary><p>
-	
+<details><summary><strong><code>CardForm</code> Usage</strong></summary><p>
+
 <img align="right" width="20%" src="/files/cardform.png"/>
 
-### Card Input Form
+#### CardForm Component
 
-The Card Input Form is a drop-in UI layout that can be included in your app making it easy to accept credit and debit cards.
+The `CardForm` Component is a drop-in UI layout that can be included in your
+app making it easy to accept credit and debit cards.
 
-#### Installation
-
-Add the dependency to your `build.gradle`:
-
-```groovy
-dependencies {
-  implementation 'com.seamlesspay.sdk:CardForm:[VERSION]'
-}
-```
-
-#### Usage
-
-CardForm is a LinearLayout that you can add to your layout:
+`CardForm` is a `LinearLayout` widget that you can easily add to your app:
 
 ```xml
 <com.seamlesspay.cardform.view.CardForm
@@ -129,7 +165,9 @@ CardForm is a LinearLayout that you can add to your layout:
   android:layout_height="match_parent" />
 ```
 
-To initialize the view and change which fields are required for the user to enter, use the required field methods and `CardForm#setup(AppCompatActivity activity)`:
+To initialize the view and change which fields are required for the user to
+enter, use the required field methods
+and **`CardForm#setup(AppCompatActivity activity)`**:
 
 ```java
 CardForm cardForm = (CardForm) findViewById(R.id.card_form);
@@ -142,7 +180,7 @@ cardForm.cardRequired(true)
   .setup(activity);
 ```
 
-#### CardForm API
+##### CardForm API
 
 The `CardForm` instance exposes several helper methods:
 
@@ -152,38 +190,26 @@ The `CardForm` instance exposes several helper methods:
 
 Additionally `CardForm` has 4 available event listeners:
 
-- **`setOnCardFormValidListener`**: CardForm has changed state from valid to invalid or invalid to valid
+- **`setOnCardFormValidListener`**: CardForm validation has changed state
 - **`setOnCardFormSubmitListener`**: Called when CardForm should be submitted
 - **`setOnFormFieldFocusedListener`**: A field in the form was focused
 - **`setOnCardTypeChangedListener`**: The `CardType` has changed
 
-#### Demo
+#### CardForm Demo
 
-Start with the provided [**`Demo`**](https://github.com/seamlesspay/seamlesspay-android/tree/master/Demo) App for basic setup and usage.
+Start with the provided **[`Demo`](Demo)**
+App for an example of basic setup and usage of CardForm.
 
 </p></details>
 
-<details><summary><strong>Single Field Input Usage</strong></summary><p>
+<details><summary><strong><code>Singlefield</code> Usage</strong></summary><p>
 
 <img align="right" width="20%" src="/files/singlefield.gif"/>
 
 ### Single Field Input
 
-The Card Input Form is a drop-in UI layout that can be included in your app making it easy to accept credit and debit cards.
-
-#### Installation
-
-Add the dependency to your `build.gradle`:
-
-```groovy
-dependencies {
-  implementation 'com.seamlesspay.ui:Singlefield:[VERSION]'
-}
-```
-
-#### Usage
-
-The Single Field Input is a drop-in UI widget that can be included in your app making it easy to accept credit and debit cards.
+The `Singlefield` Input is a drop-in UI layout that can be included in your app
+which uses a single input field to accept account information.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -256,15 +282,17 @@ protected void onCreate(Bundle savedInstanceState) {
   // ...
 ```
 
-#### Example
+#### Singlefield Demo
 
-Start with the provided demo [**`DemoSinglefield`**](https://github.com/seamlesspay/seamlesspay-android/tree/master/DemoSingleField) App for a working example with basic setup and usage.
+Start with the provided demo **[`DemoSinglefield`](DemoSingleField)** App
+for a working example with basic setup and usage.
 
 </p></details>
 
 ## Authorization
 
-To authenticate requests, use **`Authorization#fromKeys()`** with your `environment` and `publishable_key` to generate credentials.
+To authenticate requests, use **`Authorization#fromKeys()`** with your
+`environment` and `publishable_key` to generate credentials.
 
 <details><summary><strong>Example & API</strong></summary><p>
 
@@ -286,13 +314,16 @@ public class CardActivity { // ...
 
 ##### API
 
-- **`fromKeys`**: Creates credentials using `environment` and `publishable_key`
+- **`fromKeys(environment, publishable_key)`**: Creates authorization
+  credentials
 
 </p></details>
 
 ## PAN Vault
 
-The PAN Vault is a way to store payment instruments for future use while remaining outside the scope of PCI. Use `PanVault` to create a token with given payment data.
+The PAN Vault is a way to store payment instruments for future use
+while remaining outside the scope of PCI. Use `PanVault` to
+create a token with given payment data.
 
 <details><summary><strong>Example & API</strong></summary><p>
 
@@ -313,11 +344,13 @@ PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 
 ##### API
 
-- **`tokenize`**: Creates a reusable token
+- **`PanVault.tokenize(mSeamlesspayFragment, cardBuilder)`**: Creates a
+  reusable token
 
 Available listeners:
 
-- **`PaymentMethodTokenCreatedListener`**: The `PaymentMethodToken` has been created
+- **`PaymentMethodTokenCreatedListener`**: A `PaymentMethodToken` has
+  been created
 
 </p></details>
 
@@ -343,17 +376,22 @@ Charge.create(mSeamlesspayFragment, chargeBulder);
 
 ##### `Charge` API
 
-- **`create`**: Creates a charge using provided data
+- **`Charge.create(mSeamlesspayFragment, chargeBulder)`**: Creates a charge
+  using provided data
 
 Available listeners:
 
-- **`BaseChargeTokenCreatedListener`**: The `chargeToken` was successfully created
+- **`BaseChargeTokenCreatedListener`**: A `chargeToken` was successfully created
 
 </p></details>
 
 ## Card Scanning
 
-The [CardForm](#card-input-form) UI component is compatible with [card.io](https://github.com/card-io/card.io-Android-SDK), which allows users to input card information using their phone's camera. For more information, please refer to the github repository and docs for **[`card.io-Android-SDK`](https://github.com/card-io/card.io-Android-SDK)**.
+The [CardForm](#card-input-form) UI component is compatible with
+[card.io](https://github.com/card-io/card.io-Android-SDK), which
+allows users to input card information using their phone's camera.
+For more information, please refer to the github repository and
+docs for **[`card.io-Android-SDK`](https://github.com/card-io/card.io-Android-SDK)**.
 
 <details><summary><strong>Usage & API</strong></summary><p>
 
@@ -369,7 +407,32 @@ dependencies {
 
 ##### `CardForm` API for card.io
 
-- **`cardForm.isCardScanningAvailable()`**: Checks if `card.io` is available for use
+- **`cardForm.isCardScanningAvailable()`**: Is `card.io` is available for use
 - **`cardForm.scanCard(activity)`**: Initiates a card scan on device
 
 </p></details>
+
+## Examples
+
+The SeamlessPay Android SDK comes bundled with the following demo apps:
+
+- **[`CardForm`](Demo)**: Basic setup and usage of API Client & `CardForm`
+- **[`Singlefield`](DemoSinglefield)**: Setup and usage of `Singlefield` UI
+
+Run `./gradlew :Demo:installDebug` to install the [Demo](Demo) app on a device.
+
+## Help
+
+- [Read the docs](https://docs.seamlesspay.com/#tag/SeamlessPayCoreFrameworkAndroid) :books:
+- Find a bug? [Open an issue](https://github.com/seamlesspay/seamlesspay_android/issues) :bug:
+- Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
+
+## Feedback
+
+The SeamlessPay Android SDK is in active development, we welcome your feedback!
+
+Here are a few ways to get in touch:
+
+- [GitHub Issues](https://github.com/seamlesspay/seamlesspay_android/issues) - For generally applicable issues and feedback
+- [SeamlessPay Portal](https://portal.seamlesspay.com/) / [support@seamlesspay.com](mailto:support@seamlesspay.com) -
+  for personal support at any phase of integration
