@@ -193,7 +193,7 @@ Additionally `CardForm` has 4 available event listeners:
 - **`setOnFormFieldFocusedListener`**: A field in the form was focused
 - **`setOnCardTypeChangedListener`**: The `CardType` has changed
 
-### CardForm Demo
+#### CardForm Demo
 
 Start with the provided **[`Demo`](Demo)**
 App for an example of basic setup and usage of CardForm.
@@ -280,7 +280,7 @@ protected void onCreate(Bundle savedInstanceState) {
   // ...
 ```
 
-### Singlefield Demo
+#### Singlefield Demo
 
 Start with the provided demo **[`DemoSinglefield`](DemoSingleField)** App
 for a working example with basic setup and usage.
@@ -419,12 +419,6 @@ The SeamlessPay Android SDK comes bundled with the following demo apps:
 
 Run `./gradlew :Demo:installDebug` to install the [Demo](Demo) app on a device.
 
-## Help
-
-- [Read the docs](https://docs.seamlesspay.com/#tag/SeamlessPayCoreFrameworkAndroid) :books:
-- Find a bug? [Open an issue](https://github.com/seamlesspay/seamlesspay_android/issues) :bug:
-- Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
-
 ### Feedback
 
 The SeamlessPay Android SDK is in active development, we welcome your feedback!
@@ -434,3 +428,9 @@ Here are a few ways to get in touch:
 - [GitHub Issues](https://github.com/seamlesspay/seamlesspay_android/issues) - For generally applicable issues and feedback
 - [SeamlessPay Portal](https://portal.seamlesspay.com/) / [support@seamlesspay.com](mailto:support@seamlesspay.com) -
   for personal support at any phase of integration
+
+### Help
+
+- [Read the docs](https://docs.seamlesspay.com/#tag/SeamlessPayCoreFrameworkAndroid) :books:
+- Find a bug? [Open an issue](https://github.com/seamlesspay/seamlesspay_android/issues) :bug:
+- Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
