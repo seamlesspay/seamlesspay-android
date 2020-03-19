@@ -49,7 +49,7 @@ Your development environment must have minimum requirements configured:
 Note: If you do have the Android SDK installed, add a `local.properties`
 file to the top level directory with `sdk.dir=/path/to/your/sdk/.android-sdk`
 
-</p></details><br/>
+</p></details>
 
 Once your environment is configured, add the SeamlessPay Android SDK
 to your project using your preferred repository, for example:
@@ -135,10 +135,10 @@ Add the required dependencies to your project's **`ivy.xml`**:
 _Note: Be sure to replace **`[VERSION]`** with the correct
 semantic version of package._
 
-</p></details><br>
+</p></details>
 
 In most cases, you will only need to install the **`api`** and one of the
-UI packages, either `card-form` **or** `singlefield`.
+UI packages, either `card-form` **or** `singlefield`.<br/>
 
 ## Usage
 
@@ -289,7 +289,7 @@ for a working example with basic setup and usage.
 
 </p></details>
 
-## Authorization
+### Authorization
 
 To authenticate requests, use **`Authorization#fromKeys()`** with your
 `environment` and `publishable_key` to generate credentials.
@@ -319,7 +319,7 @@ public class CardActivity { // ...
 
 </p></details>
 
-## PAN Vault
+### PAN Vault
 
 The PAN Vault is a way to store payment instruments for future use
 while remaining outside the scope of PCI. Use `PanVault` to
@@ -354,7 +354,7 @@ Available listeners:
 
 </p></details>
 
-## Charge
+### Charge
 
 Create a `Charge` (payment transaction) using a token from `PanVault`:
 
@@ -385,7 +385,7 @@ Available listeners:
 
 </p></details>
 
-## Card Scanning
+### Card Scanning
 
 The [CardForm](#card-input-form) UI component is compatible with
 [card.io](https://github.com/card-io/card.io-Android-SDK), which
