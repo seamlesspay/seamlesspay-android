@@ -178,7 +178,7 @@ cardForm.cardRequired(true)
   .setup(activity);
 ```
 
-##### CardForm API
+#### CardForm API
 
 The `CardForm` instance exposes several helper methods:
 
@@ -193,7 +193,7 @@ Additionally `CardForm` has 4 available event listeners:
 - **`setOnFormFieldFocusedListener`**: A field in the form was focused
 - **`setOnCardTypeChangedListener`**: The `CardType` has changed
 
-#### CardForm Demo
+### CardForm Demo
 
 Start with the provided **[`Demo`](Demo)**
 App for an example of basic setup and usage of CardForm.
@@ -280,7 +280,7 @@ protected void onCreate(Bundle savedInstanceState) {
   // ...
 ```
 
-#### Singlefield Demo
+### Singlefield Demo
 
 Start with the provided demo **[`DemoSinglefield`](DemoSingleField)** App
 for a working example with basic setup and usage.
@@ -294,7 +294,7 @@ To authenticate requests, use **`Authorization#fromKeys()`** with your
 
 <details><summary><strong>Example & API</strong></summary><p>
 
-##### Example
+### Example
 
 ```java
 import com.seamlesspay.api.SeamlesspayFragment;
@@ -310,7 +310,7 @@ public class CardActivity { // ...
   mSeamlesspayFragment = SeamlesspayFragment.newInstance(this, authorization);
 ```
 
-##### API
+### API
 
 - **`fromKeys(environment, publishable_key)`**: Creates authorization
   credentials
@@ -325,7 +325,7 @@ create a token with given payment data.
 
 <details><summary><strong>Example & API</strong></summary><p>
 
-##### Example
+### Example
 
 ```java
 CardBuilder cardBuilder = new CardBuilder()
@@ -340,7 +340,7 @@ CardBuilder cardBuilder = new CardBuilder()
 PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 ```
 
-##### API
+### API
 
 - **`PanVault.tokenize(mSeamlesspayFragment, cardBuilder)`**: Creates a
   reusable token
@@ -358,7 +358,7 @@ Create a `Charge` (payment transaction) using a token from `PanVault`:
 
 <details><summary><strong>Example & API</strong></summary><p>
 
-##### Example
+### Example
 
 ```java
 CardChargeBulder chargeBulder = new CardChargeBulder()
@@ -372,7 +372,7 @@ CardChargeBulder chargeBulder = new CardChargeBulder()
 Charge.create(mSeamlesspayFragment, chargeBulder);
 ```
 
-##### `Charge` API
+### `Charge` API
 
 - **`Charge.create(mSeamlesspayFragment, chargeBulder)`**: Creates a charge
   using provided data
@@ -393,7 +393,7 @@ docs for **[`card.io-Android-SDK`](https://github.com/card-io/card.io-Android-SD
 
 <details><summary><strong>Usage & API</strong></summary><p>
 
-##### Usage
+### Usage
 
 To use card.io, add the dependency to your `build.gradle`:
 
@@ -403,14 +403,14 @@ dependencies {
 }
 ```
 
-##### `CardForm` API for card.io
+### `CardForm` API for card.io
 
 - **`cardForm.isCardScanningAvailable()`**: Is `card.io` is available for use
 - **`cardForm.scanCard(activity)`**: Initiates a card scan on device
 
 </p></details>
 
-## Examples
+## Example Apps
 
 The SeamlessPay Android SDK comes bundled with the following demo apps:
 
@@ -425,7 +425,7 @@ Run `./gradlew :Demo:installDebug` to install the [Demo](Demo) app on a device.
 - Find a bug? [Open an issue](https://github.com/seamlesspay/seamlesspay_android/issues) :bug:
 - Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
 
-## Feedback
+### Feedback
 
 The SeamlessPay Android SDK is in active development, we welcome your feedback!
 
