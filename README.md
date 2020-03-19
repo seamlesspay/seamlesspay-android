@@ -140,21 +140,19 @@ semantic version of package._
 In most cases, you will only need to install the **`api`** and one of the
 UI packages, either `card-form` **or** `singlefield`.<br/>
 
-## Usage
-
-### Drop-In UI Components
+## UI Components
 
 We provide several drop-in native UI components for easily collecting
 payment information in your Android Application:
 
-<details><summary><strong><code>CardForm</code> Usage</strong></summary><p>
-
-<img align="right" width="20%" src="/files/cardform.png"/>
-
-#### CardForm Component
+### CardForm Component
 
 The `CardForm` Component is a drop-in UI layout that can be included in your
 app making it easy to accept credit and debit cards.
+
+<details><summary><strong>Usage & Example</strong></summary><p>
+
+<img align="right" width="20%" src="/files/cardform.png"/>
 
 `CardForm` is a `LinearLayout` widget that you can easily add to your app:
 
@@ -202,14 +200,14 @@ App for an example of basic setup and usage of CardForm.
 
 </p></details>
 
-<details><summary><strong><code>Singlefield</code> Usage</strong></summary><p>
-
-<img align="right" width="20%" src="/files/singlefield.gif"/>
-
 ### Single Field Input
 
 The `Singlefield` Input is a drop-in UI layout that can be included in your app
 which uses a single input field to accept account information.
+
+<details><summary><strong>Usage & Example</strong></summary><p>
+
+<img align="right" width="20%" src="/files/singlefield.gif"/>
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -289,7 +287,7 @@ for a working example with basic setup and usage.
 
 </p></details>
 
-### Authorization
+## Authorization
 
 To authenticate requests, use **`Authorization#fromKeys()`** with your
 `environment` and `publishable_key` to generate credentials.
@@ -319,7 +317,7 @@ public class CardActivity { // ...
 
 </p></details>
 
-### PAN Vault
+## PAN Vault
 
 The PAN Vault is a way to store payment instruments for future use
 while remaining outside the scope of PCI. Use `PanVault` to
@@ -354,7 +352,7 @@ Available listeners:
 
 </p></details>
 
-### Charge
+## Charge
 
 Create a `Charge` (payment transaction) using a token from `PanVault`:
 
@@ -385,7 +383,7 @@ Available listeners:
 
 </p></details>
 
-### Card Scanning
+## Card Scanning
 
 The [CardForm](#card-input-form) UI component is compatible with
 [card.io](https://github.com/card-io/card.io-Android-SDK), which
