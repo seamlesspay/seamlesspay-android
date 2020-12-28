@@ -81,7 +81,7 @@ dependencies {
     implementation 'com.seamlesspay.api:Client:1.0.4'
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
     implementation 'com.google.android.material:material:1.0.0-beta01'
 
     androidTestImplementation 'com.lukekorth:device-automator:1.0.0'
