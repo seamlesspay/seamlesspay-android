@@ -77,7 +77,7 @@ public class AppHelper {
       screenWidth +
       "," +
       screenHeight +
-      "]}";
+      "]}]}";
 
     return new String(
       Base64.encodeToString(jsonString.getBytes(), Base64.NO_WRAP)
