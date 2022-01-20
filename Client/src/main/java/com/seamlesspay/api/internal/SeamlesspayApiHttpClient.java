@@ -10,6 +10,8 @@ package com.seamlesspay.api.internal;
 import android.text.TextUtils;
 import com.seamlesspay.api.exceptions.SeamlesspayApiErrorResponse;
 import com.seamlesspay.api.exceptions.UnprocessableEntityException;
+import com.seamlesspay.api.models.Configuration;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
@@ -24,7 +26,7 @@ public class SeamlesspayApiHttpClient extends HttpClient {
     mBaseUrl = baseUrl;
     mBearer = bearer;
 
-    setUserAgent("seamlesspay-android");
+    setUserAgent(Configuration.getApiUserAgent());
     setSSLSocketFactory(new SeamlesspaySSLSocketFactory());
   }
 
@@ -35,6 +37,8 @@ public class SeamlesspayApiHttpClient extends HttpClient {
     if (!TextUtils.isEmpty(mBearer)) {
       connection.setRequestProperty("Authorization", "Bearer " + mBearer);
     }
+
+    connection.setRequestProperty("API-Version", Configuration.getApiVersion());
 
     return connection;
   }

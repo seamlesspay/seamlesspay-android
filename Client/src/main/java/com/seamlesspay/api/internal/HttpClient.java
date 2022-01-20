@@ -37,7 +37,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -200,10 +203,6 @@ public class HttpClient<T extends HttpClient> {
     final HttpResponseCallback callback
   ) {
 
-    if (mBaseUrl.indexOf("sandbox") != -1) {
-      Log.i("HTTP POST request:", "Path: " + mBaseUrl + path + "\n\r" + "Data: " + data);
-    }
-
     if (path == null) {
       postCallbackOnMainThread(
         callback,
@@ -252,6 +251,18 @@ public class HttpClient<T extends HttpClient> {
       connection.setRequestMethod(METHOD_POST);
       connection.setDoOutput(true);
 
+      if (mBaseUrl.indexOf("sandbox") != -1) {
+        String headers = "";
+        Map<String, List<String>> headerFields = connection.getRequestProperties();
+        Set<String> keys = headerFields.keySet();
+        for (String key : keys) {
+          String val = connection.getRequestProperty(key);
+          headers += key + "    " + val + "\n";
+        }
+        Log.i("HTTP request headers:\n", headers);
+        Log.i("HTTP POST request:\n", "Path: " + mBaseUrl + path + "\n" + "Data: " + data);
+      }
+
       writeOutputStream(connection.getOutputStream(), data);
 
       return parseResponse(connection);
@@ -299,6 +310,7 @@ public class HttpClient<T extends HttpClient> {
 
   protected String parseResponse(HttpURLConnection connection)
     throws Exception {
+
     int responseCode = connection.getResponseCode();
 
     boolean gzip = "gzip".equals(connection.getContentEncoding());

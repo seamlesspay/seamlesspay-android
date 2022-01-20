@@ -17,12 +17,13 @@ public class Configuration {
     public static final String SANDBOX = "sandbox";
   }
 
-  public static final String API_VERSION = "v1";
-
-  private static final String SANDBOX_API_URL ="https://sandbox.seamlesspay.com";
-  private static final String PRODUCTION_API_URL ="https://api.seamlesspay.com";
-  private static final String SANDBOX_PANVAULT_URL ="https://sandbox-pan-vault.seamlesspay.com";
-  private static final String PRODUCTION_PANVAULT_URL ="https://pan-vault.seamlesspay.com";
+  //public static final String API_VERSION = "v1";
+  private static final String API_VERSION = "v2019";
+  private static final String API_USER_AGENT = "SeamlessPay.android.sdk";
+  private static final String SANDBOX_API_URL = "https://sandbox.seamlesspay.com";
+  private static final String PRODUCTION_API_URL = "https://api.seamlesspay.com";
+  private static final String SANDBOX_PANVAULT_URL = "https://sandbox-pan-vault.seamlesspay.com";
+  private static final String PRODUCTION_PANVAULT_URL = "https://pan-vault.seamlesspay.com";
 
   private String mEnvironment;
 
@@ -45,13 +46,24 @@ public class Configuration {
   }
 
   /**
+   * @return The ApiVersion of the SeamlessPay client API for the current environment.
+   */
+  public static String getApiVersion() {
+      return API_VERSION;
+  }
+
+  public static String getApiUserAgent() {
+    return API_USER_AGENT;
+  }
+
+  /**
    * @return The url of the SeamlessPay client API for the current environment.
    */
   public String getApiUrl() {
     if (mEnvironment == Keys.SANDBOX) {
-      return SANDBOX_API_URL + '/' + API_VERSION + '/';
+      return SANDBOX_API_URL + "/" + "v1" + "/";
     } else {
-      return PRODUCTION_API_URL + '/' + API_VERSION + '/';
+      return PRODUCTION_API_URL + "/" + "v1" + "/";
     }
   }
 
