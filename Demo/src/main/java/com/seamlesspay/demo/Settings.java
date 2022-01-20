@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Settings {
   private static final String SANDBOX_TOKENIZATION_KEY =
-    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+    "pk_01DX4BQ6KX98Y1YZ75XWWMTNZN";
   private static final String PRODUCTION_TOKENIZATION_KEY =
     "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 

@@ -18,6 +18,8 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import com.seamlesspay.api.exceptions.AuthenticationException;
 import com.seamlesspay.api.exceptions.AuthorizationException;
 import com.seamlesspay.api.exceptions.DownForMaintenanceException;
@@ -197,6 +199,11 @@ public class HttpClient<T extends HttpClient> {
     final String data,
     final HttpResponseCallback callback
   ) {
+
+    if (mBaseUrl.indexOf("sandbox") != -1) {
+      Log.i("HTTP POST request:", "Path: " + mBaseUrl + path + "\n\r" + "Data: " + data);
+    }
+
     if (path == null) {
       postCallbackOnMainThread(
         callback,

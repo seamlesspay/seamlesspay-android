@@ -43,12 +43,9 @@ allprojects {
 
     apply plugin: 'maven'
 
-    version = '1.0.1'
     ext {
         compileSdkVersion = 28
         minSdkVersion = 21
         targetSdkVersion = 28
-        versionCode = 111
-        versionName = version
     }
 }

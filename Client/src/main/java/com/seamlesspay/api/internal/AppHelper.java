@@ -53,7 +53,7 @@ public class AppHelper {
       uniqueID +
       "\"," +
       "\"components\":[" +
-      "{\"key\":\"user_agent\", \"value\":\"android sdk + v1\"}," +
+      "{\"key\":\"user_agent\", \"value\":\"SeamlessPay.android.sdk.v1\"}," +
       "{\"key\":\"language\", \"value\":\"en-US\"}," +
       "{\"key\":\"model\", \"value\":\"" +
       deviceModel +
