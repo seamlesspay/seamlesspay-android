@@ -23,11 +23,11 @@ There are several components that comprise this SDK:
 The individual components may be used for advanced integrations
 and are available as modules in maven.
 
-| Package                                                                 | Description                                                 | Release                                                                                                     |
-| ----------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| [**`api`**](https://bintray.com/seamless-ops/maven/api)                 | Seamless Payments API Client for Android                    | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/api?logo=android&color=3DDC84)                |
-| [**`card-form`**](https://bintray.com/seamless-ops/maven/card-form)     | UI component for card input using a traditional form layout | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/card-form?logo=android-studio&color=3DDC84)   |
-| [**`singlefield`**](https://bintray.com/seamless-ops/maven/singlefield) | UI component for card input using a single-field widget     | ![Bintray](https://img.shields.io/bintray/v/seamlesspay/maven/singlefield?logo=android-studio&color=3DDC84) |
+| Package                                                                 | Description                                                 |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------- | 
+| [**`api`**](https://repo1.maven.org/maven2/com/seamlesspay/api)                 | Seamless Payments API Client for Android                    | 
+| [**`card-form`**](https://repo1.maven.org/maven2/com/seamlesspay/card-form)     | UI component for card input using a traditional form layout |
+| [**`singlefield`**](https://repo1.maven.org/maven2/com/seamlesspay/singlefield) | UI component for card input using a single-field widget     |
 
 Get started with our [📚 integration guide](https://docs.seamlesspay.com/#tag/SeamlessPayCoreFrameworkAndroid) and [example projects](#examples).
 

@@ -16,6 +16,9 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.Build;
 import android.util.Base64;
+
+import com.seamlesspay.api.models.Configuration;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -53,7 +56,7 @@ public class AppHelper {
       uniqueID +
       "\"," +
       "\"components\":[" +
-      "{\"key\":\"user_agent\", \"value\":\"android sdk + v1\"}," +
+      "{\"key\":\"user_agent\", \"value\":\"" + Configuration.getApiUserAgent() + "\"}," +
       "{\"key\":\"language\", \"value\":\"en-US\"}," +
       "{\"key\":\"model\", \"value\":\"" +
       deviceModel +
