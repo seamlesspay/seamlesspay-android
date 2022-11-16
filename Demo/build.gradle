@@ -16,6 +16,11 @@ android {
         multiDexEnabled true
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     packagingOptions {
         exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
         exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
@@ -56,9 +61,9 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-   // compile project(':Client')
+    //implementation project(':Client')
     implementation 'com.seamlesspay.api:Client:1.0.7'
 
-    //compile project(':CardForm')
+    //implementation project(':CardForm')
     implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
 }
