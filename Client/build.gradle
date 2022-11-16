@@ -15,10 +15,15 @@ android {
         versionCode 107
         versionName version
     }
+    compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation 'io.sentry:sentry:6.6.0'
 }
 
 apply from: 'maven-push.gradle'

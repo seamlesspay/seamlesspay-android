@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 
+import io.sentry.Sentry;
+
 class CrashReporter implements UncaughtExceptionHandler {
   private SeamlesspayFragment mSeamlesspayFragment;
   private Thread.UncaughtExceptionHandler mDefaultExceptionHandler;
@@ -35,6 +37,7 @@ class CrashReporter implements UncaughtExceptionHandler {
     StringWriter stringWriter = new StringWriter();
 
     ex.printStackTrace(new PrintWriter(stringWriter));
+    Sentry.captureException(ex);
 
     if (mDefaultExceptionHandler != null) {
       mDefaultExceptionHandler.uncaughtException(thread, ex);

@@ -13,6 +13,11 @@ android {
         versionCode 101
         versionName version
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -26,9 +31,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    //compile project(':Singlefield')
-    implementation 'com.seamlesspay.ui:Singlefield:1.0.1'
+    implementation project(':Singlefield')
+    //implementation 'com.seamlesspay.ui:Singlefield:1.0.1'
 
-    //compile project(':Client')
-    implementation 'com.seamlesspay.api:Client:1.0.7'
+    implementation project(':Client')
+    //implementation 'com.seamlesspay.api:Client:1.0.7'
 }
