@@ -19,7 +19,6 @@ import com.seamlesspay.api.models.PaymentMethodToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.sentry.Sentry;
 
 class TokenizationClient {
   static final String PAYMENT_METHOD_ENDPOINT = "tokens";
@@ -64,11 +63,7 @@ class TokenizationClient {
 
       data = dataJson.toString();
     } catch (JSONException ignored) {}
-      try {
-          throw new Exception("Test it is");
-      } catch (Exception e) {
-          Sentry.captureException(e);
-      }
+
       fragment
       .getPanVaulHttpClient()
       .post(
