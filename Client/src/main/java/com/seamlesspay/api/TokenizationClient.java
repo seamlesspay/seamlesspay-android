@@ -19,6 +19,7 @@ import com.seamlesspay.api.models.PaymentMethodToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 class TokenizationClient {
   static final String PAYMENT_METHOD_ENDPOINT = "tokens";
 
@@ -63,7 +64,7 @@ class TokenizationClient {
       data = dataJson.toString();
     } catch (JSONException ignored) {}
 
-    fragment
+      fragment
       .getPanVaulHttpClient()
       .post(
         TokenizationClient.PAYMENT_METHOD_ENDPOINT,

@@ -41,6 +41,9 @@ import com.seamlesspay.cardform.utils.CardType;
 import com.seamlesspay.cardform.utils.ViewUtils;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
+import io.sentry.Sentry;
+import io.sentry.SentryOptions;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -138,6 +141,7 @@ public class CardForm
   }
 
   private void init() {
+    setUpSentry();
     setVisibility(GONE);
     setOrientation(VERTICAL);
 
@@ -168,6 +172,18 @@ public class CardForm
     setListeners(mPostalCode);
 
     mCardNumber.setOnCardTypeChangedListener(this);
+  }
+
+  private void setUpSentry() {
+    SentryOptions options = new SentryOptions();
+    options.setDsn("https://f3ca34981162465cabb2783483179ae9@o4504125304209408.ingest.sentry.io/4504140012584960");
+    Sentry.init(options);
+    Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+      @Override
+      public void uncaughtException(Thread thread, Throwable throwable) {
+        Sentry.captureException(throwable);
+      }
+    });
   }
 
   /**

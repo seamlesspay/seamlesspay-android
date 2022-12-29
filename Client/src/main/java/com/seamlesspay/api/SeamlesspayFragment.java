@@ -38,6 +38,9 @@ import java.util.Locale;
 import java.util.Queue;
 import java.util.UUID;
 
+import io.sentry.Sentry;
+import io.sentry.SentryOptions;
+
 /**
  * Core Seamlesspay class that handles network requests and managing callbacks.
  */
@@ -204,7 +207,7 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
     if (mContext == null) {
       mContext = getActivity().getApplicationContext();
     }
-
+    setUpSentry();
     mCrashReporter = CrashReporter.setup(this);
     mAuthorization = getArguments().getParcelable(EXTRA_AUTHORIZATION_TOKEN);
     mConfiguration =
@@ -225,6 +228,12 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
           mAuthorization.getBearer()
         );
     }
+  }
+
+  private void setUpSentry() {
+    SentryOptions options = new SentryOptions();
+    options.setDsn("https://f3ca34981162465cabb2783483179ae9@o4504125304209408.ingest.sentry.io/4504140012584960");
+    Sentry.init(options);
   }
 
   @TargetApi(VERSION_CODES.M)

@@ -15,11 +15,13 @@ android {
         versionCode 101
         versionName version
     }
+
 }
 
 dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'io.card:android-sdk:5.5.1'
+    implementation 'io.sentry:sentry:6.6.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.8'
