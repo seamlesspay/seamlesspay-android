@@ -17,7 +17,7 @@ public class Settings {
   private static final String SANDBOX_TOKENIZATION_KEY =
     "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String STAGING_TOKENIZATION_KEY =
-      "pk_01G92NVMJFB9XHEBFD4Q9EE6AY";
+      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String QAT_TOKENIZATION_KEY =
       "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String PRODUCTION_TOKENIZATION_KEY =
@@ -26,7 +26,7 @@ public class Settings {
   private static final String SANDBOX_SECRET_KEY =
     "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String STAGING_SECRET_KEY =
-      "sk_01G92NVMJFHRMYGFX95ZJ8VJVN";
+      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String QAT_SECRET_KEY =
       "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String PRODUCTION_SECRET_KEY =
