@@ -15,15 +15,16 @@ import org.json.JSONObject;
 public abstract class BaseChargeToken implements Parcelable {
   protected static final String AMOUNT_KEY = "amount";
   protected static final String AUTHCODE_KEY = "authCode";
-  protected static final String AVS_MESSAGE_KEY = "avsMessage";
-  protected static final String AVS_RESULT_KEY = "avsResult";
-  protected static final String BATCH_KEY = "batch";
+  protected static final String BATCH_KEY = "batchId";
   protected static final String BUSINESSCARD_KEY = "businessCard";
-  protected static final String CARD_BRAND_KEY = "cardBrand";
-  protected static final String CARD_TYPE_KEY = "cardType";
+  protected static final String PAYMENT_NETWORK_KEY = "paymentNetwork";
+  protected static final String ACCOUNT_TYPE_KEY = "accountType";
   protected static final String CHARGEID_KEY = "id";
   protected static final String CURRENCY_KEY = "currency";
-  protected static final String CVV_RESULT_KEY = "cvvResult";
+  private static final String VERIFICATION_OBJECT_KEY = "verification";
+  private static final String AVS_RESULT_KEY = "addressLine1";
+  private static final String CVV_RESULT_KEY = "cvv";
+  private static final String POSTAL_CODE_RESULT_KEY = "addressPostalCode";
   protected static final String EXP_DATE_KEY = "expDate";
   protected static final String IP_ADDRESS_KEY = "ipAddress";
   protected static final String LASTFOUR_KEY = "lastFour";
@@ -31,7 +32,7 @@ public abstract class BaseChargeToken implements Parcelable {
   protected static final String SURCHARGE_FEEAMOUNT_KEY = "surchargeFeeAmount";
   protected static final String TIP_KEY = "tip";
   protected static final String TOKEN_KEY = "token";
-  protected static final String TXN_DATE_KEY = "txnDate";
+  protected static final String TXN_DATE_KEY = "transactionDate";
   protected static final String TXN_METHOD_KEY = "method";
   protected static final String TXN_STATUS_DESCRIPTION_KEY =
     "statusDescription";
@@ -40,15 +41,15 @@ public abstract class BaseChargeToken implements Parcelable {
 
   private String mAmount;
   private String mAuthCode;
-  private String mAvsMessage;
   private String mAvsResult;
   private String mBatch;
   private String mBusinessCard;
-  private String mCardBrand;
-  private String mCardType;
+  private String mPaymentNetwork;
+  private String mAccountType;
   private String mChargeId;
   private String mCurrency;
   private String mCvvResult;
+  private String mPostalCodeResult;
   private String mExpDate;
   private String mIpAddress;
   private String mLastFour;
@@ -69,8 +70,6 @@ public abstract class BaseChargeToken implements Parcelable {
     mAmount = json.getString(AMOUNT_KEY);
     mAuthCode = json.getString(AUTHCODE_KEY);
     mMethod = json.getString(TXN_METHOD_KEY);
-    mAvsMessage = json.getString(AVS_MESSAGE_KEY);
-    mAvsResult = json.getString(AVS_RESULT_KEY);
     mCurrency = json.getString(CURRENCY_KEY);
     mIpAddress = json.getString(IP_ADDRESS_KEY);
     mToken = json.getString(TOKEN_KEY);
@@ -80,9 +79,9 @@ public abstract class BaseChargeToken implements Parcelable {
     mTxnDate = json.getString(TXN_DATE_KEY);
 
     try {
-      mCardBrand = json.getString(CARD_BRAND_KEY);
+      mPaymentNetwork = json.getString(PAYMENT_NETWORK_KEY);
     } catch (JSONException ex) {
-      mCardBrand = null;
+      mPaymentNetwork = null;
     }
 
     try {
@@ -98,15 +97,9 @@ public abstract class BaseChargeToken implements Parcelable {
     }
 
     try {
-      mCvvResult = json.getString(CVV_RESULT_KEY);
+      mAccountType = json.getString(ACCOUNT_TYPE_KEY);
     } catch (JSONException ex) {
-      mCvvResult = null;
-    }
-
-    try {
-      mCardType = json.getString(CARD_TYPE_KEY);
-    } catch (JSONException ex) {
-      mCardType = null;
+      mAccountType = null;
     }
 
     try {
@@ -136,6 +129,17 @@ public abstract class BaseChargeToken implements Parcelable {
     try {
       mOrder = json.getJSONObject(ORDER_KEY);
     } catch (JSONException ex) {}
+
+    try {
+      JSONObject verification = json.getJSONObject(VERIFICATION_OBJECT_KEY);
+      mAvsResult = verification.getString(AVS_RESULT_KEY);
+      mCvvResult = verification.getString(CVV_RESULT_KEY);
+      mPostalCodeResult = verification.getString(POSTAL_CODE_RESULT_KEY);
+    } catch (JSONException ex) {
+      mAvsResult = null;
+      mCvvResult = null;
+      mPostalCodeResult = null;
+    }
   }
 
   public static BaseChargeToken parseChargeToken(String json)
@@ -158,15 +162,15 @@ public abstract class BaseChargeToken implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(mAuthCode);
-    dest.writeString(mAvsMessage);
     dest.writeString(mAvsResult);
     dest.writeString(mChargeId);
     dest.writeString(mCvvResult);
+    dest.writeString(mPostalCodeResult);
     dest.writeString(mAmount);
     dest.writeString(mCurrency);
-    dest.writeString(mCardBrand);
+    dest.writeString(mPaymentNetwork);
     dest.writeString(mExpDate);
-    dest.writeString(mCardType);
+    dest.writeString(mAccountType);
     dest.writeString(mIpAddress);
     dest.writeString(mLastFour);
     dest.writeString(mMethod);
@@ -184,15 +188,15 @@ public abstract class BaseChargeToken implements Parcelable {
 
   protected BaseChargeToken(Parcel in) {
     mAuthCode = in.readString();
-    mAvsMessage = in.readString();
     mAvsResult = in.readString();
     mChargeId = in.readString();
     mCvvResult = in.readString();
+    mPostalCodeResult = in.readString();
     mAmount = in.readString();
     mCurrency = in.readString();
-    mCardBrand = in.readString();
+    mPaymentNetwork = in.readString();
     mExpDate = in.readString();
-    mCardType = in.readString();
+    mAccountType = in.readString();
     mIpAddress = in.readString();
     mLastFour = in.readString();
     mMethod = in.readString();
@@ -221,7 +225,7 @@ public abstract class BaseChargeToken implements Parcelable {
     return mBusinessCard;
   }
 
-  public String getBatch() {
+  public String getBatchId() {
     return mBatch;
   }
 
@@ -265,12 +269,12 @@ public abstract class BaseChargeToken implements Parcelable {
     return mIpAddress;
   }
 
-  public String getCardType() {
-    return mCardType;
+  public String getAccountType() {
+    return mAccountType;
   }
 
-  public String getCardBrand() {
-    return mCardBrand;
+  public String getPaymentNetwork() {
+    return mPaymentNetwork;
   }
 
   public String getExpDate() {
@@ -295,10 +299,6 @@ public abstract class BaseChargeToken implements Parcelable {
 
   public String getAvsResult() {
     return mAvsResult;
-  }
-
-  public String getAvsMessage() {
-    return mAvsMessage;
   }
 
   public String getAuthCode() {
