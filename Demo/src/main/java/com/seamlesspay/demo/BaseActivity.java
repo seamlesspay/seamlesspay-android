@@ -25,10 +25,12 @@ import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
+import com.seamlesspay.api.interfaces.RefundTokenCreatedListener;
 import com.seamlesspay.api.interfaces.SeamlesspayCancelListener;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.PaymentMethodToken;
+import com.seamlesspay.api.models.RefundToken;
 import com.seamlesspay.demo.R;
 
 @SuppressWarnings("deprecation")
@@ -37,6 +39,7 @@ public abstract class BaseActivity
   implements
     OnRequestPermissionsResultCallback,
     PaymentMethodTokenCreatedListener,
+    RefundTokenCreatedListener,
     BaseChargeTokenCreatedListener,
     SeamlesspayCancelListener,
     SeamlesspayErrorListener,
@@ -95,6 +98,17 @@ public abstract class BaseActivity
 
   @CallSuper
   @Override
+  public void onRefundTokenCreated(RefundToken refundToken) {
+    setProgressBarIndeterminateVisibility(true);
+
+    Log.d(
+        getClass().getSimpleName(),
+        "Charge Token received: " + refundToken.getId()
+    );
+  }
+
+  @CallSuper
+  @Override
   public void onPaymentMethodTokenCreated(
     PaymentMethodToken paymentMethodToken
   ) {
@@ -132,10 +146,16 @@ public abstract class BaseActivity
     setProgressBarIndeterminateVisibility(true);
 
     try {
+      String key;
+      if(this instanceof CardActivity) {
+        key = Settings.getEnvironmentTokenizationKey(this);
+      } else  {
+        key = Settings.getEnvironmentSecretKey(this);
+      }
       mAuthorization =
         Authorization.fromKeys(
           Settings.getEnvironmentName(this),
-          Settings.getEnvironmentTokenizationKey(this)
+          key
         );
     } catch (InvalidArgumentException ex) {
       showDialog("An error occurred (" + ex.getMessage());

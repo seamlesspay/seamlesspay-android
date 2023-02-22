@@ -68,13 +68,13 @@ public class Configuration {
   public String getApiUrl() {
     switch (mEnvironment) {
       case Keys.SANDBOX:
-        return SANDBOX_API_URL + "/" + "v1" + "/";
+        return SANDBOX_API_URL + "/";
       case Keys.STAGING:
-        return STAGING_API_URL + "/" + "v1" + "/";
+        return STAGING_API_URL + "/";
       case Keys.QAT:
-        return QAT_API_URL + "/" + "v1" + "/";
+        return QAT_API_URL + "/";
       default:
-        return PRODUCTION_API_URL + "/" + "v1" + "/";
+        return PRODUCTION_API_URL + "/";
     }
   }
 
