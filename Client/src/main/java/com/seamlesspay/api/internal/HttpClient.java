@@ -16,8 +16,10 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 
+import android.net.http.X509TrustManagerExtensions;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Base64;
 import android.util.Log;
 
 import com.seamlesspay.api.exceptions.AuthenticationException;
@@ -37,6 +39,15 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -47,12 +58,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 public class HttpClient<T extends HttpClient> {
   private static final String METHOD_GET = "GET";
   private static final String METHOD_POST = "POST";
   private static final String UTF_8 = "UTF-8";
+
+  public static final String[] CERTIFICATE_KEY_VALUES = new String[] { "a", "b" };
+  public static final Set<String> CERTIFICATE_SET = new HashSet<>(Arrays.asList(CERTIFICATE_KEY_VALUES));
 
   private final Handler mMainThreadHandler;
 
@@ -310,7 +328,9 @@ public class HttpClient<T extends HttpClient> {
 
   protected String parseResponse(HttpURLConnection connection)
     throws Exception {
-
+    if (connection instanceof HttpsURLConnection) {
+      validatePinning((HttpsURLConnection)connection);
+    }
     int responseCode = connection.getResponseCode();
 
     boolean gzip = "gzip".equals(connection.getContentEncoding());
@@ -418,5 +438,58 @@ public class HttpClient<T extends HttpClient> {
         in.close();
       } catch (IOException ignored) {}
     }
+  }
+
+  private void validatePinning(HttpsURLConnection conn) throws SSLException {
+    StringBuilder certChainMsg = new StringBuilder();
+    try {
+      X509TrustManagerExtensions trustManagerExt = getTrustManager();
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+      List<X509Certificate> trustedChain = trustedChain(trustManagerExt, conn);
+      for (X509Certificate cert : trustedChain) {
+        byte[] publicKey = cert.getPublicKey().getEncoded();
+        md.update(publicKey, 0, publicKey.length);
+        String pin = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+        certChainMsg.append("    sha256/")
+                    .append(pin)
+                    .append(" : ")
+                    .append(cert.getSubjectDN().toString())
+                    .append("\n");
+        if (HttpClient.CERTIFICATE_SET.contains(pin)) {
+          return;
+        }
+      }
+    } catch (NoSuchAlgorithmException | KeyStoreException e) {
+      throw new SSLException(e);
+    } throw new SSLPeerUnverifiedException("Certificate pinning " +
+        "failure\n  Peer certificate chain:\n" + certChainMsg);
+  }
+
+  private List<X509Certificate> trustedChain(
+      X509TrustManagerExtensions trustManagerExt,
+      HttpsURLConnection conn) throws SSLException {
+    Certificate[] serverCerts = conn.getServerCertificates();
+    X509Certificate[] untrustedCerts = Arrays.copyOf(serverCerts, serverCerts.length, X509Certificate[].class);
+    String host = conn.getURL().getHost();
+    try {
+      return trustManagerExt.checkServerTrusted(untrustedCerts, "RSA", host);
+    } catch (CertificateException e) {
+      throw new SSLException(e);
+    }
+  }
+
+  private X509TrustManagerExtensions getTrustManager()
+      throws NoSuchAlgorithmException, KeyStoreException {
+      TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      trustManagerFactory.init((KeyStore) null);
+      // Find first X509TrustManager in the TrustManagerFactory
+      X509TrustManager x509TrustManager = null;
+      for (TrustManager trustManager : trustManagerFactory.getTrustManagers()) {
+        if (trustManager instanceof X509TrustManager) {
+          x509TrustManager = (X509TrustManager) trustManager;
+          break;
+        }
+      }
+      return new X509TrustManagerExtensions(x509TrustManager);
   }
 }
