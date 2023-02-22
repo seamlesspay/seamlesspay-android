@@ -30,6 +30,7 @@ public class MainActivity extends BaseActivity {
 
   private Button mCardsButton;
   private Button mCreateTransactionButton;
+  private Button mCreateRefundButton;
   private ImageView mTokenIcon;
   private Long mTimeElapsed;
   private PaymentMethodToken mToken;
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity {
     mDeviceData = findViewById(R.id.device_data);
     mCardsButton = findViewById(R.id.card);
     mCreateTransactionButton = findViewById(R.id.create_transaction);
+    mCreateRefundButton = findViewById(R.id.create_refund);
 
     if (savedInstanceState != null) {
       if (savedInstanceState.containsKey(KEY_TOKEN)) {
@@ -70,6 +72,17 @@ public class MainActivity extends BaseActivity {
     Intent intent = new Intent(this, CardActivity.class);
 
     startActivityForResult(intent, CARDS_REQUEST);
+  }
+
+  public void createRefund(View v) {
+    Intent intent = new Intent(this, RefundActivity.class)
+        .putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD_TOKEN, mToken);
+
+    startActivity(intent);
+
+    mCreateTransactionButton.setEnabled(false);
+
+    clearToken();
   }
 
   public void createTransaction(View v) {
@@ -132,6 +145,7 @@ public class MainActivity extends BaseActivity {
     mTokenDetails.setVisibility(VISIBLE);
 
     mCreateTransactionButton.setEnabled(true);
+    mCreateRefundButton.setEnabled(true);
   }
 
   private void clearToken() {
@@ -140,6 +154,7 @@ public class MainActivity extends BaseActivity {
     mTokenDetails.setVisibility(GONE);
     mDeviceData.setVisibility(GONE);
     mCreateTransactionButton.setEnabled(false);
+    mCreateRefundButton.setEnabled(false);
   }
 
   private void enableButtons(boolean enable) {

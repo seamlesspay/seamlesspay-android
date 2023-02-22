@@ -23,6 +23,7 @@ import com.seamlesspay.api.exceptions.SeamlesspayException;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
 import com.seamlesspay.api.interfaces.QueuedCallback;
+import com.seamlesspay.api.interfaces.RefundTokenCreatedListener;
 import com.seamlesspay.api.interfaces.SeamlesspayCancelListener;
 import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
 import com.seamlesspay.api.interfaces.SeamlesspayListener;
@@ -31,6 +32,7 @@ import com.seamlesspay.api.internal.SeamlesspayApiHttpClient;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.Configuration;
 import com.seamlesspay.api.models.PaymentMethodToken;
+import com.seamlesspay.api.models.RefundToken;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +71,7 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
 
   private BaseChargeTokenCreatedListener mBaseChargeTokenCreatedListener;
   private PaymentMethodTokenCreatedListener mPaymentMethodTokenCreatedListener;
+  private RefundTokenCreatedListener mRefundTokenCreatedListener;
   private SeamlesspayCancelListener mCancelListener;
   private SeamlesspayErrorListener mErrorListener;
 
@@ -365,6 +368,11 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
         (PaymentMethodTokenCreatedListener) listener;
     }
 
+    if (listener instanceof RefundTokenCreatedListener) {
+      mRefundTokenCreatedListener =
+          (RefundTokenCreatedListener) listener;
+    }
+
     if (listener instanceof BaseChargeTokenCreatedListener) {
       mBaseChargeTokenCreatedListener =
         (BaseChargeTokenCreatedListener) listener;
@@ -391,6 +399,10 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
       mPaymentMethodTokenCreatedListener = null;
     }
 
+    if (listener instanceof RefundTokenCreatedListener) {
+      mRefundTokenCreatedListener = null;
+    }
+
     if (listener instanceof BaseChargeTokenCreatedListener) {
       mBaseChargeTokenCreatedListener = null;
     }
@@ -412,6 +424,10 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
 
     if (mPaymentMethodTokenCreatedListener != null) {
       listeners.add(mPaymentMethodTokenCreatedListener);
+    }
+
+    if (mRefundTokenCreatedListener != null) {
+      listeners.add(mRefundTokenCreatedListener);
     }
 
     if (mBaseChargeTokenCreatedListener != null) {
@@ -458,6 +474,25 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
           );
         }
       }
+    );
+  }
+
+  protected void postCallback(final RefundToken refundToken) {
+    postOrQueueCallback(
+        new QueuedCallback() {
+
+          @Override
+          public boolean shouldRun() {
+            return mRefundTokenCreatedListener != null;
+          }
+
+          @Override
+          public void run() {
+            mRefundTokenCreatedListener.onRefundTokenCreated(
+                refundToken
+            );
+          }
+        }
     );
   }
 

@@ -16,7 +16,7 @@ import org.json.JSONObject;
  * {@link PaymentMethodToken} representing a credit or debit card.
  */
 public class CardToken extends PaymentMethodToken implements Parcelable {
-  private static final String CARD_BRAND_KEY = "cardBrand";
+  private static final String CARD_BRAND_KEY = "paymentNetwork";
   private static final String EXPIRATION_DATE_KEY = "expDate";
 
   private String mCardBrand;

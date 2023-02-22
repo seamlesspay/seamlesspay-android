@@ -18,6 +18,7 @@
     <string name="local_payments_button">Local Payments</string>
     <string name="cards">Credit or Debit Cards</string>
     <string name="create_transaction">Create a Transaction</string>
+    <string name="create_refund">Create a Refund</string>
     <string name="loading">Loading…</string>
     <string name="buy">Buy</string>
     <string name="payment_icon">payment icon</string>
@@ -37,6 +38,8 @@
     <string name="none">None</string>
     <string name="options">Options</string>
     <string name="sandbox">Sandbox</string>
+    <string name="staging">Staging</string>
+    <string name="qat">QAT</string>
     <string name="production">Production</string>
     <string name="authorization">Authorization</string>
     <string name="tokenization_key">Use Tokenization Key</string>

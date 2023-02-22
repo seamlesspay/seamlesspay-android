@@ -21,10 +21,10 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
     public static final String CURRENCY_USD = "USD";
     public static final String SCHEDULE_INDICATOR_SCHEDULED = "Scheduled";
     public static final String SCHEDULE_INDICATOR_UNSCHEDULED = "Unscheduled";
-    public static final String TXN_ENV_CARD_ON_FILE = "C";
-    public static final String TXN_ENV_ECOMMERCE_INTERNET = "E";
-    public static final String TXN_ENV_RECURRING = "R";
-    public static final String TXN_ENV_TELEPHONE_OR_MAIL = "M";
+    public static final String TXN_ENV_CARD_ON_FILE = "card_on_file";
+    public static final String TXN_ENV_ECOMMERCE_INTERNET = "ecommerce";
+    public static final String TXN_ENV_RECURRING = "recurring";
+    public static final String TXN_ENV_KEYED = "keyed";
     public static final String TXN_INITIATION_CUSTOMER = "Customer";
     public static final String TXN_INITIATION_MERCHANT = "Merchant";
     public static final String TXN_INITIATION_TERMINAL = "Terminal";
@@ -32,6 +32,7 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
 
   protected static final String AMOUNT_KEY = "amount";
   protected static final String CAPTURE_KEY = "capture";
+  protected static final String RECURRING_KEY = "recurring";
   protected static final String CURRENCY_KEY = "currency";
   protected static final String CVV_KEY = "cvv";
   protected static final String DESCRIPTION_KEY = "description";
@@ -45,7 +46,7 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
   protected static final String TOKEN_KEY = "token";
   protected static final String TAX_AMOUNT_KEY = "taxAmount";
   protected static final String TIP_KEY = "tip";
-  protected static final String TXN_ENV_KEY = "txnEnv";
+  protected static final String TXN_ENV_KEY = "entryType";
   protected static final String TXN_INITIATION_KEY = "transactionInitiation";
   protected static final String SCHEDULE_INDICATOR_KEY = "scheduleIndicator";
   protected static final String CREDENTIAL_INDICATOR_KEY =
@@ -53,6 +54,7 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
   protected static final String TAX_EXEMPT_KEY = "taxExempt";
 
   private Boolean mCapture = false;
+  private Boolean mRecurring = false;
   private Boolean mTaxExempt = false;
   private JSONObject mMetadata;
   private JSONObject mOrder;
@@ -86,6 +88,7 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
       base.put(AMOUNT_KEY, mAmount);
       base.put(CURRENCY_KEY, mCurrency);
       base.put(CAPTURE_KEY, mCapture);
+      base.put(RECURRING_KEY, mRecurring);
       base.put(TAX_EXEMPT_KEY, mTaxExempt);
 
       if (mDescription != null) {
@@ -166,6 +169,13 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
   @SuppressWarnings("unchecked")
   public T setCapture(Boolean capture) {
     mCapture = capture;
+
+    return (T) this;
+  }
+
+  @SuppressWarnings("unchecked")
+  public T setRecurring(Boolean recurring) {
+    mRecurring = recurring;
 
     return (T) this;
   }
@@ -311,6 +321,7 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
     mScheduleIndicator = in.readString();
     mCredentialIndicator = in.readString();
     mCapture = in.readByte() > 0;
+    mRecurring = in.readByte() > 0;
     mTaxExempt = in.readByte() > 0;
 
     try {
@@ -345,6 +356,7 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
     dest.writeString(mScheduleIndicator);
     dest.writeString(mCredentialIndicator);
     dest.writeByte(mCapture ? (byte) 1 : 0);
+    dest.writeByte(mRecurring ? (byte) 1 : 0);
     dest.writeByte(mTaxExempt ? (byte) 1 : 0);
     dest.writeString(mMetadata.toString());
     dest.writeString(mOrder.toString());
@@ -412,6 +424,10 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
 
   public Boolean getCapture() {
     return mCapture;
+  }
+
+  public Boolean getRecurring() {
+    return mRecurring;
   }
 
   public Boolean getTaxExempt() {

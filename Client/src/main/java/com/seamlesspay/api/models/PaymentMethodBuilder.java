@@ -19,13 +19,13 @@ import org.json.JSONObject;
 public abstract class PaymentMethodBuilder<T> {
 
   public final class Keys {
-    public static final String ACH_TYPE = "ACH";
-    public static final String CREDIT_CARD_TYPE = "CREDIT_CARD";
-    public static final String GIFT_CARD_TYPE = "GIFT_CARD";
-    public static final String PLDEBIT_CARD_TYPE = "PLDEBIT_CARD";
+    public static final String ACH_TYPE = "ach";
+    public static final String CREDIT_CARD_TYPE = "credit_card";
+    public static final String GIFT_CARD_TYPE = "gift_card";
+    public static final String PLDEBIT_CARD_TYPE = "pldebit_card";
   }
 
-  protected static final String TXN_TYPE_KEY = "txnType";
+  protected static final String TXN_TYPE_KEY = "paymentType";
 
   private String mTxnType;
 

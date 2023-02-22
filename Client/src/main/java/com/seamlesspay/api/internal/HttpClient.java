@@ -269,7 +269,7 @@ public class HttpClient<T extends HttpClient> {
       connection.setRequestMethod(METHOD_POST);
       connection.setDoOutput(true);
 
-      if (mBaseUrl.indexOf("sandbox") != -1) {
+      if (mBaseUrl.indexOf("sbx") != -1 || mBaseUrl.indexOf("dev") != -1) {
         String headers = "";
         Map<String, List<String>> headerFields = connection.getRequestProperties();
         Set<String> keys = headerFields.keySet();

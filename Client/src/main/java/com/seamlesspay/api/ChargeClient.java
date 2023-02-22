@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class ChargeClient {
-  static final String CHARGE_ENDPOINT = "charge";
+  static final String CHARGE_ENDPOINT = "charges";
 
   static void create(
     final SeamlesspayFragment fragment,

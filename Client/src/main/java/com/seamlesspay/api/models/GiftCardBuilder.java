@@ -19,45 +19,24 @@ import org.json.JSONObject;
 public class GiftCardBuilder
   extends BaseCardBuilder<GiftCardBuilder>
   implements Parcelable {
-  static final String PINNUMBER_KEY = "pinNumber";
-
-  String mPinNumber;
 
   public GiftCardBuilder() {}
 
-  /**
-   * @param pinNumber The gift card number.
-   * @return {@link GiftCardBuilder}
-   */
-  @SuppressWarnings("unchecked")
-  public GiftCardBuilder pinNumber(String pinNumber) {
-    if (TextUtils.isEmpty(pinNumber)) {
-      mPinNumber = null;
-    } else {
-      mPinNumber = pinNumber;
-    }
-
-    return (GiftCardBuilder) this;
-  }
 
   @Override
   protected void build(JSONObject json) throws JSONException {
     super.build(json);
 
-    json.put(PINNUMBER_KEY, mPinNumber);
     json.put(TXN_TYPE_KEY, Keys.GIFT_CARD_TYPE);
   }
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     super.writeToParcel(dest, flags);
-
-    dest.writeString(mPinNumber);
   }
 
   protected GiftCardBuilder(Parcel in) {
     super(in);
-    mPinNumber = in.readString();
   }
 
   public static final Creator<GiftCardBuilder> CREATOR = new Creator<GiftCardBuilder>() {
