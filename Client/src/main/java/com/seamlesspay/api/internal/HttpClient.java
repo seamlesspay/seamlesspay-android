@@ -69,8 +69,15 @@ public class HttpClient<T extends HttpClient> {
   private static final String METHOD_POST = "POST";
   private static final String UTF_8 = "UTF-8";
 
-  public static final String[] CERTIFICATE_KEY_VALUES = new String[] { "a", "b" };
-  public static final Set<String> CERTIFICATE_SET = new HashSet<>(Arrays.asList(CERTIFICATE_KEY_VALUES));
+  //We should use only root Amazon Certificates
+  private static final String[] CERTIFICATE_KEY_VALUES = new String[] {
+      "++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=",
+      "f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE=",
+      "NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k=",
+      "9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U=",
+      "KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I="
+  };
+  private static final Set<String> CERTIFICATE_SET = new HashSet<>(Arrays.asList(CERTIFICATE_KEY_VALUES));
 
   private final Handler mMainThreadHandler;
 
