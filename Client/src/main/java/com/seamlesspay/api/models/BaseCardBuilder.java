@@ -334,7 +334,7 @@ public abstract class BaseCardBuilder<T>
     billingAddressObject.put(BILLING_ADDRESS_LINE_KEY, mBillingAddress);
     billingAddressObject.put(BILLING_ADDRESS_LINE2_KEY, mBillingAddress2);
     if (billingAddressObject.length() > 0) {
-      json.put(BILLING_ADDRESS_OBJECT_KEY, billingAddressObject.toString());
+      json.put(BILLING_ADDRESS_OBJECT_KEY, billingAddressObject);
     }
     json.put(EMAIL_KEY, mEmail);
     json.put(PHONE_KEY, mPhoneNumber);
