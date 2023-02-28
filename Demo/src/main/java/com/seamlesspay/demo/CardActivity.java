@@ -142,8 +142,7 @@ public class CardActivity
       .expirationYear(mCardForm.getExpirationYear())
       .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
       .billingZip(mCardForm.getPostalCode())
-      .cvv(mCardForm.getCvv())
-      .verification(true);
+      .cvv(mCardForm.getCvv());
 
     PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
 
@@ -184,12 +183,6 @@ public class CardActivity
       token.getToken() +
       "\nExpDate: " +
       token.getExpirationDate() +
-      (token.getVerificationResult() != null ? "\nVerificationResult: " : "") +
-      (
-        token.getVerificationResult() != null
-          ? token.getVerificationResult()
-          : ""
-      ) +
       "\nTokenization runtime : " +
       ((float) timeElapsed / 1000) +
       " s"

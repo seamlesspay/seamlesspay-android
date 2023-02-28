@@ -25,13 +25,15 @@ public abstract class BaseCardBuilder<T>
   static final String EXPIRATION_DATE_KEY = "expDate";
   static final String NUMBER_KEY = "accountNumber";
   static final String PHONE_KEY = "phoneNumber";
+  static final String PAYMENT_TYPE = "paymentType";
 
-  static final String BILLING_ADDRESS_KEY = "billingAddress";
-  static final String BILLING_ADDRESS2_KEY = "billingAddress2";
-  static final String BILLING_CITY_KEY = "billingCity";
-  static final String BILLING_COUNTRY_KEY = "billingCountry";
-  static final String BILLING_STATE_KEY = "billingState";
-  static final String BILLING_ZIP_KEY = "billingZip";
+  static final String BILLING_ADDRESS_OBJECT_KEY = "billingAddress";
+  static final String BILLING_ADDRESS_LINE_KEY = "line1";
+  static final String BILLING_ADDRESS_LINE2_KEY = "line2";
+  static final String BILLING_CITY_KEY = "city";
+  static final String BILLING_COUNTRY_KEY = "country";
+  static final String BILLING_STATE_KEY = "state";
+  static final String BILLING_ZIP_KEY = "postalCode";
 
   String mAccountNumber;
   String mBillingAddress;
@@ -49,6 +51,7 @@ public abstract class BaseCardBuilder<T>
   String mFirstName;
   String mLastName;
   String mPhoneNumber;
+  String mPaymentType;
 
   public BaseCardBuilder() {}
 
@@ -323,12 +326,16 @@ public abstract class BaseCardBuilder<T>
     }
 
     json.put(COMPANY_KEY, mCompany);
-    json.put(BILLING_CITY_KEY, mBillingCity);
-    json.put(BILLING_ZIP_KEY, mBillingZip);
-    json.put(BILLING_STATE_KEY, mBillingState);
-    json.put(BILLING_COUNTRY_KEY, mBillingCountry);
-    json.put(BILLING_ADDRESS_KEY, mBillingAddress);
-    json.put(BILLING_ADDRESS2_KEY, mBillingAddress2);
+    JSONObject billingAddressObject = new JSONObject();
+    billingAddressObject.put(BILLING_CITY_KEY, mBillingCity);
+    billingAddressObject.put(BILLING_ZIP_KEY, mBillingZip);
+    billingAddressObject.put(BILLING_STATE_KEY, mBillingState);
+    billingAddressObject.put(BILLING_COUNTRY_KEY, mBillingCountry);
+    billingAddressObject.put(BILLING_ADDRESS_LINE_KEY, mBillingAddress);
+    billingAddressObject.put(BILLING_ADDRESS_LINE2_KEY, mBillingAddress2);
+    if (billingAddressObject.length() > 0) {
+      json.put(BILLING_ADDRESS_OBJECT_KEY, billingAddressObject);
+    }
     json.put(EMAIL_KEY, mEmail);
     json.put(PHONE_KEY, mPhoneNumber);
   }

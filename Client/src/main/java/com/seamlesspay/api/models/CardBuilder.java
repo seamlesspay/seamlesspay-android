@@ -20,9 +20,6 @@ public class CardBuilder
   extends BaseCardBuilder<CardBuilder>
   implements Parcelable {
   static final String CVV_KEY = "cvv";
-  static final String VERIFICATION_KEY = "verification";
-
-  Boolean mVerification = false;
 
   String mCvv;
 
@@ -42,20 +39,9 @@ public class CardBuilder
     return (CardBuilder) this;
   }
 
-  /**
-   * @param verification if true billingAddress, billingZip and cvv will be verified.
-   * @return {@link BaseCardBuilder}
-   */
-  @SuppressWarnings("unchecked")
-  public CardBuilder verification(Boolean verification) {
-    mVerification = verification;
-    return (CardBuilder) this;
-  }
-
   @Override
   protected void build(JSONObject json) throws JSONException {
     super.build(json);
-    json.put(VERIFICATION_KEY, mVerification);
     json.put(CVV_KEY, mCvv);
   }
 
@@ -63,13 +49,11 @@ public class CardBuilder
   public void writeToParcel(Parcel dest, int flags) {
     super.writeToParcel(dest, flags);
     dest.writeString(mCvv);
-    dest.writeByte(mVerification ? (byte) 1 : 0);
   }
 
   protected CardBuilder(Parcel in) {
     super(in);
     mCvv = in.readString();
-    mVerification = in.readByte() > 0;
   }
 
   public static final Creator<CardBuilder> CREATOR = new Creator<CardBuilder>() {

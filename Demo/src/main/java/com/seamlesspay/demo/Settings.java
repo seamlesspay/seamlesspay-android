@@ -15,12 +15,20 @@ import java.util.List;
 
 public class Settings {
   private static final String SANDBOX_TOKENIZATION_KEY =
-    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+    "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String STAGING_TOKENIZATION_KEY =
+      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String QAT_TOKENIZATION_KEY =
+      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String PRODUCTION_TOKENIZATION_KEY =
     "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
   private static final String SANDBOX_SECRET_KEY =
     "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String STAGING_SECRET_KEY =
+      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
+  private static final String QAT_SECRET_KEY =
+      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
   private static final String PRODUCTION_SECRET_KEY =
     "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
@@ -50,34 +58,45 @@ public class Settings {
   public static String getEnvironmentName(Context context) {
     int environment = getEnvironment(context);
 
-    if (environment == 0) {
-      return "sandbox";
-    } else {
-      return "production";
+    switch (environment) {
+      case 0:
+        return "sandbox";
+      case 1:
+        return "staging";
+      case 2:
+        return "QAT";
+      default:
+        return "production";
     }
   }
 
   public static String getEnvironmentTokenizationKey(Context context) {
     int environment = getEnvironment(context);
 
-    if (environment == 0) {
-      return SANDBOX_TOKENIZATION_KEY;
-    } else if (environment == 1) {
-      return PRODUCTION_TOKENIZATION_KEY;
-    } else {
-      return "";
+    switch (environment) {
+      case 0:
+        return SANDBOX_TOKENIZATION_KEY;
+      case 1:
+        return STAGING_TOKENIZATION_KEY;
+      case 2:
+        return QAT_TOKENIZATION_KEY;
+      default:
+        return PRODUCTION_TOKENIZATION_KEY;
     }
   }
 
   public static String getEnvironmentSecretKey(Context context) {
     int environment = getEnvironment(context);
 
-    if (environment == 0) {
-      return SANDBOX_SECRET_KEY;
-    } else if (environment == 1) {
-      return PRODUCTION_SECRET_KEY;
-    } else {
-      return "";
+    switch (environment) {
+      case 0:
+        return SANDBOX_SECRET_KEY;
+      case 1:
+        return STAGING_SECRET_KEY;
+      case 2:
+        return QAT_SECRET_KEY;
+      default:
+        return PRODUCTION_SECRET_KEY;
     }
   }
 }

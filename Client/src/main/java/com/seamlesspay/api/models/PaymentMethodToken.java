@@ -17,22 +17,23 @@ import org.json.JSONObject;
  * common interface of all payment methods, and can be handled by a server interchangeably.
  */
 public abstract class PaymentMethodToken implements Parcelable {
-  private static final String AVS_RESULT_KEY = "avsResult";
-  private static final String CVV_RESULT_KEY = "cvvResult";
+  private static final String VERIFICATION_OBJECT_KEY = "verification";
+  private static final String AVS_RESULT_KEY = "addressLine1";
+  private static final String CVV_RESULT_KEY = "cvv";
+  private static final String POSTAL_CODE_RESULT_KEY = "addressPostalCode";
   private static final String LAST_FOUR_KEY = "lastfour";
   private static final String NAME_KEY = "name";
   private static final String TOKEN_KEY = "token";
-  private static final String TXN_TYPE_KEY = "txnType";
-  private static final String VERIFICATION_KEY = "verificationResult";
+  private static final String TXN_TYPE_KEY = "paymentType";
 
   private String mAvsResult;
   private String mCvvResult;
+  private String mPostalCodeResult;
   private String mInfo;
   private String mLastFour;
   private String mName;
   private String mToken;
   private String mTxnType;
-  private String mVerificationResult;
 
   protected void fromJson(JSONObject json) throws JSONException {
     mLastFour = json.getString(LAST_FOUR_KEY);
@@ -46,26 +47,19 @@ public abstract class PaymentMethodToken implements Parcelable {
     }
 
     try {
-      mAvsResult = json.getString(AVS_RESULT_KEY);
+      JSONObject verification = json.getJSONObject(VERIFICATION_OBJECT_KEY);
+      mAvsResult = verification.getString(AVS_RESULT_KEY);
+      mCvvResult = verification.getString(CVV_RESULT_KEY);
+      mPostalCodeResult = verification.getString(POSTAL_CODE_RESULT_KEY);
     } catch (JSONException ex) {
       mAvsResult = null;
-    }
-
-    try {
-      mCvvResult = json.getString(CVV_RESULT_KEY);
-    } catch (JSONException ex) {
       mCvvResult = null;
-    }
-
-    try {
-      mVerificationResult = json.getString(VERIFICATION_KEY);
-    } catch (JSONException ex) {
-      mVerificationResult = null;
+      mPostalCodeResult = null;
     }
   }
 
   /**
-   * @return Last four digits of the card.
+   * @return Payment type.
    */
   public String getTxnType() {
     return mTxnType;
@@ -93,24 +87,24 @@ public abstract class PaymentMethodToken implements Parcelable {
   }
 
   /**
-   * @return AVS Result. Enum: "SM" "ZD" "SD" "ZM" "NS" "SE" "GN".
+   * @return AVS Result. Enum: "pass" "fail" "unchecked" "unsupported" "retry".
    */
   public String getAvsResult() {
     return mAvsResult;
   }
 
   /**
-   * @return CVV Result. Enum: "M" "N" "P" "S" "U" "X".
+   * @return CVV Result. Enum: "pass" "fail" "unchecked" "unsupported" "retry".
    */
   public String getCvvResult() {
     return mCvvResult;
   }
 
   /**
-   * @return Verification Result. Enum: "verification_successful" , "verification_failed"
+   * @return Postal Code Result. Enum: "pass" "fail" "unchecked" "unsupported" "retry".
    */
-  public String getVerificationResult() {
-    return mVerificationResult;
+  public String getPostalCodeResult() {
+    return mPostalCodeResult;
   }
 
   /**
@@ -184,7 +178,7 @@ public abstract class PaymentMethodToken implements Parcelable {
     dest.writeString(mInfo);
     dest.writeString(mAvsResult);
     dest.writeString(mCvvResult);
-    dest.writeString(mVerificationResult);
+    dest.writeString(mPostalCodeResult);
   }
 
   protected PaymentMethodToken(Parcel in) {
@@ -195,6 +189,6 @@ public abstract class PaymentMethodToken implements Parcelable {
     mInfo = in.readString();
     mAvsResult = in.readString();
     mCvvResult = in.readString();
-    mVerificationResult = in.readString();
+    mPostalCodeResult = in.readString();
   }
 }
