@@ -88,10 +88,6 @@ public class CardForm
   private CountryCodeEditText mCountryCode;
   private CvvEditText mCvv;
   private ExpirationDateEditText mExpiration;
-  private ImageView mCardholderNameIcon;
-  private ImageView mCardNumberIcon;
-  private ImageView mMobileNumberIcon;
-  private ImageView mPostalCodeIcon;
   private InitialValueCheckBox mSaveCardCheckBox;
   private List<ErrorEditText> mVisibleEditTexts;
   private MobileNumberEditText mMobileNumber;
@@ -148,18 +144,14 @@ public class CardForm
     inflate(getContext(), R.layout.bt_card_form_fields, this);
 
     mCardholderName = findViewById(R.id.bt_card_form_cardholder_name);
-    mCardholderNameIcon = findViewById(R.id.bt_card_form_cardholder_name_icon);
     mCardNumber = findViewById(R.id.bt_card_form_card_number);
-    mCardNumberIcon = findViewById(R.id.bt_card_form_card_number_icon);
     mCountryCode = findViewById(R.id.bt_card_form_country_code);
     mCvv = findViewById(R.id.bt_card_form_cvv);
     mExpiration = findViewById(R.id.bt_card_form_expiration);
     mMobileNumber = findViewById(R.id.bt_card_form_mobile_number);
     mMobileNumberExplanation =
       findViewById(R.id.bt_card_form_mobile_number_explanation);
-    mMobileNumberIcon = findViewById(R.id.bt_card_form_mobile_number_icon);
     mPostalCode = findViewById(R.id.bt_card_form_postal_code);
-    mPostalCodeIcon = findViewById(R.id.bt_card_form_postal_code_icon);
     mSaveCardCheckBox = findViewById(R.id.bt_card_form_save_card_checkbox);
 
     mVisibleEditTexts = new ArrayList<>();
@@ -331,44 +323,17 @@ public class CardForm
       );
 
     boolean cardHolderNameVisible = mCardholderNameStatus != FIELD_DISABLED;
-    boolean isDarkBackground = ViewUtils.isDarkBackground(activity);
-
-    mCardholderNameIcon.setImageResource(
-      isDarkBackground
-        ? R.drawable.bt_ic_cardholder_name_dark
-        : R.drawable.bt_ic_cardholder_name
-    );
-
-    mCardNumberIcon.setImageResource(
-      isDarkBackground ? R.drawable.bt_ic_card_dark : R.drawable.bt_ic_card
-    );
-
-    mPostalCodeIcon.setImageResource(
-      isDarkBackground
-        ? R.drawable.bt_ic_postal_code_dark
-        : R.drawable.bt_ic_postal_code
-    );
-
-    mMobileNumberIcon.setImageResource(
-      isDarkBackground
-        ? R.drawable.bt_ic_mobile_number_dark
-        : R.drawable.bt_ic_mobile_number
-    );
 
     mExpiration.useDialogForExpirationDateEntry(activity, true);
 
-    setViewVisibility(mCardholderNameIcon, cardHolderNameVisible);
     setFieldVisibility(mCardholderName, cardHolderNameVisible);
 
-    setViewVisibility(mCardNumberIcon, mCardNumberRequired);
     setFieldVisibility(mCardNumber, mCardNumberRequired);
     setFieldVisibility(mExpiration, mExpirationRequired);
     setFieldVisibility(mCvv, mCvvRequired);
 
-    setViewVisibility(mPostalCodeIcon, mPostalCodeRequired);
     setFieldVisibility(mPostalCode, mPostalCodeRequired);
 
-    setViewVisibility(mMobileNumberIcon, mMobileNumberRequired);
     setFieldVisibility(mCountryCode, mMobileNumberRequired);
     setFieldVisibility(mMobileNumber, mMobileNumberRequired);
 
@@ -394,48 +359,6 @@ public class CardForm
     mSaveCardCheckBox.setInitiallyChecked(mSaveCardCheckBoxChecked);
 
     setVisibility(VISIBLE);
-  }
-
-  /**
-   * Sets the icon to the left of the card-holder name entry field,
-   * overriding the default icon.
-   *
-   * @param res The drawable resource for the card-holder name icon
-   */
-  public void setCardholderNameIcon(@DrawableRes int res) {
-    mCardholderNameIcon.setImageResource(res);
-  }
-
-  /**
-   * Sets the icon to the left of the card number entry field,
-   * overriding the default icon.
-   *
-   * @param res The drawable resource for the card number icon
-   */
-  public void setCardNumberIcon(@DrawableRes int res) {
-    mCardNumberIcon.setImageResource(res);
-  }
-
-  /**
-   * Sets the icon to the left of the postal code entry field,
-   * overriding the default icon.
-   *
-   * @param res The drawable resource for the postal code icon.
-   */
-  public void setPostalCodeIcon(@DrawableRes int res) {
-    mPostalCodeIcon.setImageResource(res);
-  }
-
-  /**
-   * Sets the icon to the left of the mobile number entry field,
-   * overriding the default icon.
-   *
-   * If {@code null} is passed, the mobile number's icon will be hidden.
-   *
-   * @param res The drawable resource for the mobile number icon.
-   */
-  public void setMobileNumberIcon(@DrawableRes int res) {
-    mMobileNumberIcon.setImageResource(res);
   }
 
   /**

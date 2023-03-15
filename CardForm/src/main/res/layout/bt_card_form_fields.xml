@@ -8,11 +8,7 @@
         style="@style/bt_field_container"
         android:weightSum="2">
 
-        <ImageView
-            style="@style/bt_card_form_icon"
-            tools:ignore="ContentDescription"
-            android:id="@+id/bt_card_form_cardholder_name_icon"/>
-        <com.google.android.material.textfield.TextInputLayout
+       <com.google.android.material.textfield.TextInputLayout
             style="@style/bt_text_input_layout"
             tools:ignore="RtlCompat"
             android:paddingLeft="@dimen/bt_edit_text_icon_padding"
@@ -31,11 +27,6 @@
 
     <LinearLayout
         style="@style/bt_field_container">
-
-        <ImageView
-            style="@style/bt_card_form_icon"
-            tools:ignore="ContentDescription"
-            android:id="@+id/bt_card_form_card_number_icon"/>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/bt_text_input_layout"
@@ -96,11 +87,6 @@
         style="@style/bt_field_container"
         android:weightSum="2">
 
-        <ImageView
-            style="@style/bt_card_form_icon"
-            tools:ignore="ContentDescription"
-            android:id="@+id/bt_card_form_postal_code_icon"/>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/bt_text_input_layout"
             tools:ignore="RtlCompat"
@@ -121,11 +107,6 @@
     <LinearLayout
         style="@style/bt_field_container"
         android:weightSum="5">
-
-        <ImageView
-            style="@style/bt_card_form_icon"
-            tools:ignore="ContentDescription"
-            android:id="@+id/bt_card_form_mobile_number_icon"/>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/bt_text_input_layout"
