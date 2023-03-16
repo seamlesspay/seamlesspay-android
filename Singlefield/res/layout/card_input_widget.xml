@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/iv_card_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/card_icon_width"
+        android:layout_height="@dimen/card_icon_height"
         android:layout_marginTop="@dimen/seamlesspay_card_icon_padding"
         android:layout_marginBottom="@dimen/seamlesspay_card_icon_padding"
         android:layout_marginEnd="@dimen/seamlesspay_card_icon_padding"
