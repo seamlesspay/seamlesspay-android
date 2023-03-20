@@ -18,6 +18,8 @@ import android.util.AttributeSet;
  * variation of postal code formats worldwide.
  */
 public class PostalCodeEditText extends ErrorEditText {
+  private static final int DEFAULT_MIN_LENGTH = 5;
+  private static final int DEFAULT_MAX_LENGTH = 5;
 
   public PostalCodeEditText(Context context) {
     super(context);
@@ -37,14 +39,14 @@ public class PostalCodeEditText extends ErrorEditText {
   private void init() {
     setInputType(InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
 
-    InputFilter[] filters = { new LengthFilter(16) };
+    InputFilter[] filters = { new LengthFilter(DEFAULT_MAX_LENGTH) };
 
     setFilters(filters);
   }
 
   @Override
   public boolean isValid() {
-    return isOptional() || getText().toString().length() > 0;
+    return isOptional() || getText().toString().length() >= DEFAULT_MIN_LENGTH;
   }
 
   @Override
