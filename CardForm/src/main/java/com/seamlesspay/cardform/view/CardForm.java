@@ -93,6 +93,7 @@ public class CardForm
   private MobileNumberEditText mMobileNumber;
   private PostalCodeEditText mPostalCode;
   private TextView mMobileNumberExplanation;
+  private ImageView mCardIcon;
 
   private boolean mCardNumberRequired;
   private boolean mCvvRequired;
@@ -153,6 +154,7 @@ public class CardForm
       findViewById(R.id.bt_card_form_mobile_number_explanation);
     mPostalCode = findViewById(R.id.bt_card_form_postal_code);
     mSaveCardCheckBox = findViewById(R.id.bt_card_form_save_card_checkbox);
+    mCardIcon = findViewById(R.id.iv_card_icon);
 
     mVisibleEditTexts = new ArrayList<>();
 
@@ -812,7 +814,7 @@ public class CardForm
   @Override
   public void onCardTypeChanged(CardType cardType) {
     mCvv.setCardType(cardType);
-
+    mCardIcon.setImageResource(cardType.getFrontResource());
     if (mOnCardTypeChangedListener != null) {
       mOnCardTypeChangedListener.onCardTypeChanged(cardType);
     }

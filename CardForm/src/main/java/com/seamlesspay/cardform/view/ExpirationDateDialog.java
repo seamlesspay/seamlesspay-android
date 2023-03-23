@@ -269,7 +269,7 @@ public class ExpirationDateDialog
     if (mSelectedYear == -1) {
       expirationDate += "    ";
     } else {
-      expirationDate += mYears.get(mSelectedYear);
+      expirationDate += mYears.get(mSelectedYear).substring(2);
     }
 
     mEditText.setText(expirationDate);
