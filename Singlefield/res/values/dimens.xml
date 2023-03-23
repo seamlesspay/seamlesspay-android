@@ -31,4 +31,8 @@
 
     <!-- Text size of CardInputWidget EditText views -->
     <dimen name="ciw_seamlesspay_edit_text_size">19sp</dimen>
+
+    <!-- Card Icon Size -->
+    <dimen name="card_icon_width">32dp</dimen>
+    <dimen name="card_icon_height">21dp</dimen>
 </resources>

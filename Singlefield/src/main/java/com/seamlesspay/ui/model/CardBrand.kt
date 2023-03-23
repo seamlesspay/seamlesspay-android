@@ -94,13 +94,6 @@ enum class CardBrand(
         )
     ),
 
-    UnionPay(
-        "unionpay",
-        "UnionPay",
-        R.drawable.seamlesspay_ic_unionpay,
-        prefixes = listOf("62")
-    ),
-
     Unknown(
         "unknown",
         "Unknown",

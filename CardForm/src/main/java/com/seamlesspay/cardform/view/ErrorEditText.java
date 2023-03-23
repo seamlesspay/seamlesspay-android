@@ -29,7 +29,7 @@ import com.seamlesspay.cardform.utils.VibrationHelper;
 /**
  * Parent {@link android.widget.EditText} for storing and displaying error states.
  */
-public class ErrorEditText extends TextInputEditText {
+public class ErrorEditText extends SelectableEditText {
   private Animation mErrorAnimator;
   private boolean mError;
   private boolean mOptional;
