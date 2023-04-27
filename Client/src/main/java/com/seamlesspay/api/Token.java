@@ -19,7 +19,7 @@ import com.seamlesspay.api.models.PaymentMethodToken;
  * For more information see the
  * <a href="https://docs.seamlesspay.com/#tag/PanVault">documentation</a>
  */
-public class PanVault {
+public class Token {
 
   /**
    * Create a {@link PaymentMethodToken}.

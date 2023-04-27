@@ -64,6 +64,7 @@ dependencies {
     implementation project(':Client')
     //implementation 'com.seamlesspay.api:Client:1.0.7'
 
-    //implementation project(':CardForm')
-    implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
+    implementation project(':CardForm')
+    //implementation 'com.seamlesspay.sdk:CardForm:1.0.1'
+
 }

@@ -13,13 +13,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import com.seamlesspay.api.Charge;
+import com.seamlesspay.api.Transaction;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.PaymentMethodToken;
-import com.seamlesspay.demo.R;
 
 public class CreateTransactionActivity extends BaseActivity {
   public static final String EXTRA_PAYMENT_METHOD_TOKEN = "token";
@@ -107,7 +106,7 @@ public class CreateTransactionActivity extends BaseActivity {
       .setDescription("Demo Android Client Charge")
       .setCvv(token.getInfo());
 
-    Charge.create(mSeamlesspayFragment, chargeBulder);
+    Transaction.create(mSeamlesspayFragment, chargeBulder);
   }
 
   private void setStatus(int message) {

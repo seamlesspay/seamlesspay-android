@@ -52,7 +52,7 @@ public enum CardType {
     19,
     3,
     "CVC",
-    "^6\\d*"
+    null
   ),
   UNKNOWN("\\d+", R.drawable.bt_ic_unknown, 12, 19, 3, "CVV", null),
   EMPTY("^$", R.drawable.bt_ic_unknown, 12, 19, 3, "CVV", null);
