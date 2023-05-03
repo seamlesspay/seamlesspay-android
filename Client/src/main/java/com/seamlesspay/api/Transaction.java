@@ -8,6 +8,7 @@
 package com.seamlesspay.api;
 
 import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
+import com.seamlesspay.api.interfaces.BaseVoidCallback;
 import com.seamlesspay.api.interfaces.RefundTokenCallback;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
@@ -35,6 +36,28 @@ public class Transaction {
           fragment.postCallback(exception);
         }
       }
+    );
+  }
+
+  public static void delete(
+      final SeamlesspayFragment fragment,
+      final String transactionId
+  ) {
+    ChargeClient.delete(
+        fragment,
+        transactionId,
+        new BaseVoidCallback() {
+
+          @Override
+          public void success() {
+            fragment.postCallback();
+          }
+
+          @Override
+          public void failure(Exception exception) {
+            fragment.postCallback(exception);
+          }
+        }
     );
   }
 

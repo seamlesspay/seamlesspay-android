@@ -24,6 +24,7 @@ import com.seamlesspay.api.Authorization;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
+import com.seamlesspay.api.interfaces.BaseVoidListener;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
 import com.seamlesspay.api.interfaces.RefundTokenCreatedListener;
 import com.seamlesspay.api.interfaces.SeamlesspayCancelListener;
@@ -41,6 +42,7 @@ public abstract class BaseActivity
     PaymentMethodTokenCreatedListener,
     RefundTokenCreatedListener,
     BaseChargeTokenCreatedListener,
+    BaseVoidListener,
     SeamlesspayCancelListener,
     SeamlesspayErrorListener,
     ActionBar.OnNavigationListener {
@@ -93,6 +95,17 @@ public abstract class BaseActivity
     Log.d(
       getClass().getSimpleName(),
       "Charge Token received: " + baseChargeToken.getChargeId()
+    );
+  }
+
+  @CallSuper
+  @Override
+  public void onChargeVoided() {
+    setProgressBarIndeterminateVisibility(true);
+
+    Log.d(
+        getClass().getSimpleName(),
+        "Charge Voided"
     );
   }
 

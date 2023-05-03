@@ -67,6 +67,7 @@ import javax.net.ssl.X509TrustManager;
 public class HttpClient<T extends HttpClient> {
   private static final String METHOD_GET = "GET";
   private static final String METHOD_POST = "POST";
+  private static final String METHOD_DELETE = "DELETE";
   private static final String UTF_8 = "UTF-8";
 
   //We should use only root Amazon Certificates
@@ -214,6 +215,43 @@ public class HttpClient<T extends HttpClient> {
   }
 
   /**
+   * Make a HTTP DELETE request using the base url and path provided.
+   * If the path is a full url, it will be used instead of the
+   * previously provided url.
+   *
+   * @param path The URL to request from the server via HTTP DELETE
+   * @param callback The {@link HttpResponseCallback} handler
+   */
+  public void delete(
+      final String path,
+      final HttpResponseCallback callback
+  ) {
+
+    if (path == null) {
+      postCallbackOnMainThread(
+          callback,
+          new IllegalArgumentException("Path cannot be null")
+      );
+
+      return;
+    }
+
+    mThreadPool.submit(
+        new Runnable() {
+
+          @Override
+          public void run() {
+            try {
+              postCallbackOnMainThread(callback, delete(path));
+            } catch (Exception e) {
+              postCallbackOnMainThread(callback, e);
+            }
+          }
+        }
+    );
+  }
+
+  /**
    * Make a HTTP POST request using the base url and path provided.
    * If the path is a full url, it will be used instead of the
    * previously provided url.
@@ -298,6 +336,49 @@ public class HttpClient<T extends HttpClient> {
     }
   }
 
+  /**
+   * Performs a synchronous delete request.
+   *
+   * @param path the path or url to request from the server via HTTP DELETE
+   * @return The HTTP body the of the response
+   *
+   * @see HttpClient#post(String, String, HttpResponseCallback)
+   * @throws Exception
+   */
+  public String delete(String path) throws Exception {
+    HttpURLConnection connection = null;
+
+    try {
+      if (path.startsWith("http")) {
+        connection = init(path);
+      } else {
+        connection = init(mBaseUrl + path);
+      }
+
+      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+      connection.setRequestMethod(METHOD_DELETE);
+      connection.setDoOutput(true);
+
+      if (mBaseUrl.indexOf("sbx") != -1 || mBaseUrl.indexOf("dev") != -1) {
+        String headers = "";
+        Map<String, List<String>> headerFields = connection.getRequestProperties();
+        Set<String> keys = headerFields.keySet();
+        for (String key : keys) {
+          String val = connection.getRequestProperty(key);
+          headers += key + "    " + val + "\n";
+        }
+        Log.i("HTTP request headers:\n", headers);
+        Log.i("HTTP DELETE request:\n", "Path: " + mBaseUrl + path);
+      }
+
+      return parseResponse(connection);
+    } finally {
+      if (connection != null) {
+        connection.disconnect();
+      }
+    }
+  }
+
   protected HttpURLConnection init(String url) throws IOException {
     HttpURLConnection connection = (HttpURLConnection) new URL(url)
     .openConnection();
@@ -335,10 +416,12 @@ public class HttpClient<T extends HttpClient> {
 
   protected String parseResponse(HttpURLConnection connection)
     throws Exception {
+
+    int responseCode = connection.getResponseCode();
+
     if (connection instanceof HttpsURLConnection) {
       validatePinning((HttpsURLConnection)connection);
     }
-    int responseCode = connection.getResponseCode();
 
     boolean gzip = "gzip".equals(connection.getContentEncoding());
 

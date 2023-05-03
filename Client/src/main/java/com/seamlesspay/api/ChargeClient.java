@@ -8,6 +8,7 @@
 package com.seamlesspay.api;
 
 import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
+import com.seamlesspay.api.interfaces.BaseVoidCallback;
 import com.seamlesspay.api.interfaces.HttpResponseCallback;
 import com.seamlesspay.api.internal.AppHelper;
 import com.seamlesspay.api.models.BaseChargeToken;
@@ -24,6 +25,14 @@ class ChargeClient {
     final BaseChargeTokenCallback callback
   ) {
     createRest(fragment, cardChargeBulder, callback);
+  }
+
+  static void delete(
+      final SeamlesspayFragment fragment,
+      final String transactionId,
+      final BaseVoidCallback callback
+  ) {
+    createRest(fragment, transactionId, callback);
   }
 
   private static void createRest(
@@ -66,5 +75,32 @@ class ChargeClient {
           }
         }
       );
+  }
+
+
+  private static void createRest(
+      final SeamlesspayFragment fragment,
+      final String transactionId,
+      final BaseVoidCallback callback
+  ) {
+
+    String path = ChargeClient.CHARGE_ENDPOINT + "/"+ transactionId;
+    fragment
+        .getApiHttpClient()
+        .delete(
+            path,
+            new HttpResponseCallback() {
+
+              @Override
+              public void success(String responseBody) {
+                callback.success();
+              }
+
+              @Override
+              public void failure(Exception exception) {
+                callback.failure(exception);
+              }
+            }
+        );
   }
 }
