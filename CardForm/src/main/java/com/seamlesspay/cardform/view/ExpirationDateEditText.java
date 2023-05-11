@@ -213,7 +213,8 @@ public class ExpirationDateEditText
     }
 
     addDateSlash(editable);
-
+    String rawDate = editable.toString().replace(" ","");
+    editable.replace(0, length() - 1, rawDate);
     if (
       (
         getSelectionStart() == 4
@@ -259,13 +260,20 @@ public class ExpirationDateEditText
   private void addDateSlash(Editable editable) {
     final int index = 2;
     final int length = editable.length();
-
     if (index <= length) {
       editable.setSpan(
         new SlashSpan(),
         index - 1,
         index,
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+      );
+    } else if (length == 1) {
+      editable.append(" ");
+      editable.setSpan(
+          new SlashSpan(),
+          index - 1,
+          index,
+          Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
       );
     }
   }

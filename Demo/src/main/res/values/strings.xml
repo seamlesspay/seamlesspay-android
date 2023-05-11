@@ -32,6 +32,7 @@
     <string name="processing_transaction">Processing Transaction</string>
     <string name="transaction_failed">Transaction Failed</string>
     <string name="transaction_complete">Transaction Complete</string>
+    <string name="void_title">Void</string>
 
     <!-- Settings -->
     <string name="empty"></string>

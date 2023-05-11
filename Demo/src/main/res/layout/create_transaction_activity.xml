@@ -26,5 +26,13 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center"
         android:visibility="gone"/>
-
+    <Button
+        style="?android:attr/buttonStyle"
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/void_title"
+        android:onClick="deleteRequest"
+        android:visibility="gone"
+        android:textSize="12sp" />
 </LinearLayout>

@@ -138,7 +138,6 @@ public class CardForm
   }
 
   private void init() {
-    setUpSentry();
     setVisibility(GONE);
     setOrientation(VERTICAL);
 

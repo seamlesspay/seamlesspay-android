@@ -7,24 +7,27 @@
 
 package com.seamlesspay.demo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import com.seamlesspay.api.Charge;
+import com.seamlesspay.api.Transaction;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.PaymentMethodToken;
-import com.seamlesspay.demo.R;
 
 public class CreateTransactionActivity extends BaseActivity {
   public static final String EXTRA_PAYMENT_METHOD_TOKEN = "token";
   private ProgressBar mLoadingSpinner;
+  private Button mDeleteButton;
   private Long mStartTime, mEndTime;
+  private String mTransactionId;
 
   @Override
   protected void onResume() {
@@ -42,6 +45,8 @@ public class CreateTransactionActivity extends BaseActivity {
 
     long timeElapsed = mEndTime - mStartTime;
 
+    mTransactionId = chargeToken.getChargeId();
+
     setStatus(R.string.transaction_complete);
     setMessage(
       "Amount: " +
@@ -56,6 +61,7 @@ public class CreateTransactionActivity extends BaseActivity {
       ((float) timeElapsed / 1000) +
       " s"
     );
+    mDeleteButton.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -94,6 +100,7 @@ public class CreateTransactionActivity extends BaseActivity {
     }
 
     mLoadingSpinner = findViewById(R.id.loading_spinner);
+    mDeleteButton = findViewById(R.id.btnDelete);
 
     setTitle(R.string.processing_transaction);
   }
@@ -107,7 +114,7 @@ public class CreateTransactionActivity extends BaseActivity {
       .setDescription("Demo Android Client Charge")
       .setCvv(token.getInfo());
 
-    Charge.create(mSeamlesspayFragment, chargeBulder);
+    Transaction.create(mSeamlesspayFragment, chargeBulder);
   }
 
   private void setStatus(int message) {
@@ -138,5 +145,14 @@ public class CreateTransactionActivity extends BaseActivity {
     }
 
     return false;
+  }
+
+  public void deleteRequest(View v) {
+    Transaction.delete(mSeamlesspayFragment, mTransactionId);
+  }
+
+  @Override
+  public void onChargeVoided() {
+    mDeleteButton.setVisibility(View.GONE);
   }
 }

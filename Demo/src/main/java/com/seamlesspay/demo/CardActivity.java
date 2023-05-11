@@ -14,7 +14,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.seamlesspay.api.PanVault;
+import com.seamlesspay.api.Token;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
@@ -28,8 +28,7 @@ import com.seamlesspay.cardform.OnCardFormSubmitListener;
 import com.seamlesspay.cardform.utils.CardType;
 import com.seamlesspay.cardform.view.CardEditText;
 import com.seamlesspay.cardform.view.CardForm;
-import com.seamlesspay.demo.R;
-import java.util.concurrent.TimeUnit;
+import com.seamlesspay.cardform.view.ExpirationDateEditText;
 
 public class CardActivity
   extends BaseActivity
@@ -41,6 +40,7 @@ public class CardActivity
   private Button mPurchaseButton;
   private CardForm mCardForm;
   private CardType mCardType;
+  private ExpirationDateEditText mExpDate;
   private Configuration mConfiguration;
   private Long mStartTime, mEndTime;
   private ProgressDialog mLoading;
@@ -58,7 +58,7 @@ public class CardActivity
     mCardForm.setOnCardFormSubmitListener(this);
 
     mPurchaseButton = findViewById(R.id.purchase_button);
-
+    mExpDate = findViewById(R.id.bt_card_form_expiration);
     mCardForm
       .cardRequired(true)
       .expirationRequired(true)
@@ -67,6 +67,7 @@ public class CardActivity
       .mobileNumberRequired(false)
       .actionLabel(getString(R.string.purchase))
       .setup(this);
+    mExpDate.useDialogForExpirationDateEntry(this, false);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class CardActivity
       .billingZip(mCardForm.getPostalCode())
       .cvv(mCardForm.getCvv());
 
-    PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
+    Token.tokenize(mSeamlesspayFragment, cardBuilder);
 
     mStartTime = System.currentTimeMillis();
   }

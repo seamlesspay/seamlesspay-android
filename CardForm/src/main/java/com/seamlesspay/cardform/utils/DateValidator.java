@@ -89,18 +89,6 @@ public class DateValidator {
       return false;
     }
 
-    if (year < currentYear) {
-      // Account for century-overlapping in 2-digit year representations
-      int adjustedYear = year + 100;
-      if (adjustedYear - currentYear > MAXIMUM_VALID_YEAR_DIFFERENCE) {
-        return false;
-      }
-    }
-
-    if (year > currentYear + MAXIMUM_VALID_YEAR_DIFFERENCE) {
-      return false;
-    }
-
     return true;
   }
 

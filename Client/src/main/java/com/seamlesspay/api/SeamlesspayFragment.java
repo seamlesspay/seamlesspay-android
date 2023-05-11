@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.exceptions.SeamlesspayException;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
+import com.seamlesspay.api.interfaces.BaseVoidListener;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
 import com.seamlesspay.api.interfaces.QueuedCallback;
 import com.seamlesspay.api.interfaces.RefundTokenCreatedListener;
@@ -70,6 +71,7 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
   private final Queue<QueuedCallback> mCallbackQueue = new ArrayDeque<>();
 
   private BaseChargeTokenCreatedListener mBaseChargeTokenCreatedListener;
+  private BaseVoidListener mBaseVoidListener;
   private PaymentMethodTokenCreatedListener mPaymentMethodTokenCreatedListener;
   private RefundTokenCreatedListener mRefundTokenCreatedListener;
   private SeamlesspayCancelListener mCancelListener;
@@ -378,6 +380,11 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
         (BaseChargeTokenCreatedListener) listener;
     }
 
+    if (listener instanceof BaseVoidListener) {
+      mBaseVoidListener =
+          (BaseVoidListener) listener;
+    }
+
     if (listener instanceof SeamlesspayErrorListener) {
       mErrorListener = (SeamlesspayErrorListener) listener;
     }
@@ -407,6 +414,10 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
       mBaseChargeTokenCreatedListener = null;
     }
 
+    if (listener instanceof BaseVoidListener) {
+      mBaseVoidListener = null;
+    }
+
     if (listener instanceof SeamlesspayErrorListener) {
       mErrorListener = null;
     }
@@ -432,6 +443,10 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
 
     if (mBaseChargeTokenCreatedListener != null) {
       listeners.add(mBaseChargeTokenCreatedListener);
+    }
+
+    if(mBaseVoidListener != null) {
+      listeners.add(mBaseVoidListener);
     }
 
     if (mErrorListener != null) {
@@ -512,6 +527,23 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
           );
         }
       }
+    );
+  }
+
+  protected void postCallback() {
+    postOrQueueCallback(
+        new QueuedCallback() {
+
+          @Override
+          public boolean shouldRun() {
+            return mBaseVoidListener != null;
+          }
+
+          @Override
+          public void run() {
+            mBaseVoidListener.onChargeVoided();
+          }
+        }
     );
   }
 

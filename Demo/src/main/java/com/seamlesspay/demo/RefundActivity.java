@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import com.seamlesspay.api.Refund;
 import com.seamlesspay.api.SeamlesspayFragment;
+import com.seamlesspay.api.Transaction;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.api.models.RefundBuilder;
@@ -104,7 +104,7 @@ public class RefundActivity extends BaseActivity {
 				.setToken(token.getToken())
 				.setDescriptor("Demo Android Client Refund");
 
-		Refund.create(mSeamlesspayFragment, refundBuilder);
+		Transaction.create(mSeamlesspayFragment, refundBuilder);
 	}
 
 	private void setStatus(int message) {
