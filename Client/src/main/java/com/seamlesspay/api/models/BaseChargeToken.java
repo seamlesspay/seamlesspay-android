@@ -304,4 +304,8 @@ public abstract class BaseChargeToken implements Parcelable {
   public String getAuthCode() {
     return mAuthCode;
   }
+
+  public String getPostalCodeResult() {
+    return mPostalCodeResult;
+  }
 }
