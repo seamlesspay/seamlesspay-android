@@ -10,8 +10,10 @@ package com.seamlesspay.api;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
 import com.seamlesspay.api.interfaces.BaseVoidCallback;
 import com.seamlesspay.api.interfaces.RefundTokenCallback;
+import com.seamlesspay.api.interfaces.VerifyTokenCallback;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
+import com.seamlesspay.api.models.CardVerifyBuilder;
 import com.seamlesspay.api.models.RefundBuilder;
 import com.seamlesspay.api.models.RefundToken;
 
@@ -36,6 +38,28 @@ public class Transaction {
           fragment.postCallback(exception);
         }
       }
+    );
+  }
+
+  public static void verify(
+      final SeamlesspayFragment fragment,
+      final CardVerifyBuilder chargeBuilder
+  ) {
+    ChargeClient.verify(
+        fragment,
+        chargeBuilder,
+        new VerifyTokenCallback() {
+
+          @Override
+          public void success(BaseChargeToken baseChargeToken) {
+            fragment.postCallback(baseChargeToken);
+          }
+
+          @Override
+          public void failure(Exception exception) {
+            fragment.postCallback(exception);
+          }
+        }
     );
   }
 

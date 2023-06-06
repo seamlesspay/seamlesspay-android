@@ -20,10 +20,12 @@ import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
+import com.seamlesspay.api.models.CardVerifyBuilder;
 import com.seamlesspay.api.models.PaymentMethodToken;
 
 public class CreateTransactionActivity extends BaseActivity {
   public static final String EXTRA_PAYMENT_METHOD_TOKEN = "token";
+  public static final String EXTRA_PAYMENT_METHOD = "method";
   private ProgressBar mLoadingSpinner;
   private Button mDeleteButton;
   private Long mStartTime, mEndTime;
@@ -57,7 +59,7 @@ public class CreateTransactionActivity extends BaseActivity {
       chargeToken.getStatusDescription() +
       "\ntxnID #: " +
       chargeToken.getChargeId() +
-      "\nCharge runtime : " +
+      "\nTransaction runtime : " +
       ((float) timeElapsed / 1000) +
       " s"
     );
@@ -73,10 +75,14 @@ public class CreateTransactionActivity extends BaseActivity {
       onError(e);
     }
 
-    crateCharge(
-      (PaymentMethodToken) getIntent()
-        .getParcelableExtra(EXTRA_PAYMENT_METHOD_TOKEN)
-    );
+    boolean isCharge = getIntent().getBooleanExtra(EXTRA_PAYMENT_METHOD, true);
+    PaymentMethodToken method = (PaymentMethodToken) getIntent().getParcelableExtra(EXTRA_PAYMENT_METHOD_TOKEN);
+    if (isCharge) {
+      crateCharge(method);
+    } else  {
+      crateVerify(method);
+    }
+
 
     mStartTime = System.currentTimeMillis();
   }
@@ -115,6 +121,15 @@ public class CreateTransactionActivity extends BaseActivity {
       .setCvv(token.getInfo());
 
     Transaction.create(mSeamlesspayFragment, chargeBulder);
+  }
+
+  private void crateVerify(PaymentMethodToken token) {
+    CardVerifyBuilder verifyBuilder = new CardVerifyBuilder()
+        .setToken(token.getToken())
+        .setDescription("Demo Android Client Verify")
+        .setCvv(token.getInfo());
+
+    Transaction.verify(mSeamlesspayFragment, verifyBuilder);
   }
 
   private void setStatus(int message) {

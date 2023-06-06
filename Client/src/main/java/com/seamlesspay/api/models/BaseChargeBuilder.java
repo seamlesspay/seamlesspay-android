@@ -32,7 +32,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
 
   protected static final String AMOUNT_KEY = "amount";
   protected static final String CAPTURE_KEY = "capture";
-  protected static final String RECURRING_KEY = "recurring";
   protected static final String CURRENCY_KEY = "currency";
   protected static final String CVV_KEY = "cvv";
   protected static final String DESCRIPTION_KEY = "description";
@@ -54,7 +53,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
   protected static final String TAX_EXEMPT_KEY = "taxExempt";
 
   private Boolean mCapture = false;
-  private Boolean mRecurring = false;
   private Boolean mTaxExempt = false;
   private JSONObject mMetadata;
   private JSONObject mOrder;
@@ -88,7 +86,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
       base.put(AMOUNT_KEY, mAmount);
       base.put(CURRENCY_KEY, mCurrency);
       base.put(CAPTURE_KEY, mCapture);
-      base.put(RECURRING_KEY, mRecurring);
       base.put(TAX_EXEMPT_KEY, mTaxExempt);
 
       if (mDescription != null) {
@@ -169,13 +166,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
   @SuppressWarnings("unchecked")
   public T setCapture(Boolean capture) {
     mCapture = capture;
-
-    return (T) this;
-  }
-
-  @SuppressWarnings("unchecked")
-  public T setRecurring(Boolean recurring) {
-    mRecurring = recurring;
 
     return (T) this;
   }
@@ -321,7 +311,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
     mScheduleIndicator = in.readString();
     mCredentialIndicator = in.readString();
     mCapture = in.readByte() > 0;
-    mRecurring = in.readByte() > 0;
     mTaxExempt = in.readByte() > 0;
 
     try {
@@ -356,7 +345,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
     dest.writeString(mScheduleIndicator);
     dest.writeString(mCredentialIndicator);
     dest.writeByte(mCapture ? (byte) 1 : 0);
-    dest.writeByte(mRecurring ? (byte) 1 : 0);
     dest.writeByte(mTaxExempt ? (byte) 1 : 0);
     dest.writeString(mMetadata.toString());
     dest.writeString(mOrder.toString());
@@ -424,10 +412,6 @@ public abstract class BaseChargeBuilder<T> implements Parcelable {
 
   public Boolean getCapture() {
     return mCapture;
-  }
-
-  public Boolean getRecurring() {
-    return mRecurring;
   }
 
   public Boolean getTaxExempt() {

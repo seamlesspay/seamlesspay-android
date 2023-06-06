@@ -56,6 +56,20 @@
             android:layout_height="match_parent">
             <Button
                 style="?android:attr/buttonStyle"
+                android:id="@+id/verify_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/verify_transaction"
+                android:onClick="verifyTransaction"
+                android:enabled="false"
+                android:textSize="12sp"
+                android:layout_weight="1" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                style="?android:attr/buttonStyle"
                 android:id="@+id/create_refund"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
