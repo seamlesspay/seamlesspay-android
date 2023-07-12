@@ -7,10 +7,12 @@
 
 package com.seamlesspay.api;
 
+import com.seamlesspay.api.interfaces.BaseAdjustCallback;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
 import com.seamlesspay.api.interfaces.BaseVoidCallback;
 import com.seamlesspay.api.interfaces.RefundTokenCallback;
 import com.seamlesspay.api.interfaces.VerifyTokenCallback;
+import com.seamlesspay.api.models.AdjustChargeBuilder;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.CardVerifyBuilder;
@@ -75,6 +77,30 @@ public class Transaction {
           @Override
           public void success() {
             fragment.postCallback();
+          }
+
+          @Override
+          public void failure(Exception exception) {
+            fragment.postCallback(exception);
+          }
+        }
+    );
+  }
+
+  public static void adjust(
+      final SeamlesspayFragment fragment,
+      final String transactionId,
+      final AdjustChargeBuilder adjustChargeBuilder
+  ) {
+    ChargeClient.adjust(
+        fragment,
+        transactionId,
+        adjustChargeBuilder,
+        new BaseAdjustCallback() {
+
+          @Override
+          public void success() {
+            fragment.postAdjustCallback();
           }
 
           @Override

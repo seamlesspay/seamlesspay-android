@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
 import com.seamlesspay.api.exceptions.SeamlesspayException;
+import com.seamlesspay.api.interfaces.BaseAdjustListener;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
 import com.seamlesspay.api.interfaces.BaseVoidListener;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
@@ -72,6 +73,7 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
 
   private BaseChargeTokenCreatedListener mBaseChargeTokenCreatedListener;
   private BaseVoidListener mBaseVoidListener;
+  private BaseAdjustListener mBaseAdjustListener;
   private PaymentMethodTokenCreatedListener mPaymentMethodTokenCreatedListener;
   private RefundTokenCreatedListener mRefundTokenCreatedListener;
   private SeamlesspayCancelListener mCancelListener;
@@ -384,6 +386,11 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
           (BaseVoidListener) listener;
     }
 
+    if (listener instanceof BaseAdjustListener) {
+      mBaseAdjustListener =
+          (BaseAdjustListener) listener;
+    }
+
     if (listener instanceof SeamlesspayErrorListener) {
       mErrorListener = (SeamlesspayErrorListener) listener;
     }
@@ -417,6 +424,10 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
       mBaseVoidListener = null;
     }
 
+    if (listener instanceof BaseAdjustListener) {
+      mBaseAdjustListener = null;
+    }
+
     if (listener instanceof SeamlesspayErrorListener) {
       mErrorListener = null;
     }
@@ -446,6 +457,10 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
 
     if(mBaseVoidListener != null) {
       listeners.add(mBaseVoidListener);
+    }
+
+    if(mBaseAdjustListener != null) {
+      listeners.add(mBaseAdjustListener);
     }
 
     if (mErrorListener != null) {
@@ -541,6 +556,23 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
           @Override
           public void run() {
             mBaseVoidListener.onChargeVoided();
+          }
+        }
+    );
+  }
+
+  protected void postAdjustCallback() {
+    postOrQueueCallback(
+        new QueuedCallback() {
+
+          @Override
+          public boolean shouldRun() {
+            return mBaseAdjustListener != null;
+          }
+
+          @Override
+          public void run() {
+            mBaseAdjustListener.onChargeUpdated();
           }
         }
     );

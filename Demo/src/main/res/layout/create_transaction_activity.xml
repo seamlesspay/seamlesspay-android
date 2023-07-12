@@ -35,4 +35,13 @@
         android:onClick="deleteRequest"
         android:visibility="gone"
         android:textSize="12sp" />
+    <Button
+        style="?android:attr/buttonStyle"
+        android:id="@+id/btnAdjust"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/adjust_title"
+        android:onClick="adjustRequest"
+        android:visibility="gone"
+        android:textSize="12sp" />
 </LinearLayout>

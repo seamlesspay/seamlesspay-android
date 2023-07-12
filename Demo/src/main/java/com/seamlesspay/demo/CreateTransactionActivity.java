@@ -18,6 +18,7 @@ import androidx.appcompat.app.ActionBar;
 import com.seamlesspay.api.Transaction;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
+import com.seamlesspay.api.models.AdjustChargeBuilder;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.CardVerifyBuilder;
@@ -27,7 +28,7 @@ public class CreateTransactionActivity extends BaseActivity {
   public static final String EXTRA_PAYMENT_METHOD_TOKEN = "token";
   public static final String EXTRA_PAYMENT_METHOD = "method";
   private ProgressBar mLoadingSpinner;
-  private Button mDeleteButton;
+  private Button mDeleteButton, mAdjustButton;
   private Long mStartTime, mEndTime;
   private String mTransactionId;
 
@@ -64,6 +65,7 @@ public class CreateTransactionActivity extends BaseActivity {
       " s"
     );
     mDeleteButton.setVisibility(View.VISIBLE);
+    mAdjustButton.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -107,6 +109,7 @@ public class CreateTransactionActivity extends BaseActivity {
 
     mLoadingSpinner = findViewById(R.id.loading_spinner);
     mDeleteButton = findViewById(R.id.btnDelete);
+    mAdjustButton = findViewById(R.id.btnAdjust);
 
     setTitle(R.string.processing_transaction);
   }
@@ -166,8 +169,22 @@ public class CreateTransactionActivity extends BaseActivity {
     Transaction.delete(mSeamlesspayFragment, mTransactionId);
   }
 
+  public void adjustRequest(View v) {
+    AdjustChargeBuilder builder = new AdjustChargeBuilder()
+        .setAmount("100");
+
+    Transaction.adjust(mSeamlesspayFragment, mTransactionId, builder);
+  }
+
   @Override
   public void onChargeVoided() {
+    super.onChargeVoided();
     mDeleteButton.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void onChargeUpdated() {
+    super.onChargeUpdated();
+    mAdjustButton.setVisibility(View.GONE);
   }
 }
