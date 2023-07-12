@@ -28,7 +28,7 @@ public class CreateTransactionActivity extends BaseActivity {
   public static final String EXTRA_PAYMENT_METHOD_TOKEN = "token";
   public static final String EXTRA_PAYMENT_METHOD = "method";
   private ProgressBar mLoadingSpinner;
-  private Button mDeleteButton, mAdjustButton;
+  private Button mDeleteButton, mAdjustButton, mCaptureButton, mUncapture;
   private Long mStartTime, mEndTime;
   private String mTransactionId;
 
@@ -66,6 +66,8 @@ public class CreateTransactionActivity extends BaseActivity {
     );
     mDeleteButton.setVisibility(View.VISIBLE);
     mAdjustButton.setVisibility(View.VISIBLE);
+    mCaptureButton.setVisibility(View.VISIBLE);
+    mUncapture.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -110,6 +112,8 @@ public class CreateTransactionActivity extends BaseActivity {
     mLoadingSpinner = findViewById(R.id.loading_spinner);
     mDeleteButton = findViewById(R.id.btnDelete);
     mAdjustButton = findViewById(R.id.btnAdjust);
+    mCaptureButton = findViewById(R.id.btnCapture);
+    mUncapture = findViewById(R.id.btnUncapture);
 
     setTitle(R.string.processing_transaction);
   }
@@ -120,8 +124,7 @@ public class CreateTransactionActivity extends BaseActivity {
       .setCurrency(CardChargeBulder.Keys.CURRENCY_USD)
       .setCapture(true)
       .setToken(token.getToken())
-      .setDescription("Demo Android Client Charge")
-      .setCvv(token.getInfo());
+      .setDescription("Demo Android Client Charge");
 
     Transaction.create(mSeamlesspayFragment, chargeBulder);
   }
@@ -170,21 +173,20 @@ public class CreateTransactionActivity extends BaseActivity {
   }
 
   public void adjustRequest(View v) {
-    AdjustChargeBuilder builder = new AdjustChargeBuilder()
-        .setAmount("100");
+    Transaction.adjust(mSeamlesspayFragment, mTransactionId, "100");
+  }
 
-    Transaction.adjust(mSeamlesspayFragment, mTransactionId, builder);
+  public void captureRequest(View v) {
+    Transaction.capture(mSeamlesspayFragment, mTransactionId, true);
+  }
+
+  public void uncaptureRequest(View v) {
+    Transaction.capture(mSeamlesspayFragment, mTransactionId, false);
   }
 
   @Override
   public void onChargeVoided() {
     super.onChargeVoided();
     mDeleteButton.setVisibility(View.GONE);
-  }
-
-  @Override
-  public void onChargeUpdated() {
-    super.onChargeUpdated();
-    mAdjustButton.setVisibility(View.GONE);
   }
 }

@@ -90,12 +90,43 @@ public class Transaction {
   public static void adjust(
       final SeamlesspayFragment fragment,
       final String transactionId,
-      final AdjustChargeBuilder adjustChargeBuilder
+      final String amount
   ) {
+    AdjustChargeBuilder builder = new AdjustChargeBuilder()
+        .setAmount(amount);
+
     ChargeClient.adjust(
         fragment,
         transactionId,
-        adjustChargeBuilder,
+        builder,
+        new BaseAdjustCallback() {
+
+          @Override
+          public void success() {
+            fragment.postAdjustCallback();
+          }
+
+          @Override
+          public void failure(Exception exception) {
+            fragment.postCallback(exception);
+          }
+        }
+    );
+  }
+
+  public static void capture(
+      final SeamlesspayFragment fragment,
+      final String transactionId,
+      final Boolean capture
+  ) {
+
+    AdjustChargeBuilder builder = new AdjustChargeBuilder()
+        .setCapture(capture);
+
+    ChargeClient.adjust(
+        fragment,
+        transactionId,
+        builder,
         new BaseAdjustCallback() {
 
           @Override

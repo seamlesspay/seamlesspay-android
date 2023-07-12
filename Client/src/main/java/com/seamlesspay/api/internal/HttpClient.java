@@ -439,7 +439,7 @@ public class HttpClient<T extends HttpClient> {
         connection = init(mBaseUrl + path);
       }
 
-      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+      connection.setRequestProperty("Content-Type", "application/json");
       connection.setRequestMethod(METHOD_PUT);
       connection.setDoOutput(true);
 
@@ -452,7 +452,7 @@ public class HttpClient<T extends HttpClient> {
           headers += key + "    " + val + "\n";
         }
         Log.i("HTTP request headers:\n", headers);
-        Log.i("HTTP DELETE request:\n", "Path: " + mBaseUrl + path);
+        Log.i("HTTP PUT request:\n", "Path: " + mBaseUrl + path + "\n" + "Data: " + data);
       }
 
       writeOutputStream(connection.getOutputStream(), data);

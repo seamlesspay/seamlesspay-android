@@ -7,8 +7,10 @@ import org.json.JSONObject;
 
 public class AdjustChargeBuilder implements Parcelable {
 	protected static final String AMOUNT_KEY = "amount";
+	protected static final String CAPTURE_KEY = "capture";
 
 	private String mAmount;
+	private Boolean mCapture;
 
 	/**
 	 * @return String representation for API use.
@@ -17,7 +19,12 @@ public class AdjustChargeBuilder implements Parcelable {
 		JSONObject base = new JSONObject();
 
 		try {
-			base.put(AMOUNT_KEY, mAmount);
+			if (mAmount != null) {
+				base.put(AMOUNT_KEY, mAmount);
+			}
+			if (mCapture != null) {
+				base.put(CAPTURE_KEY, mCapture);
+			}
 		} catch (JSONException ignored) {}
 
 		return base.toString();
@@ -25,6 +32,12 @@ public class AdjustChargeBuilder implements Parcelable {
 
 	public AdjustChargeBuilder setAmount(String amount) {
 		mAmount = amount;
+
+		return this;
+	}
+
+	public AdjustChargeBuilder setCapture(Boolean capture) {
+		mCapture = capture;
 
 		return this;
 	}
