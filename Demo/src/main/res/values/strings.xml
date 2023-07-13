@@ -34,6 +34,9 @@
     <string name="transaction_failed">Transaction Failed</string>
     <string name="transaction_complete">Transaction Complete</string>
     <string name="void_title">Void</string>
+    <string name="adjust_title">Adjust</string>
+    <string name="capture_title">Capture</string>
+    <string name="uncapture_title">Uncapture</string>
     <string name="verify_title">Verify</string>
 
     <!-- Settings -->

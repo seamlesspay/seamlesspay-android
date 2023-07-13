@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import com.seamlesspay.api.Authorization;
 import com.seamlesspay.api.SeamlesspayFragment;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
+import com.seamlesspay.api.interfaces.BaseAdjustListener;
 import com.seamlesspay.api.interfaces.BaseChargeTokenCreatedListener;
 import com.seamlesspay.api.interfaces.BaseVoidListener;
 import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
@@ -43,6 +44,7 @@ public abstract class BaseActivity
     RefundTokenCreatedListener,
     BaseChargeTokenCreatedListener,
     BaseVoidListener,
+    BaseAdjustListener,
     SeamlesspayCancelListener,
     SeamlesspayErrorListener,
     ActionBar.OnNavigationListener {
@@ -106,6 +108,17 @@ public abstract class BaseActivity
     Log.d(
         getClass().getSimpleName(),
         "Charge Voided"
+    );
+  }
+
+  @CallSuper
+  @Override
+  public void onChargeUpdated() {
+    setProgressBarIndeterminateVisibility(true);
+
+    Log.d(
+        getClass().getSimpleName(),
+        "Charge Updated"
     );
   }
 

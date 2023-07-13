@@ -68,6 +68,7 @@ public class HttpClient<T extends HttpClient> {
   private static final String METHOD_GET = "GET";
   private static final String METHOD_POST = "POST";
   private static final String METHOD_DELETE = "DELETE";
+  private static final String METHOD_PUT = "PUT";
   private static final String UTF_8 = "UTF-8";
 
   //We should use only root Amazon Certificates
@@ -252,6 +253,45 @@ public class HttpClient<T extends HttpClient> {
   }
 
   /**
+   * Make a HTTP UPDATE request using the base url and path provided.
+   * If the path is a full url, it will be used instead of the
+   * previously provided url.
+   *
+   * @param path The URL to request from the server via HTTP UPDATE
+   * @param data The body of the POST request
+   * @param callback The {@link HttpResponseCallback} handler
+   */
+  public void update(
+      final String path,
+      final String data,
+      final HttpResponseCallback callback
+  ) {
+
+    if (path == null) {
+      postCallbackOnMainThread(
+          callback,
+          new IllegalArgumentException("Path cannot be null")
+      );
+
+      return;
+    }
+
+    mThreadPool.submit(
+        new Runnable() {
+
+          @Override
+          public void run() {
+            try {
+              postCallbackOnMainThread(callback, update(path,data));
+            } catch (Exception e) {
+              postCallbackOnMainThread(callback, e);
+            }
+          }
+        }
+    );
+  }
+
+  /**
    * Make a HTTP POST request using the base url and path provided.
    * If the path is a full url, it will be used instead of the
    * previously provided url.
@@ -370,6 +410,52 @@ public class HttpClient<T extends HttpClient> {
         Log.i("HTTP request headers:\n", headers);
         Log.i("HTTP DELETE request:\n", "Path: " + mBaseUrl + path);
       }
+
+      return parseResponse(connection);
+    } finally {
+      if (connection != null) {
+        connection.disconnect();
+      }
+    }
+  }
+
+  /**
+   * Performs a synchronous update request.
+   *
+   * @param path the path or url to request from the server via HTTP UPDATE
+   * @param data the body of the post request
+   * @return The HTTP body the of the response
+   *
+   * @see HttpClient#update(String, String, HttpResponseCallback)
+   * @throws Exception
+   */
+  public String update(String path, String data) throws Exception {
+    HttpURLConnection connection = null;
+
+    try {
+      if (path.startsWith("http")) {
+        connection = init(path);
+      } else {
+        connection = init(mBaseUrl + path);
+      }
+
+      connection.setRequestProperty("Content-Type", "application/json");
+      connection.setRequestMethod(METHOD_PUT);
+      connection.setDoOutput(true);
+
+      if (mBaseUrl.indexOf("sbx") != -1 || mBaseUrl.indexOf("dev") != -1) {
+        String headers = "";
+        Map<String, List<String>> headerFields = connection.getRequestProperties();
+        Set<String> keys = headerFields.keySet();
+        for (String key : keys) {
+          String val = connection.getRequestProperty(key);
+          headers += key + "    " + val + "\n";
+        }
+        Log.i("HTTP request headers:\n", headers);
+        Log.i("HTTP PUT request:\n", "Path: " + mBaseUrl + path + "\n" + "Data: " + data);
+      }
+
+      writeOutputStream(connection.getOutputStream(), data);
 
       return parseResponse(connection);
     } finally {
