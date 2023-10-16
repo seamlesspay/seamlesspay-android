@@ -21,6 +21,7 @@ public class CardVerifyBuilder implements Parcelable {
 	protected static final String CREDENTIAL_INDICATOR_KEY =
 			"credentialIndicator";
 	protected static final String TAX_EXEMPT_KEY = "taxExempt";
+	protected static final String CVV_KEY = "cvv";
 
 	private Boolean mTaxExempt = false;
 	private JSONObject mMetadata;
@@ -72,6 +73,10 @@ public class CardVerifyBuilder implements Parcelable {
 
 			if (mDescriptort != null) {
 				base.put(DESCRIPTOR_KEY, mDescriptort);
+			}
+
+			if (mCvv != null) {
+				base.put(CVV_KEY, mCvv);
 			}
 
 			if (mIdempotencyKey != null) {

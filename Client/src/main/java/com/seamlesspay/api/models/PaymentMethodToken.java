@@ -21,7 +21,7 @@ public abstract class PaymentMethodToken implements Parcelable {
   private static final String AVS_RESULT_KEY = "addressLine1";
   private static final String CVV_RESULT_KEY = "cvv";
   private static final String POSTAL_CODE_RESULT_KEY = "addressPostalCode";
-  private static final String LAST_FOUR_KEY = "lastfour";
+  private static final String LAST_FOUR_KEY = "lastFour";
   private static final String NAME_KEY = "name";
   private static final String TOKEN_KEY = "token";
   private static final String TXN_TYPE_KEY = "paymentType";
@@ -36,10 +36,14 @@ public abstract class PaymentMethodToken implements Parcelable {
   private String mTxnType;
 
   protected void fromJson(JSONObject json) throws JSONException {
-    mLastFour = json.getString(LAST_FOUR_KEY);
     mToken = json.getString(TOKEN_KEY);
     mTxnType = json.getString(TXN_TYPE_KEY);
 
+    try {
+      mLastFour = json.getString(LAST_FOUR_KEY);
+    } catch (JSONException ex) {
+      mLastFour = null;
+    }
     try {
       mName = json.getString(NAME_KEY);
     } catch (JSONException ex) {
