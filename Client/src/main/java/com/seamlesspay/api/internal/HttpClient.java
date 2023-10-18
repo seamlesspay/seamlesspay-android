@@ -77,7 +77,8 @@ public class HttpClient<T extends HttpClient> {
       "f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE=",
       "NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k=",
       "9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U=",
-      "KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I="
+      "KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I=",
+      "C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="
   };
   private static final Set<String> CERTIFICATE_SET = new HashSet<>(Arrays.asList(CERTIFICATE_KEY_VALUES));
 
@@ -504,10 +505,6 @@ public class HttpClient<T extends HttpClient> {
     throws Exception {
 
     int responseCode = connection.getResponseCode();
-
-    if (connection instanceof HttpsURLConnection) {
-      validatePinning((HttpsURLConnection)connection);
-    }
 
     boolean gzip = "gzip".equals(connection.getContentEncoding());
 
