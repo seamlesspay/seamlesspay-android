@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,12 +37,10 @@ import com.seamlesspay.cardform.OnCardFormSubmitListener;
 import com.seamlesspay.cardform.OnCardFormValidListener;
 import com.seamlesspay.cardform.R;
 import com.seamlesspay.cardform.utils.CardType;
-import com.seamlesspay.cardform.utils.ViewUtils;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 import io.sentry.Sentry;
 import io.sentry.SentryOptions;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -94,6 +91,7 @@ public class CardForm
   private PostalCodeEditText mPostalCode;
   private TextView mMobileNumberExplanation;
   private ImageView mCardIcon;
+  private TextView mDateSeparator;
 
   private boolean mCardNumberRequired;
   private boolean mCvvRequired;
@@ -154,6 +152,7 @@ public class CardForm
     mPostalCode = findViewById(R.id.bt_card_form_postal_code);
     mSaveCardCheckBox = findViewById(R.id.bt_card_form_save_card_checkbox);
     mCardIcon = findViewById(R.id.iv_card_icon);
+    mDateSeparator = findViewById(R.id.bt_card_form_date_divider);
 
     mVisibleEditTexts = new ArrayList<>();
 
@@ -824,6 +823,14 @@ public class CardForm
     if (hasFocus && mOnCardFormFieldFocusedListener != null) {
       mOnCardFormFieldFocusedListener.onCardFormFieldFocused(v);
     }
+    if (v instanceof ExpirationDateEditText) {
+      int text = getExpirationDateEditText().getText().length();
+      if (hasFocus) {
+        mDateSeparator.setVisibility(VISIBLE);
+      } else if (text == 0) {
+        mDateSeparator.setVisibility(GONE);
+      }
+    }
   }
 
   @Override
@@ -841,6 +848,14 @@ public class CardForm
       mValid = valid;
       if (mOnCardFormValidListener != null) {
         mOnCardFormValidListener.onCardFormValid(valid);
+      }
+    }
+    if (getExpirationDateEditText().isFocused()) {
+      int text = getExpirationDateEditText().getText().length();
+      if (text == 0) {
+        mDateSeparator.setText(R.string.bt_form_hint_pattern_expiration);
+      } else {
+        mDateSeparator.setText(R.string.bt_form_hint_pattern_expiration_empty);
       }
     }
   }

@@ -13,8 +13,8 @@ import android.graphics.Paint.FontMetricsInt;
 import android.text.style.ReplacementSpan;
 
 /**
- * A {@link android.text.style.ReplacementSpan} used for slashes in
- * {@link android.widget.EditText}. Adds ' / '
+ * A {@link android.text.style.ReplacementSpan} used for blank space slashes in
+ * {@link android.widget.EditText}
  */
 public class SlashSpan extends ReplacementSpan {
 
@@ -26,11 +26,10 @@ public class SlashSpan extends ReplacementSpan {
     int end,
     FontMetricsInt fm
   ) {
-    float padding = paint.measureText(" ", 0, 1) * 2;
-    float slash = paint.measureText("/", 0, 1);
+    float padding = paint.measureText(" ", 0, 1) * 7;
     float textSize = paint.measureText(text, start, end);
 
-    return (int) (padding + slash + textSize);
+    return (int) (padding + textSize);
   }
 
   @Override
@@ -45,6 +44,6 @@ public class SlashSpan extends ReplacementSpan {
     int bottom,
     Paint paint
   ) {
-    canvas.drawText(text.subSequence(start, end) + " / ", x, y, paint);
+    canvas.drawText(text.subSequence(start, end) + "   ", x, y, paint);
   }
 }
