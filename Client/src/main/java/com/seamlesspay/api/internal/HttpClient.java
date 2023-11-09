@@ -31,6 +31,7 @@ import com.seamlesspay.api.exceptions.UnexpectedException;
 import com.seamlesspay.api.exceptions.UnprocessableEntityException;
 import com.seamlesspay.api.exceptions.UpgradeRequiredException;
 import com.seamlesspay.api.interfaces.HttpResponseCallback;
+import io.sentry.Sentry;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -505,6 +506,15 @@ public class HttpClient<T extends HttpClient> {
     throws Exception {
 
     int responseCode = connection.getResponseCode();
+
+    if (connection instanceof HttpsURLConnection) {
+      try {
+        validatePinning((HttpsURLConnection)connection);
+      } catch (Exception exception) {
+        Sentry.captureException(exception);
+      }
+
+    }
 
     boolean gzip = "gzip".equals(connection.getContentEncoding());
 
