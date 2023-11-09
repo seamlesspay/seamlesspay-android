@@ -214,6 +214,7 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
     if (mContext == null) {
       mContext = getActivity().getApplicationContext();
     }
+    setUpSentry();
     mCrashReporter = CrashReporter.setup(this);
     mAuthorization = getArguments().getParcelable(EXTRA_AUTHORIZATION_TOKEN);
     mConfiguration =
