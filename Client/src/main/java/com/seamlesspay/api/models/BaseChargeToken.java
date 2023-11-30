@@ -71,12 +71,17 @@ public abstract class BaseChargeToken implements Parcelable {
     mAuthCode = json.getString(AUTHCODE_KEY);
     mMethod = json.getString(TXN_METHOD_KEY);
     mCurrency = json.getString(CURRENCY_KEY);
-    mIpAddress = json.getString(IP_ADDRESS_KEY);
     mToken = json.getString(TOKEN_KEY);
     mStatusDescription = json.getString(TXN_STATUS_DESCRIPTION_KEY);
     mStatusCode = json.getString(TXN_STATUSCODE_KEY);
     mStatus = json.getString(TXN_STATUS_KEY);
     mTxnDate = json.getString(TXN_DATE_KEY);
+
+    try {
+      mIpAddress = json.getString(IP_ADDRESS_KEY);
+    } catch (JSONException ex) {
+      mIpAddress = null;
+    }
 
     try {
       mPaymentNetwork = json.getString(PAYMENT_NETWORK_KEY);

@@ -24,7 +24,6 @@ import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardBuilder;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.CardToken;
-import com.seamlesspay.api.models.Configuration;
 import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.ui.view.CardInputWidget;
 

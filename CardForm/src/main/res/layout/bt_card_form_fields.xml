@@ -81,6 +81,7 @@
 						android:id="@+id/bt_card_form_expiration"
 						android:hint="@string/bt_form_hint_expiration"
 						style="@style/bt_card_form_field"
+						android:includeFontPadding="false"
 						android:textSize="16sp"
 						/>
 
@@ -90,7 +91,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="bottom"
-					android:layout_marginBottom="17dp"
+					android:layout_marginBottom="22dp"
 					android:layout_marginStart="5dp"
 					android:textSize="16sp"
 					android:visibility="gone"

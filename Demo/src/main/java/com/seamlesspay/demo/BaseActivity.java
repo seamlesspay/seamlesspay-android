@@ -181,7 +181,8 @@ public abstract class BaseActivity
       mAuthorization =
         Authorization.fromKeys(
           Settings.getEnvironmentName(this),
-          key
+          key,
+          this
         );
     } catch (InvalidArgumentException ex) {
       showDialog("An error occurred (" + ex.getMessage());
