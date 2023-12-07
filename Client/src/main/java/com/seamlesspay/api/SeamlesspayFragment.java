@@ -217,6 +217,9 @@ public class SeamlesspayFragment extends BrowserSwitchFragment {
     setUpSentry();
     mCrashReporter = CrashReporter.setup(this);
     mAuthorization = getArguments().getParcelable(EXTRA_AUTHORIZATION_TOKEN);
+    if (mAuthorization != null) {
+      mAuthorization.loadKeyStore(mContext);
+    }
     mConfiguration =
       Configuration.fromEnvironment(mAuthorization.getEnvironment());
 
