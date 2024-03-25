@@ -61,7 +61,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    implementation project(':Client')
+    implementation project(':sdk')
     //implementation 'com.seamlesspay.api:Client:1.0.7'
 
     implementation project(':CardForm')

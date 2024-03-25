@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.seamlesspay.api.internal;
+package com.seamlesspay.api.client;
 
 import static java.net.HttpURLConnection.HTTP_ACCEPTED;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
@@ -22,15 +22,6 @@ import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 
-import com.seamlesspay.api.exceptions.AuthenticationException;
-import com.seamlesspay.api.exceptions.AuthorizationException;
-import com.seamlesspay.api.exceptions.DownForMaintenanceException;
-import com.seamlesspay.api.exceptions.RateLimitException;
-import com.seamlesspay.api.exceptions.ServerException;
-import com.seamlesspay.api.exceptions.UnexpectedException;
-import com.seamlesspay.api.exceptions.UnprocessableEntityException;
-import com.seamlesspay.api.exceptions.UpgradeRequiredException;
-import com.seamlesspay.api.interfaces.HttpResponseCallback;
 import io.sentry.Sentry;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,6 +55,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import com.seamlesspay.api.exceptions.*;
+import com.seamlesspay.api.interfaces.*;
 
 public class HttpClient<T extends HttpClient> {
   private static final String METHOD_GET = "GET";

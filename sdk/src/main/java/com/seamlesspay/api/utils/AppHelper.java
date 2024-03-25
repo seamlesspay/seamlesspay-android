@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.seamlesspay.api.internal;
+package com.seamlesspay.api.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -41,31 +41,22 @@ public class AppHelper {
     return activities != null && activities.size() == 1;
   }
 
-  public static String getDeviceFingerprint(Context context) {
+  public static String getDeviceFingerprint() {
     Integer screenHeight = AppHelper.getScreenHeight();
     Integer screenWidth = AppHelper.getScreenWidth();
-    String appName = AppHelper.getAppName(context);
     String deviceModel = AppHelper.DeviceModel();
     String deviceRooted = AppHelper.isDeviceRooted();
     String deviceSoftwareVersion = AppHelper.DeviceSoftwareVersion();
     String timeZone = AppHelper.getTimezone();
-    String uniqueID = AppHelper.uniqueID(context);
-
     String jsonString =
       "{\"fingerprint\":\"" +
-      uniqueID +
+      Build.FINGERPRINT +
       "\"," +
       "\"components\":[" +
       "{\"key\":\"user_agent\", \"value\":\"" + Configuration.getApiUserAgent() + "\"}," +
       "{\"key\":\"language\", \"value\":\"en-US\"}," +
       "{\"key\":\"model\", \"value\":\"" +
       deviceModel +
-      "\"}," +
-      "{\"key\":\"merchant_app_id\", \"value\":\"" +
-      context.getPackageName() +
-      "\"}," +
-      "{\"key\":\"merchant_app_name\", \"value\":\"" +
-      appName +
       "\"}," +
       "{\"key\":\"device_rooted\", \"value\":\"" +
       deviceRooted +

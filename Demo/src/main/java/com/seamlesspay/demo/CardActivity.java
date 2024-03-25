@@ -14,11 +14,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.seamlesspay.api.Token;
-import com.seamlesspay.api.SeamlesspayFragment;
+import com.seamlesspay.api.client.ApiClient;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
-import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
-import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCallback;
 import com.seamlesspay.api.models.CardBuilder;
 import com.seamlesspay.api.models.CardToken;
 import com.seamlesspay.api.models.Configuration;
@@ -31,12 +29,7 @@ import com.seamlesspay.cardform.view.CardForm;
 import com.seamlesspay.cardform.view.ExpirationDateEditText;
 
 public class CardActivity
-  extends BaseActivity
-  implements
-    PaymentMethodTokenCreatedListener,
-    SeamlesspayErrorListener,
-    OnCardFormSubmitListener,
-    OnCardFormFieldFocusedListener {
+  extends BaseActivity implements OnCardFormSubmitListener, OnCardFormFieldFocusedListener {
   private Button mPurchaseButton;
   private CardForm mCardForm;
   private CardType mCardType;
@@ -89,19 +82,9 @@ public class CardActivity
 
   @Override
   protected void onAuthorizationFetched() {
-    try {
-      mSeamlesspayFragment =
-        SeamlesspayFragment.newInstance(this, mAuthorization);
-    } catch (InvalidArgumentException e) {
-      onError(e);
-    }
-
+    mApiClient =
+        ApiClient.Companion.newInstance(mAuthorization);
     mPurchaseButton.setEnabled(true);
-  }
-
-  @Override
-  public void onError(Exception error) {
-    super.onError(error);
   }
 
   @Override
@@ -113,7 +96,7 @@ public class CardActivity
 
   @Override
   public void onCardFormFieldFocused(View field) {
-    if (mSeamlesspayFragment == null) {
+    if (mApiClient == null) {
       return;
     }
 
@@ -145,30 +128,32 @@ public class CardActivity
       .billingZip(mCardForm.getPostalCode())
       .cvv(mCardForm.getCvv());
 
-    Token.tokenize(mSeamlesspayFragment, cardBuilder);
+    mApiClient.tokenize(cardBuilder, new PaymentMethodTokenCallback() {
+      @Override
+      public void success(PaymentMethodToken paymentMethodToken) {
+        mEndTime = System.currentTimeMillis();
+
+        long timeElapsed = mEndTime - mStartTime;
+
+        paymentMethodToken.setInfo(mCardForm.getCvv());
+
+        Intent intent = new Intent()
+            .putExtra(MainActivity.EXTRA_PAYMENT_RESULT, paymentMethodToken)
+            .putExtra(MainActivity.EXTRA_TIMER_RESULT, timeElapsed);
+
+        setResult(RESULT_OK, intent);
+        finish();
+      }
+
+      @Override
+      public void failure(Exception exception) {
+        onError(exception);
+      }
+    });
 
     mStartTime = System.currentTimeMillis();
   }
 
-  @Override
-  public void onPaymentMethodTokenCreated(
-    PaymentMethodToken paymentMethodToken
-  ) {
-    super.onPaymentMethodTokenCreated(paymentMethodToken);
-
-    mEndTime = System.currentTimeMillis();
-
-    long timeElapsed = mEndTime - mStartTime;
-
-    paymentMethodToken.setInfo(mCardForm.getCvv());
-
-    Intent intent = new Intent()
-      .putExtra(MainActivity.EXTRA_PAYMENT_RESULT, paymentMethodToken)
-      .putExtra(MainActivity.EXTRA_TIMER_RESULT, timeElapsed);
-
-    setResult(RESULT_OK, intent);
-    finish();
-  }
 
   private void safelyCloseLoadingView() {
     if (mLoading != null && mLoading.isShowing()) {

@@ -14,14 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Settings {
-  private static final String SANDBOX_TOKENIZATION_KEY =
-    "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
-  private static final String STAGING_TOKENIZATION_KEY =
-      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
-  private static final String QAT_TOKENIZATION_KEY =
-      "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
-  private static final String PRODUCTION_TOKENIZATION_KEY =
-    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
 
   private static final String SANDBOX_SECRET_KEY =
     "sk_XXXXXXXXXXXXXXXXXXXXXXXXXX";
@@ -67,21 +59,6 @@ public class Settings {
         return "QAT";
       default:
         return "production";
-    }
-  }
-
-  public static String getEnvironmentTokenizationKey(Context context) {
-    int environment = getEnvironment(context);
-
-    switch (environment) {
-      case 0:
-        return SANDBOX_TOKENIZATION_KEY;
-      case 1:
-        return STAGING_TOKENIZATION_KEY;
-      case 2:
-        return QAT_TOKENIZATION_KEY;
-      default:
-        return PRODUCTION_TOKENIZATION_KEY;
     }
   }
 
