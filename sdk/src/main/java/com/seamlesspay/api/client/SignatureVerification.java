@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.seamlesspay.api.internal;
+package com.seamlesspay.api.client;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

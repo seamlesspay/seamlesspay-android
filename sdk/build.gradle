@@ -27,14 +27,6 @@ android {
   kotlinOptions {
     jvmTarget = '1.8'
   }
-
-  sourceSets {
-    main {
-      manifest.srcFile 'AndroidManifest.xml'
-      res.srcDirs = ['res']
-      assets.srcDirs = ['assets']
-    }
-  }
 }
 
 dependencies {
@@ -48,6 +40,7 @@ dependencies {
   implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
   implementation 'com.google.android.material:material:1.0.0'
   implementation "javax.annotation:jsr250-api:1.0"
+  implementation 'io.sentry:sentry:6.6.0'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"

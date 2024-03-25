@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.seamlesspay.api.internal;
+package com.seamlesspay.api.utils;
 
 import java.lang.reflect.Field;
 

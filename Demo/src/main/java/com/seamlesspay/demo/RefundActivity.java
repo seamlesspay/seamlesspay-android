@@ -13,9 +13,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import com.seamlesspay.api.SeamlesspayFragment;
-import com.seamlesspay.api.Transaction;
-import com.seamlesspay.api.exceptions.InvalidArgumentException;
+import com.seamlesspay.api.client.ApiClient;
+import com.seamlesspay.api.interfaces.RefundTokenCallback;
 import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.api.models.RefundBuilder;
 import com.seamlesspay.api.models.RefundToken;
@@ -31,45 +30,14 @@ public class RefundActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void reset() {}
-
-	@Override
-	public void onRefundTokenCreated(RefundToken refundToken) {
-		super.onRefundTokenCreated(refundToken);
-
-		mEndTime = System.currentTimeMillis();
-
-		long timeElapsed = mEndTime - mStartTime;
-
-		setStatus(R.string.transaction_complete);
-		setMessage(
-				"Amount: " +
-						refundToken.getAmount() +
-						"\nStatus: " +
-						refundToken.getStatus() +
-						"\nStatus message: " +
-						refundToken.getStatusDescription() +
-						"\ntxnID #: " +
-						refundToken.getId() +
-						"\nRefund runtime : " +
-						((float) timeElapsed / 1000) +
-						" s"
-		);
+	protected void reset() {
 	}
 
 	@Override
 	protected void onAuthorizationFetched() {
-		try {
-			mSeamlesspayFragment =
-					SeamlesspayFragment.newInstance(this, mAuthorization);
-		} catch (InvalidArgumentException e) {
-			onError(e);
-		}
+		mApiClient = ApiClient.Companion.newInstance(mAuthorization);
 
-		createRefund(
-				(PaymentMethodToken) getIntent()
-						.getParcelableExtra(EXTRA_PAYMENT_METHOD_TOKEN)
-		);
+		createRefund((PaymentMethodToken) getIntent().getParcelableExtra(EXTRA_PAYMENT_METHOD_TOKEN));
 
 		mStartTime = System.currentTimeMillis();
 	}
@@ -98,13 +66,36 @@ public class RefundActivity extends BaseActivity {
 	}
 
 	private void createRefund(PaymentMethodToken token) {
-		RefundBuilder refundBuilder = new RefundBuilder()
-				.setAmount("1")
-				.setCurrency(RefundBuilder.Keys.CURRENCY_USD)
-				.setToken(token.getToken())
-				.setDescriptor("Demo Android Client Refund");
+		RefundBuilder refundBuilder = new RefundBuilder().setAmount("1")
+		                                                 .setCurrency(RefundBuilder.Keys.CURRENCY_USD)
+		                                                 .setToken(token.getToken())
+		                                                 .setDescriptor("Demo Android Client Refund");
+		mApiClient.refund(refundBuilder, new RefundTokenCallback() {
+			@Override
+			public void success(RefundToken refundToken) {
+				mEndTime = System.currentTimeMillis();
 
-		Transaction.create(mSeamlesspayFragment, refundBuilder);
+				long timeElapsed = mEndTime - mStartTime;
+
+				setStatus(R.string.transaction_complete);
+				setMessage("Amount: "
+						+ refundToken.getAmount()
+						+ "\nStatus: "
+						+ refundToken.getStatus()
+						+ "\nStatus message: "
+						+ refundToken.getStatusDescription()
+						+ "\ntxnID #: "
+						+ refundToken.getId()
+						+ "\nRefund runtime : "
+						+ ((float) timeElapsed / 1000)
+						+ " s");
+			}
+
+			@Override
+			public void failure(Exception exception) {
+				onError(exception);
+			}
+		});
 	}
 
 	private void setStatus(int message) {

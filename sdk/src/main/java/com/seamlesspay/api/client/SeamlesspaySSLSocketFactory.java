@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.seamlesspay.api.internal;
+package com.seamlesspay.api.client;
 
 import java.io.IOException;
 import java.net.InetAddress;

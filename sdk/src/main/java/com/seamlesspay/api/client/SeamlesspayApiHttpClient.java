@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.seamlesspay.api.internal;
+package com.seamlesspay.api.client;
 
 import android.text.TextUtils;
+
 import com.seamlesspay.api.exceptions.SeamlesspayApiErrorResponse;
 import com.seamlesspay.api.exceptions.UnprocessableEntityException;
 import com.seamlesspay.api.models.Configuration;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
