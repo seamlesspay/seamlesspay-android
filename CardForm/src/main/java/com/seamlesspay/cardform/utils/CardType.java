@@ -52,19 +52,8 @@ public enum CardType {
     19,
     3,
     "CVC",
-    "^6\\d*"
-  ),
-  UNIONPAY("^62\\d*", R.drawable.bt_ic_unionpay, 16, 19, 3, "CVN", null),
-  HIPER(
-    "^637(095|568|599|609|612)\\d*",
-    R.drawable.bt_ic_hiper,
-    16,
-    16,
-    3,
-    "CVC",
     null
   ),
-  HIPERCARD("^606282\\d*", R.drawable.bt_ic_hipercard, 16, 16, 3, "CVC", null),
   UNKNOWN("\\d+", R.drawable.bt_ic_unknown, 12, 19, 3, "CVV", null),
   EMPTY("^$", R.drawable.bt_ic_unknown, 12, 19, 3, "CVV", null);
 

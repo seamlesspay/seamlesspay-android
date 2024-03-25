@@ -5,14 +5,17 @@ apply plugin: 'checkstyle'
 // make sure this line comes *after* you apply the Android plugin
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 assemble.dependsOn('lint')
 
 version '1.0.1'
 
-configurations {
-    javadocDeps
-}
+//configurations {
+//    javadocDeps
+//}
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -37,6 +40,8 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
 
+    implementation 'io.sentry:sentry:6.6.0'
+
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -46,13 +51,12 @@ dependencies {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-    defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion rootProject.ext.compileSdkVersion
-        consumerProguardFiles 'proguard-rules.txt'
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 101
+        versionName version
     }
     sourceSets {
         main {
@@ -60,61 +64,7 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
-        test {
-
-        }
-    }
-    testOptions {
-        unitTests {
-            // Note: without this, all Robolectric tests using BuildConfig will fail.
-            includeAndroidResources = true
-        }
-    }
-    productFlavors {
-    }
-
-    lintOptions {
-        enable "Interoperability"
-    }
-
-    dokka {
-        outputFormat = 'javadoc'
-        outputDirectory = "${project.rootDir}/docs/"
     }
 }
 
-androidExtensions {
-    experimental = true
-}
-
-tasks.withType(Javadoc).all {
-    enabled = false
-}
-
-//ext {
-//    bintrayRepo = 'maven'
-//    bintrayName = 'singlefield'
-//
-//    publishedGroupId = 'com.seamlesspay.ui'
-//    libraryName = 'Singlefield'
-//    artifact = 'Singlefield'
-//
-//    libraryDescription = 'Singlefield widget drop-in UI component provided by the SDK.'
-//
-//    siteUrl = 'https://github.com/seamlesspay/seamlesspay-android'
-//    gitUrl = 'https://github.com/seamlesspay/seamlesspay-android'
-//
-//    libraryVersion = '1.0.1'
-//
-//    developerId = 'seamlesspay'
-//    developerName = 'Seamless Payments'
-//    developerEmail = 'info@seamlesspay.com'
-//
-//    licenseName = 'Copyright © 2020 Seamless Payments, Inc. All rights reserved.'
-//    licenseUrl = 'https://github.com/seamlesspay/seamlesspay-android/LICENSE'
-//    allLicenses = ["MIT"]
-//}
-//
-//
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply from: 'maven-push.gradle'

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+    <com.seamlesspay.ui.view.IconTextInputLayout
+        android:id="@+id/tl_card_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/acc_label_card_number"
+        android:layout_marginTop="@dimen/seamlesspay_add_card_element_vertical_margin"
+        >
+
+        <com.seamlesspay.ui.view.CardNumberEditText
+            android:id="@+id/et_card_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="@string/valid_digits"
+            android:drawablePadding="@dimen/seamlesspay_card_icon_multiline_padding"
+            android:drawableStart="@drawable/seamlesspay_ic_unknown"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:nextFocusDown="@+id/et_expiry"
+            android:nextFocusForward="@+id/et_expiry"
+            />
+
+    </com.seamlesspay.ui.view.IconTextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/second_row_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/seamlesspay_add_card_element_vertical_margin"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        >
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_expiry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/seamlesspay_add_card_expiry_middle_margin"
+            android:layout_weight="1"
+            android:hint="@string/acc_label_expiry_date"
+            >
+
+            <com.seamlesspay.ui.view.ExpiryDateEditText
+                android:id="@+id/et_expiry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="date"
+                android:maxLength="@integer/seamlesspay_date_length"
+                android:nextFocusDown="@+id/et_cvc"
+                android:nextFocusForward="@+id/et_cvc"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_cvc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/seamlesspay_add_card_expiry_middle_margin"
+            android:layout_weight="1"
+            >
+
+            <com.seamlesspay.ui.view.CvcEditText
+                android:id="@+id/et_cvc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/et_postal_code"
+                android:nextFocusForward="@+id/et_postal_code"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_postal_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+
+            <com.seamlesspay.ui.view.PostalCodeEditText
+                android:id="@+id/et_postal_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</merge>

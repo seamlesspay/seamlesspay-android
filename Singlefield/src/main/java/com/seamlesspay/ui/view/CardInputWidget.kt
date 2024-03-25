@@ -32,6 +32,7 @@ import com.seamlesspay.ui.model.CardBrand
 import com.seamlesspay.ui.view.CardInputListener.FocusField.Companion.FOCUS_CARD
 import com.seamlesspay.ui.view.CardInputListener.FocusField.Companion.FOCUS_CVC
 import com.seamlesspay.ui.view.CardInputListener.FocusField.Companion.FOCUS_EXPIRY
+import io.sentry.Sentry
 
 /**
  * A card input widget that handles all animation on its own.
@@ -160,11 +161,12 @@ class CardInputWidget @JvmOverloads constructor(
         }
 
     init {
-        View.inflate(getContext(), R.layout.card_input_widget, this)
+        setUpSentry()
+        inflate(getContext(), R.layout.card_input_widget, this)
 
         // This ensures that onRestoreInstanceState is called
         // during rotations.
-        if (id == View.NO_ID) {
+        if (id == NO_ID) {
             id = DEFAULT_READER_ID
         }
 
@@ -191,8 +193,16 @@ class CardInputWidget @JvmOverloads constructor(
         standardFields = listOf(
             cardNumberEditText, cvcNumberEditText, expiryDateEditText
         )
-
         initView(attrs)
+    }
+
+    private fun setUpSentry() {
+        Sentry.init {
+            it.dsn = "https://f3ca34981162465cabb2783483179ae9@o4504125304209408.ingest.sentry.io/4504140012584960"
+        }
+        Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
+            Sentry.captureException(throwable)
+        }
     }
 
     /**
@@ -374,12 +384,12 @@ class CardInputWidget @JvmOverloads constructor(
     private fun updatePostalCodeEditText(isEnabled: Boolean) {
         if (isEnabled) {
             postalCodeEditText.isEnabled = true
-            postalCodeTextInputLayout.visibility = View.VISIBLE
+            postalCodeTextInputLayout.visibility = VISIBLE
 
             cvcNumberEditText.imeOptions = EditorInfo.IME_ACTION_NEXT
         } else {
             postalCodeEditText.isEnabled = false
-            postalCodeTextInputLayout.visibility = View.GONE
+            postalCodeTextInputLayout.visibility = GONE
 
             cvcNumberEditText.imeOptions = EditorInfo.IME_ACTION_DONE
         }
@@ -516,10 +526,10 @@ class CardInputWidget @JvmOverloads constructor(
         attrs?.let { applyAttributes(it) }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            cardNumberEditText.setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_NUMBER)
-            expiryDateEditText.setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE)
-            cvcNumberEditText.setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_SECURITY_CODE)
-            postalCodeEditText.setAutofillHints(View.AUTOFILL_HINT_POSTAL_CODE)
+            cardNumberEditText.setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER)
+            expiryDateEditText.setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE)
+            cvcNumberEditText.setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_SECURITY_CODE)
+            postalCodeEditText.setAutofillHints(AUTOFILL_HINT_POSTAL_CODE)
         }
 
         ViewCompat.setAccessibilityDelegate(

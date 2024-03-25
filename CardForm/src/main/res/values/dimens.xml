@@ -15,4 +15,8 @@
     <dimen name="bt_expiration_date_item_selected_background_radius">2dp</dimen>
 
     <dimen name="bt_save_card_checkbox_left_margin">-7dp</dimen>
+
+    <!-- Card Icon Size -->
+    <dimen name="card_icon_width">32dp</dimen>
+    <dimen name="card_icon_height">21dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Seamless Payments, Inc.
  *
  * This source code is licensed under the MIT license found in the
@@ -10,21 +10,26 @@ package com.seamlesspay.demo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
-import com.seamlesspay.api.Charge;
-import com.seamlesspay.api.SeamlesspayFragment;
-import com.seamlesspay.api.exceptions.InvalidArgumentException;
+import com.seamlesspay.api.client.ApiClient;
+import com.seamlesspay.api.interfaces.BaseAdjustCallback;
+import com.seamlesspay.api.interfaces.BaseChargeTokenCallback;
+import com.seamlesspay.api.interfaces.BaseVoidCallback;
+import com.seamlesspay.api.models.AdjustChargeBuilder;
 import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.PaymentMethodToken;
-import com.seamlesspay.demo.R;
 
 public class CreateTransactionActivity extends BaseActivity {
   public static final String EXTRA_PAYMENT_METHOD_TOKEN = "token";
+  public static final String EXTRA_PAYMENT_METHOD = "method";
   private ProgressBar mLoadingSpinner;
+  private Button mDeleteButton, mAdjustButton, mCaptureButton, mUncapture;
   private Long mStartTime, mEndTime;
+  private String mTransactionId;
 
   @Override
   protected void onResume() {
@@ -35,42 +40,10 @@ public class CreateTransactionActivity extends BaseActivity {
   protected void reset() {}
 
   @Override
-  public void onBaseChargeTokenCreated(BaseChargeToken chargeToken) {
-    super.onBaseChargeTokenCreated(chargeToken);
-
-    mEndTime = System.currentTimeMillis();
-
-    long timeElapsed = mEndTime - mStartTime;
-
-    setStatus(R.string.transaction_complete);
-    setMessage(
-      "Amount: " +
-      chargeToken.getAmount() +
-      "\nStatus: " +
-      chargeToken.getStatus() +
-      "\nStatus message: " +
-      chargeToken.getStatusDescription() +
-      "\ntxnID #: " +
-      chargeToken.getChargeId() +
-      "\nCharge runtime : " +
-      ((float) timeElapsed / 1000) +
-      " s"
-    );
-  }
-
-  @Override
   protected void onAuthorizationFetched() {
-    try {
-      mSeamlesspayFragment =
-        SeamlesspayFragment.newInstance(this, mAuthorization);
-    } catch (InvalidArgumentException e) {
-      onError(e);
-    }
-
-    crateCharge(
-      (PaymentMethodToken) getIntent()
-        .getParcelableExtra(EXTRA_PAYMENT_METHOD_TOKEN)
-    );
+    mApiClient = ApiClient.Companion.newInstance(mAuthorization);
+    PaymentMethodToken method = (PaymentMethodToken) getIntent().getParcelableExtra(EXTRA_PAYMENT_METHOD_TOKEN);
+    crateCharge(method);
 
     mStartTime = System.currentTimeMillis();
   }
@@ -94,6 +67,10 @@ public class CreateTransactionActivity extends BaseActivity {
     }
 
     mLoadingSpinner = findViewById(R.id.loading_spinner);
+    mDeleteButton = findViewById(R.id.btnDelete);
+    mAdjustButton = findViewById(R.id.btnAdjust);
+    mCaptureButton = findViewById(R.id.btnCapture);
+    mUncapture = findViewById(R.id.btnUncapture);
 
     setTitle(R.string.processing_transaction);
   }
@@ -104,10 +81,42 @@ public class CreateTransactionActivity extends BaseActivity {
       .setCurrency(CardChargeBulder.Keys.CURRENCY_USD)
       .setCapture(true)
       .setToken(token.getToken())
-      .setDescription("Demo Android Client Charge")
-      .setCvv(token.getInfo());
+      .setDescription("Demo Android Client Charge");
 
-    Charge.create(mSeamlesspayFragment, chargeBulder);
+    mApiClient.charge(chargeBulder, new BaseChargeTokenCallback() {
+      @Override
+      public void success(BaseChargeToken baseChargedToken) {
+        mEndTime = System.currentTimeMillis();
+
+        long timeElapsed = mEndTime - mStartTime;
+
+        mTransactionId = baseChargedToken.getChargeId();
+
+        setStatus(R.string.transaction_complete);
+        setMessage(
+            "Amount: " +
+                baseChargedToken.getAmount() +
+                "\nStatus: " +
+                baseChargedToken.getStatus() +
+                "\nStatus message: " +
+                baseChargedToken.getStatusDescription() +
+                "\ntxnID #: " +
+                baseChargedToken.getChargeId() +
+                "\nTransaction runtime : " +
+                ((float) timeElapsed / 1000) +
+                " s"
+        );
+        mDeleteButton.setVisibility(View.VISIBLE);
+        mAdjustButton.setVisibility(View.VISIBLE);
+        mCaptureButton.setVisibility(View.VISIBLE);
+        mUncapture.setVisibility(View.VISIBLE);
+      }
+
+      @Override
+      public void failure(Exception exception) {
+        onError(exception);
+      }
+    });
   }
 
   private void setStatus(int message) {
@@ -138,5 +147,51 @@ public class CreateTransactionActivity extends BaseActivity {
     }
 
     return false;
+  }
+
+  public void deleteRequest(View v) {
+    mApiClient.voidCharge(mTransactionId, new BaseVoidCallback() {
+      @Override
+      public void success() {
+        mDeleteButton.setVisibility(View.GONE);
+      }
+
+      @Override
+      public void failure(Exception exception) {
+        onError(exception);
+      }
+    });
+  }
+
+  public void adjustRequest(View v) {
+    AdjustChargeBuilder builder = new AdjustChargeBuilder()
+        .setAmount("100");
+    adjust(builder);
+  }
+
+  public void captureRequest(View v) {
+    AdjustChargeBuilder builder = new AdjustChargeBuilder()
+        .setCapture(true);
+    adjust(builder);
+  }
+
+  public void uncaptureRequest(View v) {
+    AdjustChargeBuilder builder = new AdjustChargeBuilder()
+        .setCapture(false);
+    adjust(builder);
+  }
+
+  private void adjust(AdjustChargeBuilder builder) {
+    mApiClient.adjustCharge(builder, mTransactionId, new BaseAdjustCallback() {
+      @Override
+      public void success() {
+        //Nothing to do
+      }
+
+      @Override
+      public void failure(Exception exception) {
+        onError(exception);
+      }
+    });
   }
 }

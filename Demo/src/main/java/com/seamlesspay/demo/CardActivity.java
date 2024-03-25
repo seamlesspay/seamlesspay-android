@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Seamless Payments, Inc.
  *
  * This source code is licensed under the MIT license found in the
@@ -14,11 +14,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.seamlesspay.api.PanVault;
-import com.seamlesspay.api.SeamlesspayFragment;
+import com.seamlesspay.api.client.ApiClient;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
-import com.seamlesspay.api.interfaces.PaymentMethodTokenCreatedListener;
-import com.seamlesspay.api.interfaces.SeamlesspayErrorListener;
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCallback;
 import com.seamlesspay.api.models.CardBuilder;
 import com.seamlesspay.api.models.CardToken;
 import com.seamlesspay.api.models.Configuration;
@@ -28,19 +26,14 @@ import com.seamlesspay.cardform.OnCardFormSubmitListener;
 import com.seamlesspay.cardform.utils.CardType;
 import com.seamlesspay.cardform.view.CardEditText;
 import com.seamlesspay.cardform.view.CardForm;
-import com.seamlesspay.demo.R;
-import java.util.concurrent.TimeUnit;
+import com.seamlesspay.cardform.view.ExpirationDateEditText;
 
 public class CardActivity
-  extends BaseActivity
-  implements
-    PaymentMethodTokenCreatedListener,
-    SeamlesspayErrorListener,
-    OnCardFormSubmitListener,
-    OnCardFormFieldFocusedListener {
+  extends BaseActivity implements OnCardFormSubmitListener, OnCardFormFieldFocusedListener {
   private Button mPurchaseButton;
   private CardForm mCardForm;
   private CardType mCardType;
+  private ExpirationDateEditText mExpDate;
   private Configuration mConfiguration;
   private Long mStartTime, mEndTime;
   private ProgressDialog mLoading;
@@ -58,7 +51,7 @@ public class CardActivity
     mCardForm.setOnCardFormSubmitListener(this);
 
     mPurchaseButton = findViewById(R.id.purchase_button);
-
+    mExpDate = findViewById(R.id.bt_card_form_expiration);
     mCardForm
       .cardRequired(true)
       .expirationRequired(true)
@@ -67,6 +60,7 @@ public class CardActivity
       .mobileNumberRequired(false)
       .actionLabel(getString(R.string.purchase))
       .setup(this);
+    mExpDate.useDialogForExpirationDateEntry(this, false);
   }
 
   @Override
@@ -88,19 +82,9 @@ public class CardActivity
 
   @Override
   protected void onAuthorizationFetched() {
-    try {
-      mSeamlesspayFragment =
-        SeamlesspayFragment.newInstance(this, mAuthorization);
-    } catch (InvalidArgumentException e) {
-      onError(e);
-    }
-
+    mApiClient =
+        ApiClient.Companion.newInstance(mAuthorization);
     mPurchaseButton.setEnabled(true);
-  }
-
-  @Override
-  public void onError(Exception error) {
-    super.onError(error);
   }
 
   @Override
@@ -112,7 +96,7 @@ public class CardActivity
 
   @Override
   public void onCardFormFieldFocused(View field) {
-    if (mSeamlesspayFragment == null) {
+    if (mApiClient == null) {
       return;
     }
 
@@ -142,33 +126,34 @@ public class CardActivity
       .expirationYear(mCardForm.getExpirationYear())
       .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
       .billingZip(mCardForm.getPostalCode())
-      .cvv(mCardForm.getCvv())
-      .verification(true);
+      .cvv(mCardForm.getCvv());
 
-    PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
+    mApiClient.tokenize(cardBuilder, new PaymentMethodTokenCallback() {
+      @Override
+      public void success(PaymentMethodToken paymentMethodToken) {
+        mEndTime = System.currentTimeMillis();
+
+        long timeElapsed = mEndTime - mStartTime;
+
+        paymentMethodToken.setInfo(mCardForm.getCvv());
+
+        Intent intent = new Intent()
+            .putExtra(MainActivity.EXTRA_PAYMENT_RESULT, paymentMethodToken)
+            .putExtra(MainActivity.EXTRA_TIMER_RESULT, timeElapsed);
+
+        setResult(RESULT_OK, intent);
+        finish();
+      }
+
+      @Override
+      public void failure(Exception exception) {
+        onError(exception);
+      }
+    });
 
     mStartTime = System.currentTimeMillis();
   }
 
-  @Override
-  public void onPaymentMethodTokenCreated(
-    PaymentMethodToken paymentMethodToken
-  ) {
-    super.onPaymentMethodTokenCreated(paymentMethodToken);
-
-    mEndTime = System.currentTimeMillis();
-
-    long timeElapsed = mEndTime - mStartTime;
-
-    paymentMethodToken.setInfo(mCardForm.getCvv());
-
-    Intent intent = new Intent()
-      .putExtra(MainActivity.EXTRA_PAYMENT_RESULT, paymentMethodToken)
-      .putExtra(MainActivity.EXTRA_TIMER_RESULT, timeElapsed);
-
-    setResult(RESULT_OK, intent);
-    finish();
-  }
 
   private void safelyCloseLoadingView() {
     if (mLoading != null && mLoading.isShowing()) {
@@ -184,12 +169,6 @@ public class CardActivity
       token.getToken() +
       "\nExpDate: " +
       token.getExpirationDate() +
-      (token.getVerificationResult() != null ? "\nVerificationResult: " : "") +
-      (
-        token.getVerificationResult() != null
-          ? token.getVerificationResult()
-          : ""
-      ) +
       "\nTokenization runtime : " +
       ((float) timeElapsed / 1000) +
       " s"

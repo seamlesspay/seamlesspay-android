@@ -58,7 +58,7 @@ public class ExpirationDateEditText
   private void init() {
     setInputType(InputType.TYPE_CLASS_NUMBER);
 
-    InputFilter[] filters = { new LengthFilter(6) };
+    InputFilter[] filters = { new LengthFilter(4) };
 
     setFilters(filters);
     addTextChangedListener(this);
@@ -216,8 +216,7 @@ public class ExpirationDateEditText
 
     if (
       (
-        (getSelectionStart() == 4 && !editable.toString().endsWith("20")) ||
-        getSelectionStart() == 6
+        getSelectionStart() == 4
       ) &&
       isValid()
     ) {

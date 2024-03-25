@@ -26,5 +26,40 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center"
         android:visibility="gone"/>
-
+    <Button
+        style="?android:attr/buttonStyle"
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/void_title"
+        android:onClick="deleteRequest"
+        android:visibility="gone"
+        android:textSize="12sp" />
+    <Button
+        style="?android:attr/buttonStyle"
+        android:id="@+id/btnAdjust"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/adjust_title"
+        android:onClick="adjustRequest"
+        android:visibility="gone"
+        android:textSize="12sp" />
+    <Button
+        style="?android:attr/buttonStyle"
+        android:id="@+id/btnCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/capture_title"
+        android:onClick="captureRequest"
+        android:visibility="gone"
+        android:textSize="12sp" />
+    <Button
+        style="?android:attr/buttonStyle"
+        android:id="@+id/btnUncapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uncapture_title"
+        android:onClick="uncaptureRequest"
+        android:visibility="gone"
+        android:textSize="12sp" />
 </LinearLayout>

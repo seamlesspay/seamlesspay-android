@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Seamless Payments, Inc.
  *
  * This source code is licensed under the MIT license found in the
@@ -30,6 +30,8 @@ public class MainActivity extends BaseActivity {
 
   private Button mCardsButton;
   private Button mCreateTransactionButton;
+  private Button mVerifyTransactionButton;
+  private Button mCreateRefundButton;
   private ImageView mTokenIcon;
   private Long mTimeElapsed;
   private PaymentMethodToken mToken;
@@ -49,6 +51,8 @@ public class MainActivity extends BaseActivity {
     mDeviceData = findViewById(R.id.device_data);
     mCardsButton = findViewById(R.id.card);
     mCreateTransactionButton = findViewById(R.id.create_transaction);
+    mVerifyTransactionButton = findViewById(R.id.verify_transaction);
+    mCreateRefundButton = findViewById(R.id.create_refund);
 
     if (savedInstanceState != null) {
       if (savedInstanceState.containsKey(KEY_TOKEN)) {
@@ -72,6 +76,18 @@ public class MainActivity extends BaseActivity {
     startActivityForResult(intent, CARDS_REQUEST);
   }
 
+  public void createRefund(View v) {
+    Intent intent = new Intent(this, RefundActivity.class)
+        .putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD_TOKEN, mToken);
+
+    startActivity(intent);
+
+    mCreateTransactionButton.setEnabled(false);
+    mVerifyTransactionButton.setEnabled(false);
+
+    clearToken();
+  }
+
   public void createTransaction(View v) {
     Intent intent = new Intent(this, CreateTransactionActivity.class)
     .putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD_TOKEN, mToken);
@@ -79,6 +95,19 @@ public class MainActivity extends BaseActivity {
     startActivity(intent);
 
     mCreateTransactionButton.setEnabled(false);
+    mVerifyTransactionButton.setEnabled(false);
+
+    clearToken();
+  }
+
+  public void verifyTransaction(View v) {
+    Intent intent = new Intent(this, CreateTransactionActivity.class);
+    intent.putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD_TOKEN, mToken);
+    intent.putExtra(CreateTransactionActivity.EXTRA_PAYMENT_METHOD, false);
+    startActivity(intent);
+
+    mCreateTransactionButton.setEnabled(false);
+    mVerifyTransactionButton.setEnabled(false);
 
     clearToken();
   }
@@ -97,6 +126,7 @@ public class MainActivity extends BaseActivity {
       }
 
       mCreateTransactionButton.setEnabled(true);
+      mVerifyTransactionButton.setEnabled(true);
     }
   }
 
@@ -105,7 +135,7 @@ public class MainActivity extends BaseActivity {
     enableButtons(true);
 
     mCreateTransactionButton.setEnabled(false);
-
+    mVerifyTransactionButton.setEnabled(false);
     clearToken();
   }
 
@@ -132,6 +162,7 @@ public class MainActivity extends BaseActivity {
     mTokenDetails.setVisibility(VISIBLE);
 
     mCreateTransactionButton.setEnabled(true);
+    mCreateRefundButton.setEnabled(true);
   }
 
   private void clearToken() {
@@ -140,6 +171,7 @@ public class MainActivity extends BaseActivity {
     mTokenDetails.setVisibility(GONE);
     mDeviceData.setVisibility(GONE);
     mCreateTransactionButton.setEnabled(false);
+    mCreateRefundButton.setEnabled(false);
   }
 
   private void enableButtons(boolean enable) {

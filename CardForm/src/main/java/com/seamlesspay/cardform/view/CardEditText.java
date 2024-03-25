@@ -33,7 +33,6 @@ public class CardEditText extends ErrorEditText implements TextWatcher {
     void onCardTypeChanged(CardType cardType);
   }
 
-  private boolean mDisplayCardIcon = true;
   private boolean mMask = false;
   private CardType mCardType;
   private OnCardTypeChangedListener mOnCardTypeChangedListener;
@@ -56,25 +55,9 @@ public class CardEditText extends ErrorEditText implements TextWatcher {
 
   private void init() {
     setInputType(InputType.TYPE_CLASS_NUMBER);
-    setCardIcon(R.drawable.bt_ic_unknown);
     addTextChangedListener(this);
     updateCardType();
     mSavedTranformationMethod = getTransformationMethod();
-  }
-
-  /**
-   * Enable or disable showing card type icons as part of the
-   * {@link CardEditText}. Defaults to {@code true}.
-   *
-   * @param display {@code true} to display card type icons,
-   * {@code false} to never display card type icons.
-   */
-  public void displayCardTypeIcon(boolean display) {
-    mDisplayCardIcon = display;
-
-    if (!mDisplayCardIcon) {
-      setCardIcon(-1);
-    }
   }
 
   /**
@@ -135,7 +118,6 @@ public class CardEditText extends ErrorEditText implements TextWatcher {
     }
 
     updateCardType();
-    setCardIcon(mCardType.getFrontResource());
     addSpans(editable, mCardType.getSpaceIndices());
 
     if (mCardType.getMaxCardLength() == getSelectionStart()) {
@@ -212,26 +194,6 @@ public class CardEditText extends ErrorEditText implements TextWatcher {
           Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         );
       }
-    }
-  }
-
-  private void setCardIcon(int icon) {
-    if (!mDisplayCardIcon || getText().length() == 0) {
-      TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-        this,
-        0,
-        0,
-        0,
-        0
-      );
-    } else {
-      TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-        this,
-        0,
-        0,
-        icon,
-        0
-      );
     }
   }
 

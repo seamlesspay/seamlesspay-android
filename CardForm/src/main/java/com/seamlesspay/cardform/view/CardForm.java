@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,9 +37,10 @@ import com.seamlesspay.cardform.OnCardFormSubmitListener;
 import com.seamlesspay.cardform.OnCardFormValidListener;
 import com.seamlesspay.cardform.R;
 import com.seamlesspay.cardform.utils.CardType;
-import com.seamlesspay.cardform.utils.ViewUtils;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
+import io.sentry.Sentry;
+import io.sentry.SentryOptions;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -85,15 +85,13 @@ public class CardForm
   private CountryCodeEditText mCountryCode;
   private CvvEditText mCvv;
   private ExpirationDateEditText mExpiration;
-  private ImageView mCardholderNameIcon;
-  private ImageView mCardNumberIcon;
-  private ImageView mMobileNumberIcon;
-  private ImageView mPostalCodeIcon;
   private InitialValueCheckBox mSaveCardCheckBox;
   private List<ErrorEditText> mVisibleEditTexts;
   private MobileNumberEditText mMobileNumber;
   private PostalCodeEditText mPostalCode;
   private TextView mMobileNumberExplanation;
+  private ImageView mCardIcon;
+  private TextView mDateSeparator;
 
   private boolean mCardNumberRequired;
   private boolean mCvvRequired;
@@ -144,19 +142,17 @@ public class CardForm
     inflate(getContext(), R.layout.bt_card_form_fields, this);
 
     mCardholderName = findViewById(R.id.bt_card_form_cardholder_name);
-    mCardholderNameIcon = findViewById(R.id.bt_card_form_cardholder_name_icon);
     mCardNumber = findViewById(R.id.bt_card_form_card_number);
-    mCardNumberIcon = findViewById(R.id.bt_card_form_card_number_icon);
     mCountryCode = findViewById(R.id.bt_card_form_country_code);
     mCvv = findViewById(R.id.bt_card_form_cvv);
     mExpiration = findViewById(R.id.bt_card_form_expiration);
     mMobileNumber = findViewById(R.id.bt_card_form_mobile_number);
     mMobileNumberExplanation =
       findViewById(R.id.bt_card_form_mobile_number_explanation);
-    mMobileNumberIcon = findViewById(R.id.bt_card_form_mobile_number_icon);
     mPostalCode = findViewById(R.id.bt_card_form_postal_code);
-    mPostalCodeIcon = findViewById(R.id.bt_card_form_postal_code_icon);
     mSaveCardCheckBox = findViewById(R.id.bt_card_form_save_card_checkbox);
+    mCardIcon = findViewById(R.id.iv_card_icon);
+    mDateSeparator = findViewById(R.id.bt_card_form_date_divider);
 
     mVisibleEditTexts = new ArrayList<>();
 
@@ -168,6 +164,18 @@ public class CardForm
     setListeners(mPostalCode);
 
     mCardNumber.setOnCardTypeChangedListener(this);
+  }
+
+  private void setUpSentry() {
+    SentryOptions options = new SentryOptions();
+    options.setDsn("https://f3ca34981162465cabb2783483179ae9@o4504125304209408.ingest.sentry.io/4504140012584960");
+    Sentry.init(options);
+    Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+      @Override
+      public void uncaughtException(Thread thread, Throwable throwable) {
+        Sentry.captureException(throwable);
+      }
+    });
   }
 
   /**
@@ -315,44 +323,17 @@ public class CardForm
       );
 
     boolean cardHolderNameVisible = mCardholderNameStatus != FIELD_DISABLED;
-    boolean isDarkBackground = ViewUtils.isDarkBackground(activity);
-
-    mCardholderNameIcon.setImageResource(
-      isDarkBackground
-        ? R.drawable.bt_ic_cardholder_name_dark
-        : R.drawable.bt_ic_cardholder_name
-    );
-
-    mCardNumberIcon.setImageResource(
-      isDarkBackground ? R.drawable.bt_ic_card_dark : R.drawable.bt_ic_card
-    );
-
-    mPostalCodeIcon.setImageResource(
-      isDarkBackground
-        ? R.drawable.bt_ic_postal_code_dark
-        : R.drawable.bt_ic_postal_code
-    );
-
-    mMobileNumberIcon.setImageResource(
-      isDarkBackground
-        ? R.drawable.bt_ic_mobile_number_dark
-        : R.drawable.bt_ic_mobile_number
-    );
 
     mExpiration.useDialogForExpirationDateEntry(activity, true);
 
-    setViewVisibility(mCardholderNameIcon, cardHolderNameVisible);
     setFieldVisibility(mCardholderName, cardHolderNameVisible);
 
-    setViewVisibility(mCardNumberIcon, mCardNumberRequired);
     setFieldVisibility(mCardNumber, mCardNumberRequired);
     setFieldVisibility(mExpiration, mExpirationRequired);
     setFieldVisibility(mCvv, mCvvRequired);
 
-    setViewVisibility(mPostalCodeIcon, mPostalCodeRequired);
     setFieldVisibility(mPostalCode, mPostalCodeRequired);
 
-    setViewVisibility(mMobileNumberIcon, mMobileNumberRequired);
     setFieldVisibility(mCountryCode, mMobileNumberRequired);
     setFieldVisibility(mMobileNumber, mMobileNumberRequired);
 
@@ -378,48 +359,6 @@ public class CardForm
     mSaveCardCheckBox.setInitiallyChecked(mSaveCardCheckBoxChecked);
 
     setVisibility(VISIBLE);
-  }
-
-  /**
-   * Sets the icon to the left of the card-holder name entry field,
-   * overriding the default icon.
-   *
-   * @param res The drawable resource for the card-holder name icon
-   */
-  public void setCardholderNameIcon(@DrawableRes int res) {
-    mCardholderNameIcon.setImageResource(res);
-  }
-
-  /**
-   * Sets the icon to the left of the card number entry field,
-   * overriding the default icon.
-   *
-   * @param res The drawable resource for the card number icon
-   */
-  public void setCardNumberIcon(@DrawableRes int res) {
-    mCardNumberIcon.setImageResource(res);
-  }
-
-  /**
-   * Sets the icon to the left of the postal code entry field,
-   * overriding the default icon.
-   *
-   * @param res The drawable resource for the postal code icon.
-   */
-  public void setPostalCodeIcon(@DrawableRes int res) {
-    mPostalCodeIcon.setImageResource(res);
-  }
-
-  /**
-   * Sets the icon to the left of the mobile number entry field,
-   * overriding the default icon.
-   *
-   * If {@code null} is passed, the mobile number's icon will be hidden.
-   *
-   * @param res The drawable resource for the mobile number icon.
-   */
-  public void setMobileNumberIcon(@DrawableRes int res) {
-    mMobileNumberIcon.setImageResource(res);
   }
 
   /**
@@ -873,7 +812,7 @@ public class CardForm
   @Override
   public void onCardTypeChanged(CardType cardType) {
     mCvv.setCardType(cardType);
-
+    mCardIcon.setImageResource(cardType.getFrontResource());
     if (mOnCardTypeChangedListener != null) {
       mOnCardTypeChangedListener.onCardTypeChanged(cardType);
     }
@@ -883,6 +822,14 @@ public class CardForm
   public void onFocusChange(View v, boolean hasFocus) {
     if (hasFocus && mOnCardFormFieldFocusedListener != null) {
       mOnCardFormFieldFocusedListener.onCardFormFieldFocused(v);
+    }
+    if (v instanceof ExpirationDateEditText) {
+      int text = getExpirationDateEditText().getText().length();
+      if (hasFocus) {
+        mDateSeparator.setVisibility(VISIBLE);
+      } else if (text == 0) {
+        mDateSeparator.setVisibility(GONE);
+      }
     }
   }
 
@@ -901,6 +848,14 @@ public class CardForm
       mValid = valid;
       if (mOnCardFormValidListener != null) {
         mOnCardFormValidListener.onCardFormValid(valid);
+      }
+    }
+    if (getExpirationDateEditText().isFocused()) {
+      int text = getExpirationDateEditText().getText().length();
+      if (text == 0) {
+        mDateSeparator.setText(R.string.bt_form_hint_pattern_expiration);
+      } else {
+        mDateSeparator.setText(R.string.bt_form_hint_pattern_expiration_empty);
       }
     }
   }

@@ -22,6 +22,7 @@
 
         <activity android:name="com.seamlesspay.demo.CardActivity" android:label="@string/buy" />
         <activity android:name="com.seamlesspay.demo.CreateTransactionActivity" />
+        <activity android:name="com.seamlesspay.demo.RefundActivity" />
         <activity android:name="com.seamlesspay.api.SeamlesspayBrowserSwitchActivity"
             android:launchMode="singleTask">
             <intent-filter>

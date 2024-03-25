@@ -24,130 +24,133 @@ import com.seamlesspay.api.models.BaseChargeToken;
 import com.seamlesspay.api.models.CardBuilder;
 import com.seamlesspay.api.models.CardChargeBulder;
 import com.seamlesspay.api.models.CardToken;
-import com.seamlesspay.api.models.Configuration;
 import com.seamlesspay.api.models.PaymentMethodToken;
 import com.seamlesspay.ui.view.CardInputWidget;
 
-public class MainActivity extends AppCompatActivity implements PaymentMethodTokenCreatedListener,
-        BaseChargeTokenCreatedListener, SeamlesspayErrorListener {
+public class MainActivity
+  extends AppCompatActivity
+  implements
+    PaymentMethodTokenCreatedListener,
+    BaseChargeTokenCreatedListener,
+    SeamlesspayErrorListener {
+  CardInputWidget mCardInputWidget;
+  SeamlesspayFragment mSeamlesspayFragment;
+  TextView mInfoView, mChargeView;
+  private Long mStartTime, mEndTime;
 
-    CardInputWidget mCardInputWidget;
-    SeamlesspayFragment mSeamlesspayFragment;
-    TextView mInfoView, mChargeView;
-    private Long mStartTime, mEndTime;
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-        setContentView(R.layout.activity_main);
+    Button payButton = findViewById(R.id.payButton);
 
-        Button payButton = findViewById(R.id.payButton);
+    mInfoView = findViewById(R.id.infoView);
+    mChargeView = findViewById(R.id.chargeView);
 
-        mInfoView = findViewById(R.id.infoView);
-        mChargeView = findViewById(R.id.chargeView);
-        mCardInputWidget = (CardInputWidget) findViewById(R.id.cardInputWidget);
-        mCardInputWidget.configureForUs();
+    mCardInputWidget = (CardInputWidget) findViewById(R.id.cardInputWidget);
+    mCardInputWidget.configureForUs();
 
-        try {
-            Authorization authorization = Authorization.fromKeys(
-                    "sandbox",
-                    "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX"
-            );
+    try {
+      Authorization authorization = Authorization.fromKeys(
+        "sandbox",
+        "pk_XXXXXXXXXXXXXXXXXXXXXXXXXX"
+      );
 
-            mSeamlesspayFragment =
-                    SeamlesspayFragment.newInstance(this, authorization);
-        } catch (InvalidArgumentException e) {
-            mInfoView.setText(e.getMessage());
+      mSeamlesspayFragment =
+        SeamlesspayFragment.newInstance(this, authorization);
+    } catch (InvalidArgumentException e) {
+      mInfoView.setText(e.getMessage());
+    }
+
+    payButton.setOnClickListener(
+      new View.OnClickListener() {
+
+        public void onClick(View v) {
+          // Code here executes on main thread after user presses button
+          mCardInputWidget.clearFocus();
+          mInfoView.setText("");
+          mChargeView.setText("");
+
+          CardBuilder cardBuilder = new CardBuilder()
+            .accountNumber(mCardInputWidget.getCardNumber())
+            .expirationMonth(mCardInputWidget.getExpirationMonth())
+            .expirationYear(mCardInputWidget.getExpirationYear())
+            .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
+            .billingZip(mCardInputWidget.getPostalCode())
+            .cvv(mCardInputWidget.getCvv())
+            .verification(true);
+
+          PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
+
+          mStartTime = System.currentTimeMillis();
         }
+      }
+    );
+  }
 
-        payButton.setOnClickListener(
-                new View.OnClickListener() {
+  public void onPaymentMethodTokenCreated(
+    PaymentMethodToken paymentMethodToken
+  ) {
+    mEndTime = System.currentTimeMillis();
 
-                    public void onClick(View v) {
-                        // Code here executes on main thread after user presses button
-                        mCardInputWidget.clearFocus();
-                        mInfoView.setText("");
-                        mChargeView.setText("");
+    long timeElapsed = mEndTime - mStartTime;
 
-                        CardBuilder cardBuilder = new CardBuilder()
-                                .accountNumber(mCardInputWidget.getCardNumber())
-                                .expirationMonth(mCardInputWidget.getExpirationMonth())
-                                .expirationYear(mCardInputWidget.getExpirationYear())
-                                .setTxnType(CardBuilder.Keys.CREDIT_CARD_TYPE)
-                                .billingZip(mCardInputWidget.getPostalCode())
-                                .cvv(mCardInputWidget.getCvv())
-                                .verification(true);
+    CardChargeBulder chargeBulder = new CardChargeBulder()
+      .setAmount("1")
+      .setCurrency(CardChargeBulder.Keys.CURRENCY_USD)
+      .setCapture(true)
+      .setToken(paymentMethodToken.getToken())
+      .setDescription("Demo Android Client Charge")
+      .setCvv(mCardInputWidget.getCvv());
 
-                        PanVault.tokenize(mSeamlesspayFragment, cardBuilder);
+    CardToken token = (CardToken) paymentMethodToken;
 
-                        mStartTime = System.currentTimeMillis();
-                    }
-                }
-        );
-    }
+    mInfoView.setText(
+      "Card Last Four: " +
+      token.getLastFour() +
+      "\nToken: " +
+      token.getToken() +
+      "\nExpDate: " +
+      token.getExpirationDate() +
+      (token.getVerificationResult() != null ? "\nVerificationResult: " : "") +
+      (
+        token.getVerificationResult() != null
+          ? token.getVerificationResult()
+          : ""
+      ) +
+      "\nTokenization runtime : " +
+      ((float) timeElapsed / 1000) +
+      " s"
+    );
 
-    public void onPaymentMethodTokenCreated(
-            PaymentMethodToken paymentMethodToken
-    ) {
-        mEndTime = System.currentTimeMillis();
+    Charge.create(mSeamlesspayFragment, chargeBulder);
 
-        long timeElapsed = mEndTime - mStartTime;
+    mStartTime = System.currentTimeMillis();
+  }
 
-        CardChargeBulder chargeBulder = new CardChargeBulder()
-                .setAmount("1")
-                .setCurrency(CardChargeBulder.Keys.CURRENCY_USD)
-                .setCapture(true)
-                .setToken(paymentMethodToken.getToken())
-                .setDescription("Demo Android Client Charge")
-                .setCvv(mCardInputWidget.getCvv());
+  public void onBaseChargeTokenCreated(BaseChargeToken chargeToken) {
+    mEndTime = System.currentTimeMillis();
 
-        CardToken token = (CardToken) paymentMethodToken;
+    long timeElapsed = mEndTime - mStartTime;
 
-        mInfoView.setText(
-                "Card Last Four: " +
-                        token.getLastFour() +
-                        "\nToken: " +
-                        token.getToken() +
-                        "\nExpDate: " +
-                        token.getExpirationDate() +
-                        (token.getVerificationResult() != null ? "\nVerificationResult: " : "") +
-                        (
-                                token.getVerificationResult() != null
-                                        ? token.getVerificationResult()
-                                        : ""
-                        ) +
-                        "\nTokenization runtime : " +
-                        ((float) timeElapsed / 1000) +
-                        " s"
-        );
+    mChargeView.setText(
+      "Amount: " +
+      chargeToken.getAmount() +
+      "\nStatus: " +
+      chargeToken.getStatus() +
+      "\nStatus message: " +
+      chargeToken.getStatusDescription() +
+      "\ntxnID #: " +
+      chargeToken.getChargeId() +
+      "\nCharge runtime : " +
+      ((float) timeElapsed / 1000) +
+      " s"
+    );
+  }
 
-        Charge.create(mSeamlesspayFragment, chargeBulder);
-
-        mStartTime = System.currentTimeMillis();
-    }
-
-    public void onBaseChargeTokenCreated(BaseChargeToken chargeToken) {
-        mEndTime = System.currentTimeMillis();
-
-        long timeElapsed = mEndTime - mStartTime;
-
-        mChargeView.setText(
-                "Amount: " +
-                        chargeToken.getAmount() +
-                        "\nStatus: " +
-                        chargeToken.getStatus() +
-                        "\nStatus message: " +
-                        chargeToken.getStatusDescription() +
-                        "\ntxnID #: " +
-                        chargeToken.getChargeId() +
-                        "\nCharge runtime : " +
-                        ((float) timeElapsed / 1000) +
-                        " s"
-        );
-    }
-
-    public void onError(Exception error) {
-        mInfoView.setText("Error\n" + error.getMessage());
-    }
+  public void onError(Exception error) {
+    mInfoView.setText("Error\n" + error.getMessage());
+  }
 }
