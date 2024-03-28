@@ -1,4 +1,4 @@
-package com.seamlesspay.ui.view
+package com.seamlesspay.ui.utils
 
 import androidx.annotation.IntRange
 import androidx.annotation.Size

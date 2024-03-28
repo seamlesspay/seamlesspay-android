@@ -1,6 +1,6 @@
-package com.seamlesspay.ui.view
+package com.seamlesspay.ui.utils
 
-import com.seamlesspay.ui.model.CardBrand
+import com.seamlesspay.ui.models.CardBrand
 
 /**
  * Static utility functions needed for View classes.

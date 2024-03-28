@@ -6,10 +6,11 @@ import android.text.InputFilter
 import android.util.AttributeSet
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.VisibleForTesting
-import com.seamlesspay.ui.CardUtils
-import com.seamlesspay.ui.R
-import com.seamlesspay.ui.SeamlesspayTextUtils
-import com.seamlesspay.ui.model.CardBrand
+import com.seamlesspay.R
+import com.seamlesspay.ui.utils.CardUtils
+import com.seamlesspay.ui.utils.SeamlesspayTextUtils
+import com.seamlesspay.ui.models.CardBrand
+import com.seamlesspay.ui.utils.ViewUtils
 
 /**
  * A [SeamlesspayEditText] that handles spacing out the digits of a credit card.

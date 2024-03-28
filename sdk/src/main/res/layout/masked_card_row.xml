@@ -7,7 +7,7 @@
     android:paddingStart="@dimen/seamlesspay_list_row_start_padding"
     >
 
-    <com.seamlesspay.ui.view.MaskedCardView
+    <com.seamlesspay.ui.common.MaskedCardView
         android:id="@+id/masked_card_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/seamlesspay_list_row_height"/>

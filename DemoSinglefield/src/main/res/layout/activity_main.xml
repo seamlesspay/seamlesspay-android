@@ -12,7 +12,7 @@
 
     <!--  ...  -->
 
-    <com.seamlesspay.ui.view.CardInputWidget
+    <com.seamlesspay.ui.paymentinputs.direct.SingleLineCardForm
         android:id="@+id/cardInputWidget"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -20,11 +20,24 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/payButton"
+        app:layout_constraintBottom_toTopOf="@+id/tokenizeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/tokenizeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/seamlesspay_accent_color_default"
+        android:text="Tokenize"
+        android:textColor="@color/seamlesspay_title_text_color"
+        app:layout_constraintEnd_toEndOf="@+id/cardInputWidget"
+        app:layout_constraintStart_toStartOf="@+id/cardInputWidget"
+        app:layout_constraintTop_toBottomOf="@+id/cardInputWidget" />
     <Button
         android:id="@+id/payButton"
         android:layout_width="0dp"
@@ -33,36 +46,35 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/seamlesspay_accent_color_default"
-        android:text="Pay"
+        android:text="PAY"
         android:textColor="@color/seamlesspay_title_text_color"
-        app:layout_constraintEnd_toEndOf="@+id/cardInputWidget"
-        app:layout_constraintStart_toStartOf="@+id/cardInputWidget"
-        app:layout_constraintTop_toBottomOf="@+id/cardInputWidget" />
-
+        app:layout_constraintEnd_toEndOf="@+id/tokenizeButton"
+        app:layout_constraintStart_toStartOf="@+id/tokenizeButton"
+        app:layout_constraintTop_toBottomOf="@+id/tokenizeButton" />
     <TextView
         android:id="@+id/infoView"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payButton" />
+        app:layout_constraintTop_toBottomOf="@+id/payButton"
+        />
 
-    <TextView
-        android:id="@+id/chargeView"
-        android:layout_width="0dp"
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoView" />
-
+        app:layout_constraintTop_toBottomOf="@+id/payButton"
+        />
     <!--  ...  -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

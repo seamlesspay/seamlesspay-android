@@ -1,5 +1,6 @@
 package com.seamlesspay.ui.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
@@ -15,6 +16,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 
 internal class SeamlesspayColorUtils(private val context: Context) {
 
+    @SuppressLint("ResourceType")
     fun getThemeAccentColor(): TypedValue {
         @IdRes val colorAttr: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.R.attr.colorAccent
@@ -27,6 +29,7 @@ internal class SeamlesspayColorUtils(private val context: Context) {
         return outValue
     }
 
+    @SuppressLint("ResourceType")
     fun getThemeColorControlNormal(): TypedValue {
         @IdRes val colorAttr: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.R.attr.colorControlNormal
@@ -44,6 +47,7 @@ internal class SeamlesspayColorUtils(private val context: Context) {
             .getIdentifier(attrName, "attr", context.packageName)
     }
 
+    @SuppressLint("ResourceType")
     fun getThemeTextColorSecondary(): TypedValue {
         @IdRes val colorAttr: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.R.attr.textColorSecondary
@@ -56,6 +60,7 @@ internal class SeamlesspayColorUtils(private val context: Context) {
         return outValue
     }
 
+    @SuppressLint("ResourceType")
     fun getThemeTextColorPrimary(): TypedValue {
         @IdRes val colorAttr: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.R.attr.textColorPrimary

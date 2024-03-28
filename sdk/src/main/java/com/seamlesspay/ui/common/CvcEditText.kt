@@ -9,8 +9,8 @@ import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import android.view.View
 import com.google.android.material.textfield.TextInputLayout
-import com.seamlesspay.ui.R
-import com.seamlesspay.ui.model.CardBrand
+import com.seamlesspay.R
+import com.seamlesspay.ui.models.CardBrand
 
 class CvcEditText @JvmOverloads constructor(
     context: Context,

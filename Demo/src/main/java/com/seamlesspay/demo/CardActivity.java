@@ -88,13 +88,6 @@ public class CardActivity
   }
 
   @Override
-  public void onCancel(int requestCode) {
-    super.onCancel(requestCode);
-
-    Toast.makeText(this, "Canceled", Toast.LENGTH_LONG).show();
-  }
-
-  @Override
   public void onCardFormFieldFocused(View field) {
     if (mApiClient == null) {
       return;

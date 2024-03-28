@@ -6,7 +6,7 @@ import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.text.method.TextKeyListener
 import android.util.AttributeSet
-import com.seamlesspay.ui.R
+import com.seamlesspay.R
 
 class PostalCodeEditText @JvmOverloads constructor(
     context: Context,

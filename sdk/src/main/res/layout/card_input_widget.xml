@@ -37,7 +37,7 @@
             android:nextFocusDown="@+id/tl_expiry_date"
             android:contentDescription="@string/acc_label_card_number"
             app:hintEnabled="false">
-            <com.seamlesspay.ui.view.CardNumberEditText
+            <com.seamlesspay.ui.common.CardNumberEditText
                 android:id="@+id/et_card_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:nextFocusUp="@id/tl_card_number"
             android:contentDescription="@string/acc_label_expiry_date"
             app:hintEnabled="false">
-            <com.seamlesspay.ui.view.ExpiryDateEditText
+            <com.seamlesspay.ui.common.ExpiryDateEditText
                 android:id="@+id/et_expiry_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             android:nextFocusUp="@id/tl_expiry_date"
             android:contentDescription="@string/cvc_number_hint"
             app:hintEnabled="false">
-            <com.seamlesspay.ui.view.CvcEditText
+            <com.seamlesspay.ui.common.CvcEditText
                 android:id="@+id/et_cvc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
             android:nextFocusUp="@id/tl_cvc"
             android:contentDescription="@string/address_label_postal_code"
             app:hintEnabled="false">
-            <com.seamlesspay.ui.view.PostalCodeEditText
+            <com.seamlesspay.ui.common.PostalCodeEditText
                 android:id="@+id/et_postal_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

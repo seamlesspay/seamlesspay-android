@@ -6,14 +6,20 @@ import com.seamlesspay.api.utils.AppHelper
 import org.json.JSONException
 import org.json.JSONObject
 
-class ApiClient private constructor(authorization: Authorization) {
+class ApiClient private constructor(private val authorization: Authorization) {
 
-  private val configuration = Configuration.fromEnvironment(authorization.environment)
+  private val configuration by lazy {
+    Configuration.fromEnvironment(authorization.environment)
+  }
 
-  private val apiHttpClient = SeamlesspayApiHttpClient(configuration.apiUrl, authorization.bearer)
+  private val apiHttpClient by lazy {
+    SeamlesspayApiHttpClient(configuration.apiUrl, authorization.bearer)
+  }
 
-  private val panVaultHttpClient =
+  private val panVaultHttpClient by lazy {
     SeamlesspayApiHttpClient(configuration.panVaultUrl, authorization.bearer)
+  }
+
 
   /**
    * Create a {@link PaymentMethodToken} in the Seamlesspay Gateway.

@@ -66,7 +66,7 @@ public class Authorization implements Parcelable {
    * @return The authorization bearer string for API requests.
    */
   public String getBearer() {
-    return new String(Base64.decode(mSecretKey, Base64.DEFAULT));
+    return mSecretKey;
   }
 
   @Override

@@ -20,13 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import com.seamlesspay.api.client.ApiClient;
 import com.seamlesspay.api.exceptions.InvalidArgumentException;
-import com.seamlesspay.api.interfaces.SeamlesspayCancelListener;
 import com.seamlesspay.api.models.Authorization;
 
 @SuppressWarnings("deprecation")
 public abstract class BaseActivity extends AppCompatActivity
-		implements OnRequestPermissionsResultCallback, SeamlesspayCancelListener,
-		ActionBar.OnNavigationListener {
+		implements OnRequestPermissionsResultCallback, ActionBar.OnNavigationListener {
 	private static final String EXTRA_AUTHORIZATION = "com.seamlesspay.demo.EXTRA_AUTHORIZATION";
 
 	protected Authorization mAuthorization;
@@ -67,14 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity
 		}
 	}
 
-	@CallSuper
-	@Override
-	public void onCancel(int requestCode) {
-		setProgressBarIndeterminateVisibility(false);
-
-		Log.d(getClass().getSimpleName(), "Cancel received: " + requestCode);
-	}
-
 	private void performReset() {
 		setProgressBarIndeterminateVisibility(true);
 
@@ -100,7 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity
 	protected void showDialog(String message) {
 		new AlertDialog.Builder(this).setMessage(message)
 		                             .setPositiveButton(android.R.string.ok,
-                                     (dialog, which) -> dialog.dismiss())
+				                             (dialog, which) -> dialog.dismiss())
 		                             .show();
 	}
 

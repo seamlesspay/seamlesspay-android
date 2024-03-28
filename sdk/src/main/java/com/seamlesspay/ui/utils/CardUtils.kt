@@ -1,6 +1,6 @@
-package com.seamlesspay.ui
+package com.seamlesspay.ui.utils
 
-import com.seamlesspay.ui.model.CardBrand
+import com.seamlesspay.ui.models.CardBrand
 
 /**
  * Utility class for functions to do with cards.

@@ -1,4 +1,4 @@
-package com.seamlesspay.ui
+package com.seamlesspay.ui.utils
 
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest

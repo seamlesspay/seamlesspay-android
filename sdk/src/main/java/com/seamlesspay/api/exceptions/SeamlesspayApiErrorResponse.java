@@ -9,7 +9,7 @@ package com.seamlesspay.api.exceptions;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.seamlesspay.api.Json;
+import com.seamlesspay.api.models.Json;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;

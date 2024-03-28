@@ -1,4 +1,4 @@
-package com.seamlesspay.ui.common
+package com.seamlesspay.ui.paymentinputs.direct
 
 import android.content.Context
 import android.os.Build
@@ -27,12 +27,35 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.google.android.material.textfield.TextInputLayout
-import com.seamlesspay.ui.R
-import com.seamlesspay.ui.model.CardBrand
-import com.seamlesspay.ui.view.CardInputListener.FocusField.Companion.FOCUS_CARD
-import com.seamlesspay.ui.view.CardInputListener.FocusField.Companion.FOCUS_CVC
-import com.seamlesspay.ui.view.CardInputListener.FocusField.Companion.FOCUS_EXPIRY
+import com.seamlesspay.R
+import com.seamlesspay.api.client.ApiClient
+import com.seamlesspay.api.exceptions.UnexpectedException
+import com.seamlesspay.api.interfaces.BaseChargeTokenCallback
+import com.seamlesspay.api.interfaces.PaymentMethodTokenCallback
+import com.seamlesspay.api.models.*
+import com.seamlesspay.api.models.PaymentMethodBuilder.Keys.CREDIT_CARD_TYPE
+import com.seamlesspay.ui.common.*
+import com.seamlesspay.ui.common.CardInputListener.FocusField.Companion.FOCUS_CARD
+import com.seamlesspay.ui.common.CardInputListener.FocusField.Companion.FOCUS_CVC
+import com.seamlesspay.ui.common.CardInputListener.FocusField.Companion.FOCUS_EXPIRY
+import com.seamlesspay.ui.models.*
+import com.seamlesspay.ui.models.PaymentResponse.Companion.AMOUNT_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.AUTH_CODE_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.BATCH_ID_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.CARD_BRAND_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.ID_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.STATUS_CODE_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.STATUS_DESCRIPTION_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.STATUS_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.SURCHARGE_FEE_FIELD_KEY
+import com.seamlesspay.ui.models.PaymentResponse.Companion.TRANSACTION_DATE_FIELD_KEY
+import com.seamlesspay.ui.models.TokenResponse.Companion.EXPIRATION_DATE_FIELD_KEY
+import com.seamlesspay.ui.models.TokenResponse.Companion.LAST_FOUR_FIELD_KEY
+import com.seamlesspay.ui.models.TokenResponse.Companion.NAME_FIELD_KEY
+import com.seamlesspay.ui.models.TokenResponse.Companion.PAYMENT_NETWORK_FIELD_KEY
+import com.seamlesspay.ui.utils.DateUtils
 import io.sentry.Sentry
+import kotlin.Exception
 
 /**
  * A card input widget that handles all animation on its own.
@@ -40,7 +63,7 @@ import io.sentry.Sentry
  * The individual `EditText` views of this widget can be styled by defining a style
  * `Seamlesspay.CardInputWidget.EditText` that extends `Seamlesspay.Base.CardInputWidget.EditText`.
  */
-class CardInputWidget @JvmOverloads constructor(
+class SingleLineCardForm @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -59,6 +82,8 @@ class CardInputWidget @JvmOverloads constructor(
     private val postalCodeEditText: PostalCodeEditText
 
     private var cardInputListener: CardInputListener? = null
+
+    private var apiClient: ApiClient? = null
 
     @JvmSynthetic
     internal var cardNumberIsViewed = true
@@ -105,17 +130,17 @@ class CardInputWidget @JvmOverloads constructor(
                 .filterNotNull()
         }
 
-    val cardBrand: String?
+    private val cardBrand: String?
         get() {
             return cardNumberEditText.cardBrand.displayName
         }
 
-    val cardNumber: String?
+    private val cardNumber: String?
         get() {
             return cardNumberEditText.cardNumber
         }
 
-    val expirationMonth: String?
+    private val expirationMonth: String?
         get() {
             val cardDate = expiryDateEditText.validDateFields
             if (cardDate != null) {
@@ -129,7 +154,7 @@ class CardInputWidget @JvmOverloads constructor(
             return null;
         }
 
-    val expirationYear: String?
+    private val expirationYear: String?
         get() {
             val cardDate = expiryDateEditText.validDateFields
             if (cardDate != null) {
@@ -138,12 +163,12 @@ class CardInputWidget @JvmOverloads constructor(
             return null;
         }
 
-    val cvv: String?
+    private val cvv: String?
         get() {
             return this.cvcValue
         }
 
-    val postalCode: String?
+    private val postalCode: String?
         get() {
             return postalCodeValue
         }
@@ -154,11 +179,21 @@ class CardInputWidget @JvmOverloads constructor(
     @JvmSynthetic
     internal var frameWidthSupplier: () -> Int
 
-    var postalCodeEnabled: Boolean = true
+    private var postalCodeEnabled: Boolean = true
         set(value) {
             updatePostalCodeEditText(value)
             field = value
         }
+
+    private var postalCodeRequired: Boolean = true
+
+    private var cvvEnabled: Boolean = true
+        set(value) {
+            updateCvvEditText(value)
+            field = value
+        }
+
+    private var cvvRequired: Boolean = true
 
     init {
         setUpSentry()
@@ -191,9 +226,158 @@ class CardInputWidget @JvmOverloads constructor(
         cardIconImageView = findViewById(R.id.iv_card_icon)
 
         standardFields = listOf(
-            cardNumberEditText, cvcNumberEditText, expiryDateEditText
+            cardNumberEditText, expiryDateEditText
         )
         initView(attrs)
+    }
+
+
+    fun init(authorization: Authorization, fieldOptions: FieldOptions? = null) {
+        fieldOptions?.let { options ->
+            cvvRequired = options.cvv.required
+            cvvEnabled = options.cvv.display
+            postalCodeEnabled = options.postalCode.display
+            postalCodeRequired = options.postalCode.required
+        }
+        apiClient = ApiClient.newInstance(authorization)
+    }
+
+    fun tokenize(tokenizeCallback: TokenizeCallback) {
+
+        val cardBuilder: CardBuilder = CardBuilder()
+            .accountNumber(cardNumber)
+            .expirationMonth(expirationMonth)
+            .expirationYear(expirationYear)
+            .setTxnType(CREDIT_CARD_TYPE)
+            .billingZip(postalCode)
+            .cvv(cvv)
+
+        apiClient?.tokenize(cardBuilder, object : PaymentMethodTokenCallback {
+            override fun success(paymentMethodToken: PaymentMethodToken?) {
+                if (paymentMethodToken is CardToken) {
+                    tokenizeCallback.success(prepareTokenResponse(paymentMethodToken))
+                } else {
+                    tokenizeCallback.failure(UnexpectedException("Unexpected error."))
+                }
+            }
+
+            override fun failure(exception: Exception?) {
+                tokenizeCallback.failure(exception)
+            }
+        })
+    }
+
+    fun submit(paymentRequest: PaymentRequest, callback: PaymentCallback) {
+        val chargeBuilder = CardChargeBulder()
+            .setAmount(paymentRequest.amount)
+            .setCurrency(paymentRequest.currency)
+            .setCapture(paymentRequest.capture)
+            .setDescription(paymentRequest.description)
+            .setDescriptort(paymentRequest.descriptor)
+            .setIdempotencyKey(paymentRequest.idempotencyKey)
+            .setMetadata(paymentRequest.metadata)
+            .setOrder(paymentRequest.order)
+            .setOrderID(paymentRequest.orderID)
+            .setPoNumber(paymentRequest.poNumber)
+            .setSurchargeFeeAmount(paymentRequest.surchargeFeeAmount)
+            .setTaxAmount(paymentRequest.taxAmount)
+            .setTip(paymentRequest.tip)
+            .setTaxExempt(paymentRequest.taxExempt)
+
+        tokenize(object : TokenizeCallback {
+            override fun success(tokenResponse: TokenResponse) {
+                chargeBuilder.setToken(tokenResponse.cardToken)
+                charge(chargeBuilder, callback)
+            }
+
+            override fun failure(exception: Exception?) {
+                callback.failure(exception)
+            }
+
+        })
+    }
+
+    private fun charge(chargeBuilder: CardChargeBulder, callback: PaymentCallback) {
+        apiClient?.charge(chargeBuilder, object : BaseChargeTokenCallback {
+            override fun success(baseChargedToken: BaseChargeToken?) {
+                if (baseChargedToken != null) {
+                    callback.success(preparePaymentResponse(baseChargedToken))
+                } else {
+                    callback.failure(UnexpectedException("Unexpected error."))
+                }
+            }
+
+            override fun failure(exception: Exception?) {
+                callback.failure(exception)
+            }
+
+        })
+    }
+
+    private fun preparePaymentResponse(baseChargedToken: BaseChargeToken): PaymentResponse {
+        val paymentDetails = mutableMapOf<String, String>().apply {
+            baseChargedToken.amount?.let {
+                put(AMOUNT_FIELD_KEY, it)
+            }
+            baseChargedToken.authCode?.let {
+                put(AUTH_CODE_FIELD_KEY, it)
+            }
+            baseChargedToken.batchId?.let {
+                put(BATCH_ID_FIELD_KEY, it)
+            }
+            baseChargedToken.chargeId?.let {
+                put(ID_FIELD_KEY, it)
+            }
+            baseChargedToken.lastFour?.let {
+                put(LAST_FOUR_FIELD_KEY, it)
+            }
+            baseChargedToken.paymentNetwork?.let {
+                put(CARD_BRAND_FIELD_KEY, it)
+            }
+            baseChargedToken.status?.let {
+                put(STATUS_FIELD_KEY, it)
+            }
+            baseChargedToken.statusCode?.let {
+                put(STATUS_CODE_FIELD_KEY, it)
+            }
+            baseChargedToken.statusDescription?.let {
+                put(STATUS_DESCRIPTION_FIELD_KEY, it)
+            }
+            baseChargedToken.surchargeFeeAmount?.let {
+                put(SURCHARGE_FEE_FIELD_KEY, it)
+            }
+            baseChargedToken.transactionDate?.let {
+                put(TRANSACTION_DATE_FIELD_KEY, it)
+            }
+        }
+
+        return PaymentResponse(
+            paymentToken = baseChargedToken.token,
+            paymentType = PaymentResponse.PaymentType.CARD,
+            paymentDetails = paymentDetails
+        )
+    }
+
+    private fun prepareTokenResponse(token: CardToken): TokenResponse {
+        val tokenDetails = mutableMapOf<String, String>().apply {
+            token.cardBrand?.let {
+                put(PAYMENT_NETWORK_FIELD_KEY, it)
+            }
+            token.name?.let {
+                put(NAME_FIELD_KEY, it)
+            }
+            token.expirationDate?.let {
+                put(EXPIRATION_DATE_FIELD_KEY, it)
+            }
+            token.lastFour?.let {
+                put(LAST_FOUR_FIELD_KEY, it)
+            }
+        }
+        return TokenResponse(
+            cardToken = token.token,
+            tokenType = TokenResponse.TokenType.CARD,
+            cardDetails = tokenDetails
+        )
     }
 
     private fun setUpSentry() {
@@ -325,12 +509,18 @@ class CardInputWidget @JvmOverloads constructor(
             putParcelable(STATE_SUPER_STATE, super.onSaveInstanceState())
             putBoolean(STATE_CARD_VIEWED, cardNumberIsViewed)
             putBoolean(STATE_POSTAL_CODE_ENABLED, postalCodeEnabled)
+            putBoolean(STATE_POSTAL_CODE_REQUIRED, postalCodeRequired)
+            putBoolean(STATE_CVV_REQUIRED, cvvRequired)
+            putBoolean(STATE_CVV_ENABLED, cvvEnabled)
         }
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
         if (state is Bundle) {
             postalCodeEnabled = state.getBoolean(STATE_POSTAL_CODE_ENABLED, true)
+            postalCodeRequired = state.getBoolean(STATE_POSTAL_CODE_REQUIRED, true)
+            cvvRequired = state.getBoolean(STATE_CVV_REQUIRED, true)
+            cvvEnabled = state.getBoolean(STATE_CVV_ENABLED, true)
             cardNumberIsViewed = state.getBoolean(STATE_CARD_VIEWED, true)
             updateSpaceSizes(cardNumberIsViewed)
             placementParameters.totalLengthInPixels = frameWidth
@@ -386,12 +576,31 @@ class CardInputWidget @JvmOverloads constructor(
             postalCodeEditText.isEnabled = true
             postalCodeTextInputLayout.visibility = VISIBLE
 
-            cvcNumberEditText.imeOptions = EditorInfo.IME_ACTION_NEXT
+            if (cvvEnabled) {
+                cvcNumberEditText.imeOptions = EditorInfo.IME_ACTION_NEXT
+                cardNumberEditText.imeOptions = EditorInfo.IME_ACTION_NEXT
+            } else {
+                cardNumberEditText.imeOptions = EditorInfo.IME_ACTION_NEXT
+            }
         } else {
             postalCodeEditText.isEnabled = false
             postalCodeTextInputLayout.visibility = GONE
+            if (cvvEnabled) {
+                cvcNumberEditText.imeOptions = EditorInfo.IME_ACTION_DONE
+                cardNumberEditText.imeOptions = EditorInfo.IME_ACTION_NEXT
+            } else {
+                cardNumberEditText.imeOptions = EditorInfo.IME_ACTION_DONE
+            }
+        }
+    }
 
-            cvcNumberEditText.imeOptions = EditorInfo.IME_ACTION_DONE
+    private fun updateCvvEditText(isEnabled: Boolean) {
+        if (isEnabled) {
+            cvcNumberEditText.isEnabled = true
+            cvcNumberEditText.visibility = VISIBLE
+        } else {
+            cvcNumberEditText.isEnabled = false
+            cvcNumberEditText.visibility = GONE
         }
     }
 
@@ -1208,6 +1417,9 @@ class CardInputWidget @JvmOverloads constructor(
         private const val STATE_CARD_VIEWED = "state_card_viewed"
         private const val STATE_SUPER_STATE = "state_super_state"
         private const val STATE_POSTAL_CODE_ENABLED = "state_postal_code_enabled"
+        private const val STATE_POSTAL_CODE_REQUIRED = "state_postal_code_required"
+        private const val STATE_CVV_ENABLED = "state_cvv_enabled"
+        private const val STATE_CVV_REQUIRED = "state_cvv_required"
 
         // This value is used to ensure that onSaveInstanceState is called
         // in the event that the user doesn't give this control an ID.

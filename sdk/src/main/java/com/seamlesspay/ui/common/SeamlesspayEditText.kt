@@ -13,6 +13,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
+import com.seamlesspay.R
 
 /**
  * Extension of [TextInputEditText] that listens for users pressing the delete key when
@@ -227,7 +228,7 @@ open class SeamlesspayEditText @JvmOverloads constructor(
     ) : InputConnectionWrapper(target, mutable) {
         override fun deleteSurroundingText(beforeLength: Int, afterLength: Int): Boolean {
             // This method works on modern versions of Android with soft keyboard delete.
-            if (getTextBeforeCursor(1, 0).isEmpty()) {
+            if (getTextBeforeCursor(1, 0)?.isEmpty() == true) {
                 deleteEmptyListener?.onDeleteEmpty()
             }
             return super.deleteSurroundingText(beforeLength, afterLength)

@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.EditText
 import androidx.annotation.VisibleForTesting
+import com.seamlesspay.R
+import com.seamlesspay.ui.utils.DateUtils
 import kotlin.math.min
 
 /**
